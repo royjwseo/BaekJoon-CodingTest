@@ -10,44 +10,27 @@ using namespace std;
 ================= 2024-10-10 ================
 - 백준 단계별로 풀어보기 일반 수학 1
 
--- 2720번--
-테스트 케이스 개수 T
-케이스 거스름돈 C (정수) 단위 cent
-쿼터 0.25달러 다임 0.1달러 니켈 0.05달러 페니 0.01달러
-최소한의 동전으로 거슬러주기
+--2903번--
+첫째 줄에 N이 주어짐 -> N번 거친 후 정사각형들에 걸쳐 
+중복 점은 단일 저장 가정한 후 저장해야하는 점의 개수 출력
+
+-> 점은 가로, 세로 증가량이 2의 제곱으로 이루어짐을 확인
+-> 2->3->5->9->17->33...
 */
 
 
 int main() {
 
-	int TestCase;
+	int TestCase{};
 	cin >> TestCase;
-	int RefundTotal{};
-	for (int i = 0; i < TestCase; ++i) {
-		array<int, 4>CoinRefund{};
-		cin >> RefundTotal;
-		if (RefundTotal >=25) {
-			CoinRefund[0]=RefundTotal / 25;
-			RefundTotal = RefundTotal % 25;
-		}
-		if (RefundTotal >=10) {
-			CoinRefund[1]=RefundTotal / 10;
-			RefundTotal = RefundTotal % 10;
-		}
-		if (RefundTotal >=5) {
-			CoinRefund[2]=RefundTotal / 5;
-			RefundTotal = RefundTotal % 5;
-		}
-		if (RefundTotal >=1) {
-			CoinRefund[3]=RefundTotal / 1;
-			RefundTotal = RefundTotal % 1;
-		}
-		for (int Refund : CoinRefund) {
-			cout << Refund << ' ';
-		}
-		cout << '\n';
 
+	int PointNum = 2;
+
+	for (int i = 0; i < TestCase; ++i) {
+		PointNum += pow(2, i);
 	}
+	cout << int(pow(PointNum, 2));
+	
 	
 
 }
