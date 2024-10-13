@@ -9,40 +9,48 @@ using namespace std;
 /*
 ================= 2024-10-12 ================
 - 백준 
-1978번 소수 찾기
+2581번 소수 
 
-N개의 수 중에 소수 찾기. N은 100이하, N자체는 1000이하 자연수
+자연수 M, N 주고, M <= ? <= N 자연수 중 소수들 골라 소수 합, 최소값
+
 */
+
+bool is_Prime(int num) {
+
+	if (num < 2)return false;
+
+	for (int i = 2; i <= sqrt(num); ++i)
+		if (num % i == 0)return false;
+
+	return true;
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int num;
-	cin >> num;
+	vector<int> primenumbers;
 
-	int input;
-	int cnt{};
-	
-	for (int i = 0; i < num; ++i) {
-		bool is_Prime = true;
-		cin >> input;
-		if (input == 1)continue;
-		if (input == 2) {
-			cnt++;
-			continue;
-		}
-		for (int i = 2; i <= sqrt(input); ++i) {
-			if (input % i == 0) {
-				is_Prime = false;
-				break;
-			}
-		}
-		if(is_Prime) cnt++;
+	int N, M;
+	cin >> M >> N;
 
+
+	for (int i = M; i <= N; ++i) {
+		if (is_Prime(i)) primenumbers.push_back(i);
 	}
-	
-	cout << cnt;
+
+	if (primenumbers.empty())cout << -1;
+	else {
+
+		int sum{};
+		for (auto a : primenumbers) {
+			sum += a;
+		}
+		cout << sum << '\n' << *min_element(primenumbers.begin(), primenumbers.end());
+	}
+
+
+
 }
 
 
