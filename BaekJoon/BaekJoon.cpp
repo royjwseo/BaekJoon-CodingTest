@@ -8,34 +8,42 @@ using namespace std;
 
 /*
 ================= 2024-10-12 ================
-- 백준 2501 약수 구하기
+- 백준 9506 약수 구하기
 
-p, q 자연수 
-N은 1과 10000사이
-K는 1과 N사이
 */
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int N, K;
-	cin >> N >> K;
-	int cnt{};
-	bool found = false;
-	for (int i = 1; i <= N; ++i) {
-		if (N % i == 0) cnt++;
-		if (cnt == K) {
-			cout << i;
-			found = true;
-			break;
-		}
-	}
+	int input{};
+	int add{};
 	
+	while (1) {
+		vector<int> numbers{};
+		add = 0;
+		cin >> input;
+		if (input < 0)break;
+		
+		for (int i = 1; i < input; ++i) {
+			if (input % i == 0) { 
+				numbers.push_back(i);
+				add += i;
+			}
+		}
+		if (add == input) {
+			cout << input << " = ";
+			for (int i = 0; i < numbers.size(); ++i) {
+				if (i != numbers.size() - 1)cout << numbers[i] << " + ";
+				else cout << numbers[i];
+			}
+			cout << '\n';
+		}
+		else {
+			cout << input << " is NOT perfect.\n";
+		}
 
-	if (!found)cout << '0';
-
-
+	}
 }
 
 
