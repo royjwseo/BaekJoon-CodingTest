@@ -8,28 +8,33 @@ using namespace std;
 
 /*
 ================= 2024-10-12 ================
-- 백준 5086 배수와 약수
+- 백준 2501 약수 구하기
 
+p, q 자연수 
+N은 1과 10000사이
+K는 1과 N사이
 */
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int a=1, b=1;
-	while (1) {
-		cin >> a >> b;
-		if (a == 0 && b == 0)break;
-		if (a > b) {
-			if (a % b == 0)cout << "multiple\n";
-			else cout << "neither\n";
-		}
-		else {
-			if (b % a == 0)cout << "factor\n";
-			else cout << "neither\n";
+	int N, K;
+	cin >> N >> K;
+	int cnt{};
+	bool found = false;
+	for (int i = 1; i <= N; ++i) {
+		if (N % i == 0) cnt++;
+		if (cnt == K) {
+			cout << i;
+			found = true;
+			break;
 		}
 	}
 	
+
+	if (!found)cout << '0';
+
 
 }
 
