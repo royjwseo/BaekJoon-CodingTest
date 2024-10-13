@@ -8,42 +8,41 @@ using namespace std;
 
 /*
 ================= 2024-10-12 ================
-- 백준 9506 약수 구하기
+- 백준 
+1978번 소수 찾기
 
+N개의 수 중에 소수 찾기. N은 100이하, N자체는 1000이하 자연수
 */
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int input{};
-	int add{};
+	int num;
+	cin >> num;
+
+	int input;
+	int cnt{};
 	
-	while (1) {
-		vector<int> numbers{};
-		add = 0;
+	for (int i = 0; i < num; ++i) {
+		bool is_Prime = true;
 		cin >> input;
-		if (input < 0)break;
-		
-		for (int i = 1; i < input; ++i) {
-			if (input % i == 0) { 
-				numbers.push_back(i);
-				add += i;
+		if (input == 1)continue;
+		if (input == 2) {
+			cnt++;
+			continue;
+		}
+		for (int i = 2; i < input; ++i) {
+			if (input % i == 0) {
+				is_Prime = false;
+				break;
 			}
 		}
-		if (add == input) {
-			cout << input << " = ";
-			for (int i = 0; i < numbers.size(); ++i) {
-				if (i != numbers.size() - 1)cout << numbers[i] << " + ";
-				else cout << numbers[i];
-			}
-			cout << '\n';
-		}
-		else {
-			cout << input << " is NOT perfect.\n";
-		}
+		if(is_Prime) cnt++;
 
 	}
+	
+	cout << cnt;
 }
 
 
