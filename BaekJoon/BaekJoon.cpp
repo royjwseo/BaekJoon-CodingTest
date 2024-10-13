@@ -32,7 +32,7 @@ int main() {
 			cnt++;
 			continue;
 		}
-		for (int i = 2; i < input; ++i) {
+		for (int i = 2; i <= sqrt(input); ++i) {
 			if (input % i == 0) {
 				is_Prime = false;
 				break;
