@@ -9,11 +9,9 @@ using namespace std;
 /*
 ================= 2024-10-12 ================
 - 백준 
-1085번 직사각형 탈출
+3009번 네 번째 점.
 
-현위치 x,y 
-왼쪽 아래 0,0
-오른쪽 위 w,h (1<= <=1000)
+세 점을 주고, 축에 평행한 직사각형 만들기 위한 마지막 점
 
 */
 
@@ -24,25 +22,21 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int x, y;
-	cin >> x >> y;
+	int x[3], y[3];
+	for (int i = 0; i < 3; ++i) {
+		cin >> x[i] >> y[i];
 
-	int w, h;
-	cin >> w >> h;
+	}
+	int result_x, result_y;
+	if (x[0] == x[1])result_x = x[2];
+	else if (x[1] == x[2])result_x = x[0];
+	else if (x[2] == x[0])result_x = x[1];
 
-	int width_distance{};
-	int height_distance{};
+	if (y[0] == y[1])result_y = y[2];
+	else if (y[1] == y[2])result_y = y[0];
+	else if (y[2] == y[0])result_y = y[1];
 
-	if (w - x > x)width_distance = x;
-	else width_distance = w - x;
-	
-	if (h - y > y)height_distance = y;
-	else height_distance = h - y;
-
-	if (width_distance > height_distance)cout << height_distance;
-	else cout << width_distance;
-	
-
+	cout << result_x << ' ' << result_y;
 }
 
 
