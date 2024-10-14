@@ -9,7 +9,7 @@ using namespace std;
 /*
 ================= 2024-10-14 ================
 - 백준 
-15894번 수학은 체육과목 입니다
+9063번 대지
 
 
 */
@@ -21,12 +21,19 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	long long N;
+	int N;
 	cin >> N;
+	int x, y;
+	int max_x=-10000, max_y=-10000, min_x=10000, min_y=10000;
 
-	cout << 4 * N;
-
-
+	for (int i = 0; i < N; ++i) {
+		cin >> x >> y;
+		if (x > max_x)max_x = x;
+		if (y > max_y)max_y = y;
+		if (x < min_x)min_x = x;
+		if (y < min_y)min_y = y;
+	}
+	cout << (max_x - min_x) * (max_y - min_y);
 }
 
 
