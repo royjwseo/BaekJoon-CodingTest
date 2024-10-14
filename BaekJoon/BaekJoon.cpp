@@ -9,7 +9,8 @@ using namespace std;
 /*
 ================= 2024-10-14 ================
 - 백준 
-9063번 대지
+10101 삼각형 외우기
+
 
 
 */
@@ -21,19 +22,14 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int N;
-	cin >> N;
-	int x, y;
-	int max_x=-10000, max_y=-10000, min_x=10000, min_y=10000;
-
-	for (int i = 0; i < N; ++i) {
-		cin >> x >> y;
-		if (x > max_x)max_x = x;
-		if (y > max_y)max_y = y;
-		if (x < min_x)min_x = x;
-		if (y < min_y)min_y = y;
+	int a, b, c;
+	cin >> a >> b >> c;
+	if (a + b + c > 180)cout << "Error";
+	else if (a + b + c == 180) {
+		if (a == b && b == c && c == a)cout << "Equilateral";
+		else if (a != b && b != c && c != a) cout << "Scalene";
+		else cout << "Isosceles";
 	}
-	cout << (max_x - min_x) * (max_y - min_y);
 }
 
 
