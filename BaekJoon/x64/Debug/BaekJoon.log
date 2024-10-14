@@ -1,3 +1,2 @@
 ﻿  BaekJoon.cpp
-C:\Users\서정원\Desktop\CodingTest\BaekJoon\BaekJoon-CodingTest\BaekJoon\BaekJoon.cpp(34,6): warning C4101: 'num' :참조되지 않은 지역 변수입니다.
   BaekJoon.vcxproj -> C:\Users\서정원\Desktop\CodingTest\BaekJoon\BaekJoon-CodingTest\BaekJoon\x64\Debug\BaekJoon.exe

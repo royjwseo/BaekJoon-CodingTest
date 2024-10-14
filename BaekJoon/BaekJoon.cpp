@@ -9,7 +9,12 @@ using namespace std;
 /*
 ================= 2024-10-12 ================
 - 백준 
-27323번 직사각형
+1085번 직사각형 탈출
+
+현위치 x,y 
+왼쪽 아래 0,0
+오른쪽 위 w,h (1<= <=1000)
+
 */
 
 
@@ -19,11 +24,23 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
+	int x, y;
+	cin >> x >> y;
 
-	int A, B;
-	cin >>A>> B;
+	int w, h;
+	cin >> w >> h;
 
-	cout << A * B;
+	int width_distance{};
+	int height_distance{};
+
+	if (w - x > x)width_distance = x;
+	else width_distance = w - x;
+	
+	if (h - y > y)height_distance = y;
+	else height_distance = h - y;
+
+	if (width_distance > height_distance)cout << height_distance;
+	else cout << width_distance;
 	
 
 }
