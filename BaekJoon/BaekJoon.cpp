@@ -9,10 +9,9 @@ using namespace std;
 /*
 ================= 2024-10-14 ================
 - 백준 
-14215번 세 막대
+24262번 알고리즘 수업 - 알고리즘의 수행 시간 1
 
-a,b,c  최대한 길어야 함. 양의 정수, 줄일 수 잇음, 세 막대 이용해서 넓이가 양수
-
+n 1~500'000
 */
 
 
@@ -22,17 +21,18 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	array<int, 3> tri;
-	cin >> tri[0] >> tri[1] >> tri[2];
+	int n;
+	cin >> n;
+	int cnt{};
 
-	sort(tri.begin(), tri.end());
-
-	if (tri[0] + tri[1] <= tri[2]) {
-		tri[2] = tri[0] + tri[1] - 1;
+	while (n > 0) {
+		n /= 2;
+		cnt++;
 	}
-	int total{};
-	for (int a : tri)total += a;
-	cout << total;
+	
+	cout << cnt<<'\n'<<cnt-1;
+
+	
 }
 
 
