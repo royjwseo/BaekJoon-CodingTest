@@ -9,9 +9,9 @@ using namespace std;
 /*
 ================= 2024-10-14 ================
 - 백준 
-5073번 삼각형과 세 변
+14215번 세 막대
 
-
+a,b,c  최대한 길어야 함. 양의 정수, 줄일 수 잇음, 세 막대 이용해서 넓이가 양수
 
 */
 
@@ -22,24 +22,17 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	array<int, 3>tri{};
-	while (1) {
-		cin >> tri[0] >> tri[1] >> tri[2];
-		if (tri[0] == 0 && tri[1] == 0 && tri[2] == 0)break;
+	array<int, 3> tri;
+	cin >> tri[0] >> tri[1] >> tri[2];
 
-		sort(tri.begin(), tri.end());
+	sort(tri.begin(), tri.end());
 
-		if (tri[2] >= tri[0] + tri[1])cout << "Invalid\n";
-		else {
-			if ((tri[0] == tri[1]) && (tri[1] == tri[2]) && (tri[0] == tri[2])) cout << "Equilateral\n";
-			else if ((tri[0] != tri[1]) && (tri[1] != tri[2]) && (tri[0] != tri[2])) cout << "Scalene\n";
-			else cout << "Isosceles\n";
-		}
-		
-
+	if (tri[0] + tri[1] <= tri[2]) {
+		tri[2] = tri[0] + tri[1] - 1;
 	}
-
-	
+	int total{};
+	for (int a : tri)total += a;
+	cout << total;
 }
 
 
