@@ -9,9 +9,16 @@ using namespace std;
 /*
 ================= 2024-10-14 ================
 - 백준 
-24262번 알고리즘 수업 - 알고리즘의 수행 시간 1
+24263번 알고리즘 수업 - 알고리즘의 수행 시간 2
 
 n 1~500'000
+
+MenOfPassion(A[], n) {
+	sum <- 0;
+	for i <- 1 to n
+		sum <- sum + A[i]; # 코드1
+	return sum;
+}
 */
 
 
@@ -23,14 +30,9 @@ int main() {
 
 	int n;
 	cin >> n;
-	int cnt{};
-
-	while (n > 0) {
-		n /= 2;
-		cnt++;
-	}
-	
-	cout << cnt<<'\n'<<cnt-1;
+	//합을 1부터 n까지 더함 O(n)
+	cout << n << '\n';
+	cout << 1;
 
 	
 }
