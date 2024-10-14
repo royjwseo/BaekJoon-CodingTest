@@ -9,7 +9,7 @@ using namespace std;
 /*
 ================= 2024-10-14 ================
 - 백준 
-10101 삼각형 외우기
+5073번 삼각형과 세 변
 
 
 
@@ -22,14 +22,24 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int a, b, c;
-	cin >> a >> b >> c;
-	if (a + b + c > 180)cout << "Error";
-	else if (a + b + c == 180) {
-		if (a == b && b == c && c == a)cout << "Equilateral";
-		else if (a != b && b != c && c != a) cout << "Scalene";
-		else cout << "Isosceles";
+	array<int, 3>tri{};
+	while (1) {
+		cin >> tri[0] >> tri[1] >> tri[2];
+		if (tri[0] == 0 && tri[1] == 0 && tri[2] == 0)break;
+
+		sort(tri.begin(), tri.end());
+
+		if (tri[2] >= tri[0] + tri[1])cout << "Invalid\n";
+		else {
+			if ((tri[0] == tri[1]) && (tri[1] == tri[2]) && (tri[0] == tri[2])) cout << "Equilateral\n";
+			else if ((tri[0] != tri[1]) && (tri[1] != tri[2]) && (tri[0] != tri[2])) cout << "Scalene\n";
+			else cout << "Isosceles\n";
+		}
+		
+
 	}
+
+	
 }
 
 
