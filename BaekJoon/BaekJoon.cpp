@@ -7,11 +7,12 @@
 using namespace std;
 
 /*
-================= 2024-10-14 ================
+================= 2024-10-19 ================
 - 백준 
-1253 좋은 수 구하기
+2003 수들의 합
 
-정렬 + 투 포인터
+0.5초
+
 
 */
 
@@ -21,44 +22,40 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int N;
-	cin >> N;
+	int N, M;
+	cin >> N >> M;
 
-	vector<int>nums(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> nums[i];
+	vector<int>added_nums(N + 1, 0);//1부터사용
+	int input;
+	for (int i = 1; i < N+1; ++i) {
+		cin >> input;
+		added_nums[i] = added_nums[i - 1] + input;
 	}
 
-	sort(nums.begin(), nums.end());
-
-	int start = 0;
-	int end = N - 1;
 	int cnt{};
-	int find={};
 
-	for(int i=0;i<N;++i){
-		start = 0;
-		end = N - 1;
-		find = nums[i];
-		while (start < end) {
-			if (start == find) start++;
-			else if (end == find)end--;
-			else if (nums[start] + nums[end] == find && start != find && end != find) {
+	int left = 0;
+	int right = 1;
+	for (int i = 0; i < N; ++i) {
+		int left = i;
+		int right = i+1;
+
+		while (right <= N) {
+			if (added_nums[right] - added_nums[left] == M) {
 				cnt++;
 				break;
 			}
-			else if (nums[start] + nums[end] > find) {
-				end--;
+			else if (added_nums[right] - added_nums[left] < M) {
+				right++;
 			}
-			else if (nums[start] + nums[end] < find) {
-				start++;
+			else if (added_nums[right] - added_nums[left] > M) {
+				break;
 			}
 		}
-		
-
 	}
+	
 	cout << cnt;
-
+	
 
 }
 
