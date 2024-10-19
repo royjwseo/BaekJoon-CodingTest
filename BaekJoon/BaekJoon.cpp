@@ -10,63 +10,48 @@ using namespace std;
 /*
 ================= 2024-10-19 ================
 - 백준 
-1644번 소수의연속합
+2470번 두 용액
+
+
 
 
 */
-bool isPrime(int N) {
-	if (N < 2) return false;
-	if (N == 2) return true;
-	if (N % 2 == 0) return false;
-	for (int i = 3; i * i <= N; i += 2) {
-		if (N % i == 0) return false;
-	}
-	return true;
-}
+
 
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
+	
 	int N;
 	cin >> N;
-
-	vector<int>Primes;
-
-	int sum{};
-	for (int i = 2; i <= N; ++i) {
-		if (isPrime(i)) {
-			Primes.push_back(i);
-		}
+	vector<int>liquids(N);
+	for (int i = 0; i < N; ++i) {
+		cin >> liquids[i];
 	}
-	int size = Primes.size();
-	vector<int>PrimeSum(size+1,0);
-	for (int i = 1; i <= size; ++i) {
-		PrimeSum[i] = PrimeSum[i - 1] + Primes[i-1];
-	}
-	int left = size-1;
-	int right = size;
-	int cnt{};
+	sort(liquids.begin(), liquids.end());
 
-	while (left>=0) {
-		int sum = PrimeSum[right] - PrimeSum[left];
-		if (sum < N) {
-			left--;
+	int left = 0;
+	int right = liquids.size() - 1;
+
+	int max = INT_MAX;
+	int left_index{}, right_index{};
+	while (left < right) {
+		int distance = abs(liquids[right]+liquids[left]);
+		if (distance < max) {
+			max = distance;
+			right_index = right;
+			left_index = left;
 		}
-		else if (sum > N) {
-			right--;
+		if (abs(liquids[left]) > abs(liquids[right])) {
+			left++;
 		}
 		else {
-			cnt++;
-			left--;
 			right--;
 		}
-		
 	}
-	cout << cnt;
-	
-
+	cout << liquids[left_index] << ' ' << liquids[right_index];
 
 }
 
