@@ -44,8 +44,9 @@ int main() {
 	
 		left = 0;
 		right = N - 1;
-		while (left <= right) {
+		while (left < right) {
 			if (nums[left] + nums[right] > X) {
+
 				right--;
 			}
 			else if (nums[left] + nums[right] < X) {
