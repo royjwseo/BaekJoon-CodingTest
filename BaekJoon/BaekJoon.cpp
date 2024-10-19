@@ -15,16 +15,13 @@ using namespace std;
 
 */
 bool isPrime(int N) {
-	bool isPrime = true;
-	if (N == 2) return isPrime;
-	for (int i = 2; i < N; ++i) {
-		if (N % i == 0) {
-			isPrime = false;
-			break;
-		}
+	if (N < 2) return false;
+	if (N == 2) return true;
+	if (N % 2 == 0) return false;
+	for (int i = 3; i * i <= N; i += 2) {
+		if (N % i == 0) return false;
 	}
-	return isPrime;
-	//O(N)
+	return true;
 }
 
 
