@@ -10,9 +10,9 @@ using namespace std;
 /*
 ================= 2024-10-19 ================
 - 백준 
-2470번 두 용액
+11728번 배열 합치기
 
-
+들어있는 수 10억 이하 int사용가능
 
 
 */
@@ -23,35 +23,57 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	
-	int N;
-	cin >> N;
-	vector<int>liquids(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> liquids[i];
+	/*int N, M;
+	cin >> N>> M;
+	vector<int> my_array(N+M);
+	for (int i = 0; i < N + M; ++i)cin >> my_array[i];
+
+	sort(my_array.begin(), my_array.end());
+
+
+	for (auto a: my_array) {
+		cout << a << ' ';
 	}
-	sort(liquids.begin(), liquids.end());
+	//시간 복잡도 (N+M)log(N+M)
+	*/
 
-	int left = 0;
-	int right = liquids.size() - 1;
+	int N, M;
+	cin >> N >> M;
+	vector<int> array1(N);
+	vector<int> array2(M);
+	for (int i = 0; i < N; ++i) {
+		cin >> array1[i];
+	}
+	for (int i = 0; i < M; ++i) {
+		cin >> array2[i];
+	}
+	vector<int>finalarray;
+	int left_array1 = 0;
+	int left_array2 = 0;
+	while (left_array1+left_array2 < N+M) {
 
-	int max = INT_MAX;
-	int left_index{}, right_index{};
-	while (left < right) {
-		int distance = abs(liquids[right]+liquids[left]);
-		if (distance < max) {
-			max = distance;
-			right_index = right;
-			left_index = left;
+		if (left_array1 == N) {
+			finalarray.push_back(array2[left_array2]);
+			left_array2++;
 		}
-		if (abs(liquids[left]) > abs(liquids[right])) {
-			left++;
+		else if (left_array2 == M) {
+			finalarray.push_back(array1[left_array1]);
+			left_array1++;
+		}
+		else 
+		if (array1[left_array1] < array2[left_array2]) {
+			finalarray.push_back(array1[left_array1]);
+			left_array1++;
 		}
 		else {
-			right--;
+			finalarray.push_back(array2[left_array2]);
+			left_array2++;
 		}
+
 	}
-	cout << liquids[left_index] << ' ' << liquids[right_index];
+	for (auto a : finalarray) {
+		cout << a << ' ';
+	}
 
 }
 
