@@ -36,23 +36,22 @@ int main() {
 
 	int left = 0;
 	int right = 1;
-	for (int i = 0; i < N; ++i) {
-		int left = i;
-		int right = i+1;
 
 		while (right <= N) {
-			if (added_nums[right] - added_nums[left] == M) {
+			int sum = added_nums[right] - added_nums[left];
+			if (sum == M) {
 				cnt++;
-				break;
+				left++;
 			}
-			else if (added_nums[right] - added_nums[left] < M) {
+			else if (sum < M) {
 				right++;
 			}
-			else if (added_nums[right] - added_nums[left] > M) {
-				break;
+			else if (sum > M) {
+				left++;			
 			}
+			if (left == right)right++;
 		}
-	}
+
 	
 	cout << cnt;
 	
