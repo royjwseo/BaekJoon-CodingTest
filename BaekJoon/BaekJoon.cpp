@@ -8,11 +8,10 @@
 using namespace std;
 
 /*
-================= 2024-10-19 ================
+================= 2024-10-20 ================
 - 백준 
-11728번 배열 합치기
-
-들어있는 수 10억 이하 int사용가능
+12891번
+DNA 비밀번호
 
 
 */
@@ -23,57 +22,64 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	/*int N, M;
-	cin >> N>> M;
-	vector<int> my_array(N+M);
-	for (int i = 0; i < N + M; ++i)cin >> my_array[i];
+	int S, P;
 
-	sort(my_array.begin(), my_array.end());
+	cin >> S >> P;
+
+	string DNA;
+	cin >> DNA;
+
+	int A, C, G, T;
+	cin >> A >> C >> G >> T;
+
+	int left = 0;
+	int right = P;
+
+	int A_count{}, C_count{}, G_count{}, T_count{};
+	int cnt{};
+	//while (right-1 < S) {
+	//	A_count = count(DNA.begin() + left, DNA.begin() + right, 'A');
+	//	C_count = count(DNA.begin() + left, DNA.begin() + right, 'C');
+	//	G_count = count(DNA.begin() + left, DNA.begin() + right, 'G');
+	//	T_count = count(DNA.begin() + left, DNA.begin() + right, 'T');
+	//	if (A_count >= A && C_count >= C && G_count >= G && T_count >= T) {
+	//		cnt++;
+	//	}
+	//	left++;
+	//	right++;
+	//}
+	for (int i = 0; i < P; ++i) {
+	if (DNA[i] == 'A') A_count++;
+	else if (DNA[i] == 'C') C_count++;
+	else if (DNA[i] == 'G') G_count++;
+	else if (DNA[i] == 'T') T_count++;
+}
+
+// 첫 번째 윈도우가 조건을 만족하는지 확인
+if (A_count >= A && C_count >= C && G_count >= G && T_count >= T) {
+	cnt++;
+}
 
 
-	for (auto a: my_array) {
-		cout << a << ' ';
-	}
-	//시간 복잡도 (N+M)log(N+M)
-	*/
+	for (int i = P; i < S; ++i) {
+		// 윈도우의 앞쪽 문자 제외
+		if (DNA[i - P] == 'A') A_count--;
+		else if (DNA[i - P] == 'C') C_count--;
+		else if (DNA[i - P] == 'G') G_count--;
+		else if (DNA[i - P] == 'T') T_count--;
 
-	int N, M;
-	cin >> N >> M;
-	vector<int> array1(N);
-	vector<int> array2(M);
-	for (int i = 0; i < N; ++i) {
-		cin >> array1[i];
-	}
-	for (int i = 0; i < M; ++i) {
-		cin >> array2[i];
-	}
-	vector<int>finalarray;
-	int left_array1 = 0;
-	int left_array2 = 0;
-	while (left_array1+left_array2 < N+M) {
+		// 윈도우의 뒤쪽 문자 추가
+		if (DNA[i] == 'A') A_count++;
+		else if (DNA[i] == 'C') C_count++;
+		else if (DNA[i] == 'G') G_count++;
+		else if (DNA[i] == 'T') T_count++;
 
-		if (left_array1 == N) {
-			finalarray.push_back(array2[left_array2]);
-			left_array2++;
+		// 새로운 윈도우가 조건을 만족하는지 확인
+		if (A_count >= A && C_count >= C && G_count >= G && T_count >= T) {
+			cnt++;
 		}
-		else if (left_array2 == M) {
-			finalarray.push_back(array1[left_array1]);
-			left_array1++;
-		}
-		else 
-		if (array1[left_array1] < array2[left_array2]) {
-			finalarray.push_back(array1[left_array1]);
-			left_array1++;
-		}
-		else {
-			finalarray.push_back(array2[left_array2]);
-			left_array2++;
-		}
-
 	}
-	for (auto a : finalarray) {
-		cout << a << ' ';
-	}
+	cout << cnt;
 
 }
 
