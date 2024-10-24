@@ -10,8 +10,7 @@ using namespace std;
 /*
 ================= 2024-10-24================
 - 백준 
-1940번
-주몽
+2018번 수들의합 5
 
 
 */
@@ -23,33 +22,34 @@ int main() {
     cin.tie(NULL);
 
     int N;
-    int M;
-    cin >> N >> M;
-    vector<int>nums(N);
-    for (int i = 0; i < N; ++i) {
-        cin >> nums[i];
-    }
-    sort(nums.begin(), nums.end());
-    int left = 0;
-    int right = N-1;
+    cin >> N;
 
-    int sum{};
-    int result{};
-    while (left < right) {
-        sum = nums[left] + nums[right];
-        if (sum > M) {
-            right--;
+    int left = 1;
+    int right = 1;
+
+    int sum=1;
+    int cnt{};
+    while (right <= N) {
+            
+        if (sum > N) {
+            sum -= left;
+            left++;     
         }
-        else if(sum<M) {
-            left++;
+        else if (sum < N) {
+            right++;
+            sum += right;
         }
         else {
-        result++;
-        left++;
-        right--;
-       }
+            cnt++;       
+            right++;
+            sum += right;
+            sum -= left;
+            left++;
+        }
     }
-    cout << result;
+    cout << cnt;
+
+
 }
-//1 2 3 4 5 7 
+
 
