@@ -8,9 +8,9 @@
 using namespace std;
 
 /*
-================= 2024-10-21================
+================= 2024-10-24================
 - 백준 
-19532번 수학은 비대면강의입니다
+1806번 부분합
 */
 
 
@@ -19,28 +19,39 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    double a, b, c, d, e, f;
-    cin >> a >> b >> c >> d >> e >> f;
+    int N;
+    cin >> N;
+    int S;
+    cin >> S;
 
-    // 판별식 계산
-    double denominator = a * e - b * d;
+    vector<long long> nums(N+1);
+    for (int i = 1; i <=N; ++i) {
+        int a;
+        cin >> a;
+        nums[i] = nums[i - 1] + a;
+    }
+    int left = 0;
+    int right = 1;
 
-    if (denominator == 0) {
-        // a/e와 b/f가 같은지 확인
-        if (a * f == c * d && b * f == c * e) {
-            cout << "LINE" << endl; // 무한 해
+    long long sum{};
+    int result_len=INT_MAX;
+    while (right <= N) {
+        sum = nums[right] - nums[left];
+  
+        if (sum >= S) {
+            if (right - left < result_len) {
+                result_len = right - left;
+            }
+            left++;
         }
         else {
-            cout << "NONE" << endl; // 해 없음
+            right++;
         }
+        
+        
     }
-    else {
-        // 유일한 해를 구함
-        int x = (c * e - b * f) / denominator;
-        int y = (a * f - c * d) / denominator;
-        cout << x << " " << y << endl; // 해 출력
-    }
-
+    if (result_len == INT_MAX)result_len = 0;
+    cout << result_len;
 
 }
 
