@@ -10,7 +10,11 @@ using namespace std;
 /*
 ================= 2024-10-24================
 - 백준 
-1806번 부분합
+2467번 용액
+
+산성 1~10억
+알칼리 -1 ~-10억 
+
 */
 
 
@@ -21,37 +25,38 @@ int main() {
 
     int N;
     cin >> N;
-    int S;
-    cin >> S;
-
-    vector<long long> nums(N+1);
-    for (int i = 1; i <=N; ++i) {
-        int a;
-        cin >> a;
-        nums[i] = nums[i - 1] + a;
+    vector<int> liquids(N);
+    for (int i = 0; i < N; ++i) {
+        cin >> liquids[i];
     }
+    
     int left = 0;
-    int right = 1;
+    int right = N - 1;
 
-    long long sum{};
-    int result_len=INT_MAX;
-    while (right <= N) {
-        sum = nums[right] - nums[left];
-  
-        if (sum >= S) {
-            if (right - left < result_len) {
-                result_len = right - left;
-            }
+    int sum{};
+    int result=INT_MAX;
+    int result_left{}, result_right{};
+    while (left < right) {
+        sum = liquids[left] + liquids[right];
+        if (abs(sum) <= result) {
+            result = abs(sum);
+            result_left = left;
+            result_right = right;
+        }
+        if (sum > 0) {
+            right--;
+        }
+        else if (sum < 0) {
             left++;
         }
         else {
-            right++;
+            result_left = left;
+            result_right = right;
         }
-        
+      
         
     }
-    if (result_len == INT_MAX)result_len = 0;
-    cout << result_len;
 
+    cout << liquids[result_left] << ' ' << liquids[result_right];
 }
 
