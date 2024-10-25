@@ -13,46 +13,7 @@ using namespace std;
 
 */
 
-template<class T>
-class STACK {
-public:
-   const void push(const T& value) {
-        _container.push_back(value);
-        cur_size++;
-    }
-   const void pop() {
-        top();
-        if (cur_size >= 0) {
-            _container.pop_back();
-            cur_size--;
-        }
-    }
-    const void top() const{
-        if (cur_size < 0) {
-            cout << "-1\n";
-        }
-        else {
-            cout << _container[cur_size] << '\n';
-        }
-        
-    }
-   const void empty()const {
-        if (cur_size < 0) {
-            cout << "1\n";
-        }
-        else {
-            cout << "0\n";
-        }
-    }
 
-    const void size()const {
-        cout<< cur_size+1<<'\n';
-    }
-
-private:
-    vector<T> _container;
-    int cur_size=-1;
-};
 
 
 int main() {
@@ -60,30 +21,41 @@ int main() {
     cin.tie(NULL);
    
 
-    STACK<int> MY_STACK;
-
     int N;
     cin >> N;
-    for (int i = 0; i < N; ++i) {
-        string command;
-        cin >> command;
 
-        if (command == "push") {
+    string input;
+    stack<int> my_stack;
+    for (int i = 0; i < N; ++i) {
+        cin >> input;
+        if (input == "push") {
             int a;
             cin >> a;
-            MY_STACK.push(a);
+            my_stack.push(a);
         }
-        else if (command == "top") {
-            MY_STACK.top();
+        else if (input == "top") {
+            if (my_stack.empty()) {
+                cout << "-1\n";
+            }
+            else {
+                cout << my_stack.top() << '\n';
+            }
+            
         }
-        else if (command == "size") {
-            MY_STACK.size();
+        else if (input == "size") {
+            cout << my_stack.size()<<'\n';
         }
-        else if (command == "empty") {
-            MY_STACK.empty();
+        else if (input == "pop") {
+            if (my_stack.empty()) {
+                cout << "-1\n";
+            }
+            else {
+                cout << my_stack.top() << '\n';
+                my_stack.pop();
+            }
         }
-        else if (command == "pop") {
-            MY_STACK.pop();
+        else if (input == "empty") {
+            (my_stack.empty()) ? cout << "1\n" : cout << "0\n";
         }
     }
    
