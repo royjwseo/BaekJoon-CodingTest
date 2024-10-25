@@ -9,49 +9,81 @@ using namespace std;
 
 /*
 ================= 2024-10-25================
-9012번 괄호
-
-stack 활용
+10828번 스택
 
 */
+
+template<class T>
+class STACK {
+public:
+   const void push(const T& value) {
+        _container.push_back(value);
+        cur_size++;
+    }
+   const void pop() {
+        top();
+        if (cur_size >= 0) {
+            _container.pop_back();
+            cur_size--;
+        }
+    }
+    const void top() const{
+        if (cur_size < 0) {
+            cout << "-1\n";
+        }
+        else {
+            cout << _container[cur_size] << '\n';
+        }
+        
+    }
+   const void empty()const {
+        if (cur_size < 0) {
+            cout << "1\n";
+        }
+        else {
+            cout << "0\n";
+        }
+    }
+
+    const void size()const {
+        cout<< cur_size+1<<'\n';
+    }
+
+private:
+    vector<T> _container;
+    int cur_size=-1;
+};
 
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-   
+
+    STACK<int> MY_STACK;
 
     int N;
     cin >> N;
-
     for (int i = 0; i < N; ++i) {
-        string sen;
-        cin >> sen;
+        string command;
+        cin >> command;
 
-        stack<char> _container;
-        bool isValid = true;
-
-        for (char a : sen) {
-            if (a == '(') {
-                _container.push(a);
-            }
-            else if (a == ')') {
-                if (_container.empty()) {
-                    isValid = false;
-                    break;
-                }
-                else {
-                    _container.pop();
-                }
-            }
+        if (command == "push") {
+            int a;
+            cin >> a;
+            MY_STACK.push(a);
         }
-
-        if (isValid && _container.empty()) {
-            cout << "YES\n";
+        else if (command == "top") {
+            MY_STACK.top();
         }
-        else {
-            cout << "NO\n";
+        else if (command == "size") {
+            MY_STACK.size();
+        }
+        else if (command == "empty") {
+            MY_STACK.empty();
+        }
+        else if (command == "pop") {
+            MY_STACK.pop();
         }
     }
    
