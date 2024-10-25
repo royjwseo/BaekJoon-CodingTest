@@ -4,13 +4,14 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
-#include <climits>
+#include <stack>
 using namespace std;
 
 /*
 ================= 2024-10-25================
 9012번 괄호
 
+stack 활용
 
 */
 
@@ -19,29 +20,34 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
+   
+
     int N;
     cin >> N;
 
-
     for (int i = 0; i < N; ++i) {
         string sen;
-
-        int cnt{};
-       bool start = false;
         cin >> sen;
+
+        stack<char> _container;
+        bool isValid = true;
+
         for (char a : sen) {
             if (a == '(') {
-                start = true;
-                cnt++;
+                _container.push(a);
             }
-            else if (a == ')')
-            {
-                cnt--;
-                if (cnt < 0)break;
-                if (cnt == 0)start = false;
+            else if (a == ')') {
+                if (_container.empty()) {
+                    isValid = false;
+                    break;
+                }
+                else {
+                    _container.pop();
+                }
             }
-       }
-        if (cnt == 0 && !start) {
+        }
+
+        if (isValid && _container.empty()) {
             cout << "YES\n";
         }
         else {
@@ -49,6 +55,7 @@ int main() {
         }
     }
    
+ 
    
 }
 
