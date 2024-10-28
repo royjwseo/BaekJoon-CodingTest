@@ -9,8 +9,7 @@ using namespace std;
 
 /*
 ================= 2024-10-28================
-28278 스택 수열
-
+4949 균형잡힌 세상
 */
 
 
@@ -20,45 +19,49 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-    int N;
-    cin >> N;
-    stack<int> answer;
-    for (int i = 0; i < N; ++i) {
-        int a;
-        cin >> a;
-        switch (a) {
-        case 1:
-            int input;
-            cin >> input;
-            answer.push(input);
-            break;
-        case 2:
-            if (!answer.empty()) {
-                cout << answer.top() << '\n';
-                answer.pop();
+    
+        
+    while (true) {
+        string input;
+        getline(cin, input);
+
+        if (input == ".") break;  // 종료 조건
+
+        stack<char> mystack;
+        bool check = true;
+
+        for (char ch : input) {
+            if (ch == '(' || ch == '[') {
+                mystack.push(ch);
             }
-            else {
-                cout << "-1\n";
+            else if (ch == ')') {
+                if (mystack.empty() || mystack.top() != '(') {
+                    check = false;
+                    break;
+                }
+                else {
+                    mystack.pop();
+                }
             }
-          
-            break;
-        case 3:
-            cout << answer.size() << '\n';
-            break;
-        case 4:
-            cout << (answer.empty() ? "1\n" : "0\n");
-            break;
-        case 5:
-            if (!answer.empty()) {
-                cout << answer.top() << '\n';
+            else if (ch == ']') {
+                if (mystack.empty() || mystack.top() != '[') {
+                    check = false;
+                    break;
+                }
+                else {
+                    mystack.pop();
+                }
             }
-            else {
-                cout << "-1\n";
-            }
-            break;
+        }
+
+        // 최종 결과 출력
+        if (check && mystack.empty()) {
+            cout << "yes\n";
+        }
+        else {
+            cout << "no\n";
         }
     }
-    
 }
 
 
