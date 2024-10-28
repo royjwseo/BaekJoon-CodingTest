@@ -10,7 +10,7 @@ using namespace std;
 
 /*
 ================= 2024-10-28================
-2587번 대표값2
+10989번 수 정렬하기 3
 */
 
 
@@ -20,16 +20,20 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-    
-    vector<float> nums(5);
-    float sum{};
-    for (int i = 0; i < 5; ++i) {
-        cin >> nums[i];
-        sum += nums[i];
+    int N;
+    cin >> N;
+    int a;
+    array<int, 10000>nums{};
+    for (int i = 0; i < N; ++i) {
+        cin >> a;
+        nums[a]++;
     }
-    sort(nums.begin(), nums.end());
-   
-    cout << sum / 5.f << '\n' << nums[2];
+    for (int i = 1; i < 10000; ++i) {
+        if (nums[i] > 0) {
+            for (int j = 0; j < nums[i]; j++)
+                cout << i << '\n';
+        }
+    }
 }
 
 
