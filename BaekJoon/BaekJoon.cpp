@@ -9,7 +9,7 @@ using namespace std;
 
 /*
 ================= 2024-10-28================
-4949 균형잡힌 세상
+12789 도키도키 간식드리미
 */
 
 
@@ -19,48 +19,30 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-    
-        
-    while (true) {
-        string input;
-        getline(cin, input);
+    int N;
+    cin >> N;
 
-        if (input == ".") break;  // 종료 조건
-
-        stack<char> mystack;
-        bool check = true;
-
-        for (char ch : input) {
-            if (ch == '(' || ch == '[') {
-                mystack.push(ch);
-            }
-            else if (ch == ')') {
-                if (mystack.empty() || mystack.top() != '(') {
-                    check = false;
-                    break;
-                }
-                else {
-                    mystack.pop();
-                }
-            }
-            else if (ch == ']') {
-                if (mystack.empty() || mystack.top() != '[') {
-                    check = false;
-                    break;
-                }
-                else {
-                    mystack.pop();
-                }
-            }
-        }
-
-        // 최종 결과 출력
-        if (check && mystack.empty()) {
-            cout << "yes\n";
+    int a;
+    int person = 1;
+    stack<int> snack_line;
+    for (int i = 0; i < N; ++i) {
+        cin >> a;
+        if (a == person) {
+            person++;
         }
         else {
-            cout << "no\n";
+            snack_line.push(a);
         }
+        while (!snack_line.empty() && snack_line.top() == person) {
+            snack_line.pop();
+            person++;
+        }
+    }
+    if (snack_line.empty()) {
+        cout << "Nice";
+    }
+    else {
+        cout << "Sad";
     }
 }
 
