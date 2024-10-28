@@ -8,8 +8,8 @@
 using namespace std;
 
 /*
-================= 2024-10-25================
-1874 스택 수열
+================= 2024-10-28================
+28278 스택 수열
 
 */
 
@@ -20,44 +20,42 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-    int n;
-    cin >> n;
-    vector<int> nums(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> nums[i];
-    }
-
-    vector<char> result;
-    stack<int> mystack;
-
-    int a = 1;
-    bool check = true;
-    for (int i = 0; i < n; ++i) {
-        int target = nums[i];
-        
-        if (a <= target) {
-            while (a <= target) {
-                mystack.push(a++);
-                result.push_back('+');
-            }
-        }
-       
-            if (target == mystack.top()) {
-                mystack.pop();
-                result.push_back('-');
+    int N;
+    cin >> N;
+    stack<int> answer;
+    for (int i = 0; i < N; ++i) {
+        int a;
+        cin >> a;
+        switch (a) {
+        case 1:
+            int input;
+            cin >> input;
+            answer.push(input);
+            break;
+        case 2:
+            if (!answer.empty()) {
+                cout << answer.top() << '\n';
+                answer.pop();
             }
             else {
-                cout << "NO";
-                check = false;
-                break;
+                cout << "-1\n";
             }
-        
-
-
-    }
-    if (check) {
-        for (char a : result) {
-            cout << a << '\n';
+          
+            break;
+        case 3:
+            cout << answer.size() << '\n';
+            break;
+        case 4:
+            cout << (answer.empty() ? "1\n" : "0\n");
+            break;
+        case 5:
+            if (!answer.empty()) {
+                cout << answer.top() << '\n';
+            }
+            else {
+                cout << "-1\n";
+            }
+            break;
         }
     }
     
