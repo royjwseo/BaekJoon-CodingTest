@@ -9,7 +9,7 @@ using namespace std;
 
 /*
 ================= 2024-10-28================
-12789 도키도키 간식드리미
+10799 쇠막대기
 */
 
 
@@ -19,31 +19,20 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-    int N;
-    cin >> N;
+    string sen;
+    cin >> sen;
 
-    int a;
-    int person = 1;
-    stack<int> snack_line;
-    for (int i = 0; i < N; ++i) {
-        cin >> a;
-        if (a == person) {
-            person++;
+    stack<char> sticks;
+    int cnt{};
+    for (char a : sen) {
+        if (a == '(')sticks.push(a);
+        else if (a == ')' && !sticks.empty()) {
+            sticks.pop();
+            cnt += sticks.size();
         }
-        else {
-            snack_line.push(a);
-        }
-        while (!snack_line.empty() && snack_line.top() == person) {
-            snack_line.pop();
-            person++;
-        }
+
     }
-    if (snack_line.empty()) {
-        cout << "Nice";
-    }
-    else {
-        cout << "Sad";
-    }
+    cout << cnt;
 }
 
 
