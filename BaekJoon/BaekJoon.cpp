@@ -9,7 +9,7 @@ using namespace std;
 
 /*
 ================= 2024-10-25================
-10773번 제로
+1874 스택 수열
 
 */
 
@@ -20,27 +20,47 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-    int K;
-    cin >> K;
-    vector<int> moneystack;
-    for (int i = 0; i < K; ++i) {
-        int money;
-        cin >> money;
-        if (money == 0) {
-            moneystack.pop_back();
-        }
-        else {
-            moneystack.push_back(money);
-        }
+    int n;
+    cin >> n;
+    vector<int> nums(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> nums[i];
     }
 
-    int sum{};
-    for (int& a : moneystack) {
-        sum += a;
+    vector<char> result;
+    stack<int> mystack;
+
+    int a = 1;
+    bool check = true;
+    for (int i = 0; i < n; ++i) {
+        int target = nums[i];
+        
+        if (a <= target) {
+            while (a <= target) {
+                mystack.push(a++);
+                result.push_back('+');
+            }
+        }
+       
+            if (target == mystack.top()) {
+                mystack.pop();
+                result.push_back('-');
+            }
+            else {
+                cout << "NO";
+                check = false;
+                break;
+            }
+        
+
+
     }
-    cout << sum;
- 
-   
+    if (check) {
+        for (char a : result) {
+            cout << a << '\n';
+        }
+    }
+    
 }
 
 
