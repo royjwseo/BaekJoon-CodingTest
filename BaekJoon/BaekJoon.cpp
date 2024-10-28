@@ -5,11 +5,12 @@
 #include <cmath>
 #include <algorithm>
 #include <stack>
+#include <queue>
 using namespace std;
 
 /*
 ================= 2024-10-28================
-10799 쇠막대기
+2587번 대표값2
 */
 
 
@@ -19,20 +20,16 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
    
-    string sen;
-    cin >> sen;
-
-    stack<char> sticks;
-    int cnt{};
-    for (char a : sen) {
-        if (a == '(')sticks.push(a);
-        else if (a == ')' && !sticks.empty()) {
-            sticks.pop();
-            cnt += sticks.size();
-        }
-
+    
+    vector<float> nums(5);
+    float sum{};
+    for (int i = 0; i < 5; ++i) {
+        cin >> nums[i];
+        sum += nums[i];
     }
-    cout << cnt;
+    sort(nums.begin(), nums.end());
+   
+    cout << sum / 5.f << '\n' << nums[2];
 }
 
 
