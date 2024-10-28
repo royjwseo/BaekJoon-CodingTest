@@ -23,12 +23,12 @@ int main() {
     int N;
     cin >> N;
     int a;
-    array<int, 10000>nums{};
+    array<int, 10001>nums{};
     for (int i = 0; i < N; ++i) {
         cin >> a;
         nums[a]++;
     }
-    for (int i = 1; i < 10000; ++i) {
+    for (int i = 1; i <= 10000; ++i) {
         if (nums[i] > 0) {
             for (int j = 0; j < nums[i]; j++)
                 cout << i << '\n';
