@@ -12,8 +12,7 @@ using namespace std;
 /*
 ================= 2024-11-04================
 2750번 수 정렬하기
-
-선택 정렬 구현하기
+삽입 정렬 구현
 */
 
 
@@ -31,15 +30,20 @@ int main() {
         cin >> nums[i];
     }
 
-    for (int i = 0; i < N; ++i) {
-        vector<int>::iterator p = min_element(nums.begin()+i, nums.end());
-        if(p!=nums.begin()+i)
-        swap(*(nums.begin()+i), *p);
-    }
-    for (int& p : nums) {
-        cout << p << '\n';
-    }
+    for (int i = 1; i < N; ++i) {
+        int key = nums[i];
+        int j = i - 1;
+        while (j >= 0 && nums[j] > key) {
+            nums[j + 1] = nums[j];
+            j--;
 
+        }
+        nums[j + 1] = key;
+       
+    }
+    for (int& a : nums) {
+        cout << a << '\n';
+    }
 }
 
 
