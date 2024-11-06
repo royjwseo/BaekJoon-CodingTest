@@ -11,7 +11,7 @@ using namespace std;
 
 /*
 ================= 2024-11-06================
-1927번 최소 힙
+11279번 최대 힙
 
 */
 
@@ -25,7 +25,7 @@ int main() {
     int N;
     cin >> N;
 
-    priority_queue<int, vector<int>, greater<int>>pq;
+    priority_queue<int, vector<int>,less<int>>pq;
 
     for (int i = 0; i < N; ++i) {
         int input;
