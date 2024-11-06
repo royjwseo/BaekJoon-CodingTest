@@ -11,40 +11,89 @@ using namespace std;
 
 /*
 ================= 2024-11-05================
-pccp 모의고사 1번 - 외톨이 알파벳
+
 */
 
 
-string solution(string input_string) {
-    string answer = "";
-    bool has_answer = false;
-    for (int i = 0; i < input_string.size(); ++i) {
-        bool continuous = true;
-        char target = input_string[i];
-        for (int j = i + 1; j < input_string.size(); ++j) {
-            if (input_string[j] == target && input_string[j - 1] == target)continue;
-            if (input_string[j] == target) {
-                answer.push_back(target);
-                has_answer = true;
-                break;
+template<class T>
+class PriorityQueue
+{
+public:
+    void push(const T& data) {
+
+        // 우선 힙 구조부터 맞춰준다.
+        _heap.push_back(data); 
+
+        // 대소에 의한 정렬 시작
+        int cur_index = static_cast<int>(_heap.size())-1;
+
+        //루트 노드까지
+        while (cur_index > 0) {
+            int parent_index = (cur_index - 1) / 2;
+            if (_heap[cur_index] > _heap[parent_index]) {
+                swap(_heap[cur_index], _heap[parent_index]);
+                cur_index = parent_index;
             }
             else {
-                continuous = false;
+                break;
             }
         }
     }
-    sort(answer.begin(), answer.end());
-    answer.erase(unique(answer.begin(), answer.end()), answer.end());
+    
+    void pop() {
+        _heap[0] = _heap.back();
+        _heap.pop_back();
 
-    if (!has_answer)answer = "N";
+        int cur_index = 0;
 
-    return answer;
-}
+        while (true) {
+            int left = (2 * cur_index) + 1;
+            int right = (2 * cur_index) + 2;
+
+            //리프에 도달한 경우
+            if (left >= (int)_heap.size())
+                break;
+
+            int next = now;
+            //왼쪽과 비교
+            if (_heap[next] < _heap[left]) {
+                next = left;
+            }
+
+            // 둘 중 승자를 오른쪽과 비교 (하지만 오른쪽이 없을수도 있으니 체크해주고)
+            if (right < _heap.size() && _heap[next] < _heap[right]) {
+                next = right;
+            }
+
+            //왼쪽 오른쪽 둘 다 현재 값보다 작으면 종료
+            if (next == now)
+                break;
+
+            ::swap(_heap[now], _heap[next]);
+            now = next;
+        }
+        
+    }
+
+    T& top() {
+        return _heap[0];
+    }
+
+    bool empty() {
+        return _heap.empty();
+    }
+
+private:
+    vector<T> _heap;
+};
+
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
  
+  
+    
  
 }
 
