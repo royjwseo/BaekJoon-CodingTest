@@ -10,8 +10,8 @@
 using namespace std;
 
 /*
-================= 2024-11-06================
-1715 카드 정렬하기
+================= 2024-11-08================
+2559번 수열
 
 */
 
@@ -22,37 +22,29 @@ int main() {
     cin.tie(NULL);
  
     int N;
-    cin >> N;
+    int K;
+    cin >> N >> K;
 
-    priority_queue<int, vector<int>, std::greater<int>>pq;
-    for (int i = 0; i < N; ++i) {
-        int input;
-        cin >> input;
-        pq.push(input);
+    vector<int> adds(N + 1);
+
+    for (int i = 1; i <= N; ++i) {
+        int a;
+        cin >> a;
+        adds[i] = adds[i - 1] + a;
     }
 
-    int sum{};
-    int imsi_sum{};
-    int left, right;
-
-
-    for (int i = 0; i < N - 1; ++i) {
-        imsi_sum = 0;
-        left = 0; right = 0;
-        left = pq.top();
-        pq.pop();
-        if (!pq.empty()) {
-            right = pq.top();
-            pq.pop();
-        }
-        imsi_sum = left + right;
-        pq.push(imsi_sum);
-        sum += left + right;
+    int max = INT_MIN;
+    int left = 0;
+    int right = left + K;
+    while (right < adds.size()) {
+        
+        int sum = adds[right] - adds[left];
+        if (sum > max)max = sum;
+        left++;
+        right++;
     }
+    cout << max;
 
-  
-    cout << sum;
- 
 }
 
 
