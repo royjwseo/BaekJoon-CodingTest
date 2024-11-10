@@ -15,10 +15,9 @@ using namespace std;
 */
 //DFS 방문한 목록
 vector<bool>visited;
+vector<bool>visited_stack;
 vector<vector<int>>adjacent;
 
-//BFS 발견한 목록
-vector<bool> discovered;
 
 void DFS(int here){
     visited[here] = true;
@@ -32,60 +31,56 @@ void DFS(int here){
     }
 }
 
-void BFS(int here) {
+void DFS_STACK(int here) {
+    stack<int> st;
+    st.push(here);
 
-    queue<int> q;
-    q.push(here);
-    discovered[here] = true;
-
-    while (q.empty() == false) {
-        here = q.front();
-        q.pop();
-
-        cout <<  here << ' ';
-
-        int size = adjacent[here].size();
-        for (int i = 0; i < size; ++i) {
-            int there = adjacent[here][i];
-            if (discovered[there])continue;
-
-            q.push(there);
-            discovered[there] = true;
+    while (!st.empty()) {
+        int top = st.top();
+        if (!visited_stack[top]) {
+            visited_stack[top] = true;
+            cout << top << ' ';
         }
+          st.pop();
+
+          int adj = adjacent[top].size();
+          if (adj > 0) {
+              for (int i = 0; i < adj; ++i) {
+                  if (!visited_stack[adjacent[top][i]])
+                      st.push(adjacent[top][i]);
+              }
+          }
+
     }
+    
 }
+
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int N;
-    cin >> N;
-    int M;
-    cin >> M;
-    int V;
-    cin >> V;
+    int N, M, V;
+    cin >> N >> M >> V;
 
- 
-
-    adjacent.resize(N+1);
+    adjacent.resize(N + 1);
     visited.resize(N + 1, false);
-    discovered.resize(N + 1, false);
+    visited_stack.resize(N + 1, false);
+
     for (int i = 0; i < M; ++i) {
         int a, b;
         cin >> a >> b;
         adjacent[a].push_back(b);
         adjacent[b].push_back(a);
+
     }
-    int size = adjacent.size();
-    for (int i = 0; i < size; ++i) {
-        sort(adjacent[i].begin(), adjacent[i].end());
-    }
+  
     DFS(V);
     cout << '\n';
-    BFS(V);
+    for (int i = 0; i < adjacent.size(); ++i)
+        sort(adjacent[i].begin(), adjacent[i].end(), std::greater<int>());
 
-
+    DFS_STACK(V);
   
 }
 
