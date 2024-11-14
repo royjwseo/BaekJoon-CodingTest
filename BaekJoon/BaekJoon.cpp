@@ -11,62 +11,63 @@ using namespace std;
 
 /*
 ================= 2024-11-14================
-11725 트리의 부모 찾기
+18258번 큐 2
 */
 
 
-vector<vector<int>> adjacents;
-vector<int> parent;
 
-void BFS(int here) {
-
-    queue<int> q;
-    q.push(here);
- 
-    while (!q.empty()) {
-        int front = q.front();
-      
-        q.pop();
-
-        int size = adjacents[front].size();
-        for (int i = 0; i < size; ++i) {
-            if (parent[adjacents[front][i]] == 0) {
-                parent[adjacents[front][i]] = front;
-                q.push(adjacents[front][i]);
-           }
-        }
-    }
-
-   
-  
-
-}
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
+    queue<int> q;
+
     int N;
     cin >> N;
 
-    adjacents.resize(N + 1);
-    parent.resize(N + 1,0);
+    string input;
+    for (int i = 0; i < N; ++i) {
+        cin >> input;
 
-    for (int i = 0; i < N-1; ++i) {
-        int a, b;
-        cin >> a >> b;
-        adjacents[a].push_back(b);
-        adjacents[b].push_back(a);
+        if (input == "push") {
+            int a;
+            cin >> a;
+            q.push(a);
+        }
+        else if (input == "front") {
+            if (q.empty()) {
+                cout << "-1\n";
+            }
+            else {
+                cout << q.front() << '\n';
+            }
+        }
+        else if (input == "pop") {
+            if (q.empty()) {
+                cout << "-1\n";
+            }
+            else {
+                cout << q.front() << '\n';
+                q.pop();
+            }
+        }
+        else if (input == "size") {
+            cout << q.size() << '\n';
+        }
+        else if (input == "empty") {
+            (q.empty()) ? cout<<"1\n" : cout<<"0\n";
+        }
+        else if (input == "back") {
+            if (q.empty()) {
+                cout << "-1\n";
+            }
+            else {
+                cout << q.back() << '\n';
+            }
+        }
+
     }
-
-    BFS(1);
-
-    for (int i = 2; i <= N; ++i) {
-        cout << parent[i] << '\n';
-    }
-
-
-
 
 
 }
