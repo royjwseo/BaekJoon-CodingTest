@@ -11,7 +11,7 @@ using namespace std;
 
 /*
 ================= 2024-11-14================
-11866번 요세푸스 문제0
+24511번 queuestack
 */
 
 int main() {
@@ -20,43 +20,43 @@ int main() {
 
     int N;
     cin >> N;
+    vector<int>make(N);
+    for (int i = 0; i < N; ++i) {
+        cin >> make[i];
+    }
+    vector<vector<int>>stackqueue(N, vector<int>(2));
+
+    for (int i = 0; i < N; ++i) {
+        int input;
+        cin >> input;
+            stackqueue[i][0] = input;    
+    }
+    int M;
+    cin >> M;
     vector<int>answer;
-
-    int K;
-    cin >> K;
-
-    queue<int> q;
-    for (int i = 1; i <= N; ++i) {
-        q.push(i);
-    }
-
-    while (1) {
-        if (q.empty())break;
-        int cnt = K-1;
-        while (cnt > 0) {
-            int front = q.front();
-            q.pop();
-            q.push(front);
-            cnt--;
-        }
-        int front = q.front();
-        answer.push_back(front);
-        q.pop();
-
-    }
-   
-    cout << '<';
-    for (vector<int>::iterator iter = answer.begin(); iter != answer.end(); ++iter) {
-        if (iter == answer.end() - 1) {
-            cout << *iter;
-        }
-        else {
-            cout << *iter << ", ";
+    for (int i = 0; i < M; ++i) {
+        int input;
+        cin >> input;
+        stackqueue[0][1] = input;
+        int num=input;
+        for (int i = 0; i < N; ++i) {         
+            stackqueue[i][1] = num;
+            if (make[i] == 0) {// 큐 앞에서 뺌             
+                num = stackqueue[i][0];
+                stackqueue[i][0] = stackqueue[i][1];            
+            }
+            else if(make[i]==1) {//스택 뒤에서 뺌
+                num = stackqueue[i][1];
+            }
+            if (i == N - 1) {
+                answer.push_back(num);
+            }
         }
     }
-    
-    cout << ">\n";
 
+    for (int a : answer) {
+        cout << a << ' ';
+    }
 }
 
 
