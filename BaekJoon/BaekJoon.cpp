@@ -10,21 +10,29 @@
 using namespace std;
 
 /*
-================= 2024-11-10================
-//2606번 바이러스
+================= 2024-11-14================
+11724 연결 요소의 개수
 */
 
-vector<vector<int>> adjacents;
 vector<bool> visited;
-int cnt{};
-void BFS(int here) {
-    visited[here] = true;
-    cnt++;
-    int size = adjacents[here].size();
-    for (int i = 0; i < size; ++i) {
-        if (!visited[adjacents[here][i]])
-            BFS(adjacents[here][i]);
+vector<vector<int>> adjacent;
+vector<int> visited_cnt;
+
+void DFS(int here,int& cnt) {
+
+    if (!visited[here]) {
+        visited[here] = true;
+        cnt++;
     }
+    else {
+        return;
+    }
+
+    int size = adjacent[here].size();
+    for (int i = 0; i < size; ++i) {
+        DFS(adjacent[here][i],cnt);
+    }
+
 
 }
 
@@ -32,22 +40,29 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int N;
-    int E;
-    cin >> N >> E;
-    adjacents.resize(N + 1);
-    visited.resize(N + 1, false);
+    int N, M;
+    cin >> N >> M;
 
-    for (int i = 0; i < E; ++i) {
+    visited.resize(N+1, false);
+    adjacent.resize(N+1);
+    visited_cnt.resize(N+1, 0);
+
+    for (int i = 0; i < M; ++i) {
         int a, b;
         cin >> a >> b;
-        adjacents[a].push_back(b);
-        adjacents[b].push_back(a);
+        adjacent[a].push_back(b);
+        adjacent[b].push_back(a);
     }
-    BFS(1);
-    cout << cnt-1;
-
-
+    for (int i = 1; i <= N; ++i) {
+        DFS(i, visited_cnt[i]);
+    }
+    int answer = 0;
+    for (int i = 1; i <= N; ++i) {
+        if (visited_cnt[i] > 0) {
+            answer++;
+        }
+    }
+    cout << answer;
 
 }
 
