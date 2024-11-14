@@ -11,66 +11,63 @@ using namespace std;
 
 /*
 ================= 2024-11-14================
-11724 연결 요소의 개수
+11725 트리의 부모 찾기
 */
 
-vector<bool> visit;
-vector<vector<int>> adjacent;
+
+vector<vector<int>> adjacents;
+vector<int> parent;
 
 void BFS(int here) {
 
     queue<int> q;
- 
     q.push(here);
-
-
+ 
     while (!q.empty()) {
-
         int front = q.front();
-
-        if (!visit[front]) {
-            visit[front] = true;
-        }
-
+      
         q.pop();
 
-        int size = adjacent[front].size();
+        int size = adjacents[front].size();
         for (int i = 0; i < size; ++i) {
-            if (!visit[adjacent[front][i]]) {
-                q.push(adjacent[front][i]);
-            }
+            if (parent[adjacents[front][i]] == 0) {
+                parent[adjacents[front][i]] = front;
+                q.push(adjacents[front][i]);
+           }
         }
-
     }
-}
 
+   
+  
+
+}
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int N, M;
-    cin >> N >> M;
+    int N;
+    cin >> N;
 
+    adjacents.resize(N + 1);
+    parent.resize(N + 1,0);
 
-    visit.resize(N+1, false);
-    adjacent.resize(N+1);
-  
-    for (int i = 0; i < M; ++i) {
+    for (int i = 0; i < N-1; ++i) {
         int a, b;
         cin >> a >> b;
-        adjacent[a].push_back(b);
-        adjacent[b].push_back(a);
+        adjacents[a].push_back(b);
+        adjacents[b].push_back(a);
     }
-   
-    int cnt{};
-    for (int i = 1; i <= N; ++i) {
-        if (!visit[i]) {
-            cnt++;
-            BFS(i);
-        }
+
+    BFS(1);
+
+    for (int i = 2; i <= N; ++i) {
+        cout << parent[i] << '\n';
     }
-    cout << cnt;
+
+
+
+
 
 }
 
