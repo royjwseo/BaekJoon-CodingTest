@@ -16,25 +16,37 @@ using namespace std;
 
 vector<bool> visited;
 vector<vector<int>> adjacent;
-vector<int> visited_cnt;
 
-void DFS(int here,int& cnt) {
+void DFS(int here) {
 
-    if (!visited[here]) {
-        visited[here] = true;
-        cnt++;
-    }
-    else {
-        return;
+    stack<int> st;
+
+    st.push(here);
+
+    while (!st.empty()) {
+
+        int top = st.top();
+        if (!visited[top]) {
+
+            visited[top] = true;
+        }
+        
+
+        st.pop();
+
+        int size = adjacent[top].size();
+        for (int i = 0; i < size; ++i) {
+            if(!visited[adjacent[top][i]])
+            st.push(adjacent[top][i]);
+        }
+        
+
     }
 
-    int size = adjacent[here].size();
-    for (int i = 0; i < size; ++i) {
-        DFS(adjacent[here][i],cnt);
-    }
 
 
 }
+
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -45,24 +57,21 @@ int main() {
 
     visited.resize(N+1, false);
     adjacent.resize(N+1);
-    visited_cnt.resize(N+1, 0);
-
+  
     for (int i = 0; i < M; ++i) {
         int a, b;
         cin >> a >> b;
         adjacent[a].push_back(b);
         adjacent[b].push_back(a);
     }
+    int cnt{};
     for (int i = 1; i <= N; ++i) {
-        DFS(i, visited_cnt[i]);
-    }
-    int answer = 0;
-    for (int i = 1; i <= N; ++i) {
-        if (visited_cnt[i] > 0) {
-            answer++;
+        if (!visited[i]) {
+            cnt++;
+            DFS(i);
         }
     }
-    cout << answer;
+    cout << cnt;
 
 }
 
