@@ -14,37 +14,34 @@ using namespace std;
 11724 연결 요소의 개수
 */
 
-vector<bool> visited;
+vector<bool> visit;
 vector<vector<int>> adjacent;
 
-void DFS(int here) {
+void BFS(int here) {
 
-    stack<int> st;
+    queue<int> q;
+ 
+    q.push(here);
 
-    st.push(here);
 
-    while (!st.empty()) {
+    while (!q.empty()) {
 
-        int top = st.top();
-        if (!visited[top]) {
+        int front = q.front();
 
-            visited[top] = true;
+        if (!visit[front]) {
+            visit[front] = true;
         }
-        
 
-        st.pop();
+        q.pop();
 
-        int size = adjacent[top].size();
+        int size = adjacent[front].size();
         for (int i = 0; i < size; ++i) {
-            if(!visited[adjacent[top][i]])
-            st.push(adjacent[top][i]);
+            if (!visit[adjacent[front][i]]) {
+                q.push(adjacent[front][i]);
+            }
         }
-        
 
     }
-
-
-
 }
 
 
@@ -55,7 +52,8 @@ int main() {
     int N, M;
     cin >> N >> M;
 
-    visited.resize(N+1, false);
+
+    visit.resize(N+1, false);
     adjacent.resize(N+1);
   
     for (int i = 0; i < M; ++i) {
@@ -64,11 +62,12 @@ int main() {
         adjacent[a].push_back(b);
         adjacent[b].push_back(a);
     }
+   
     int cnt{};
     for (int i = 1; i <= N; ++i) {
-        if (!visited[i]) {
+        if (!visit[i]) {
             cnt++;
-            DFS(i);
+            BFS(i);
         }
     }
     cout << cnt;
