@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 ================= 2024-11-15================
-1920번 수 찾기
+28279번 덱 2
 
 //
 1KB -> 1024바이트
@@ -20,48 +20,59 @@ using namespace std;
 스택 크기 : 1MB
 */
 
-bool binary_search(int n, vector<int>& nums) {
-    int right = nums.size()-1;
-    int left = 0;
-    int index; 
-    while (left<=right) {
-        index = (right + left) / 2;
-        if (n > nums[index]) {
-            left = index + 1;
-        }
-        else if (n < nums[index]) {
-            right = index-1;
-        }
-        else {
-            return true;
-        }
-    }
-    return false;
-}
+
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    vector<int> nums;
     int N;
     cin >> N;
+    deque<int> dq;
     for (int i = 0; i < N; ++i) {
         int input;
         cin >> input;
-        nums.push_back(input);
-    }
-    sort(nums.begin(), nums.end()); //O(nlogn) 100000*16.61 =160만
-    int M;
-    cin >> M;
-    for (int i = 0; i < M; ++i) {
-        int input;
-        cin >> input;
-        if (binary_search(input, nums)) {
-            cout << 1 << '\n';
-        }
-        else {
-            cout << 0 << '\n';
+        switch (input) {
+        case 1:
+            int num;
+            cin >> num;
+            dq.push_front(num);
+            break;
+        case 2:
+            int num2;
+            cin >> num2;
+            dq.push_back(num2);
+            break;
+        case 3:
+            if (!dq.empty()) {
+                cout << dq.front()<<'\n';
+                dq.pop_front();
+            }
+            else {
+                cout << "-1\n";
+            }
+            break;
+        case 4:
+            if (!dq.empty()) {
+                cout << dq.back() << '\n';
+                dq.pop_back();
+            }
+            else {
+                cout << "-1\n";
+            }
+            break; 
+        case 5:
+            cout << dq.size()<<'\n';
+            break; 
+        case 6:
+            (dq.empty()) ? cout << "1\n" :cout<<"0\n";
+            break; 
+        case 7:
+            (dq.empty()) ? cout << "-1\n" : cout << dq.front() << '\n';
+            break;
+        case 8:
+            (dq.empty()) ? cout << "-1\n" : cout << dq.back() << '\n';
+            break;
         }
     }
     
