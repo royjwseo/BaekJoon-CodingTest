@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 ================= 2024-11-17================
-11651번 좌표 정렬하기2
+1181번 단어 정렬
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -22,21 +22,29 @@ using namespace std;
 
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
 
-    int N;
-    cin >> N;
-    vector<pair<int, int>>coords(N);
-    for (int i = 0; i < N; ++i) {
-        cin >> coords[i].first >> coords[i].second;
-    }
-    sort(coords.begin(), coords.end(), [](pair<int, int> a, pair<int, int> b) {
-        return a.second < b.second;
-        });
-    for (auto a : coords) {
-        cout << a.first << ' ' << a.second << '\n';
-    }
+	int N;
+	cin >> N;
+	vector<string> words(N);
+
+	for (int i = 0; i < N; ++i) {
+		cin >> words[i];
+	}
+	sort(words.begin(), words.end(), [](const string& a, const string& b) {
+		if (a.length() == b.length()) {
+			return a < b;
+		}
+		return a.length() < b.length();
+		});
+	words.erase(unique(words.begin(), words.end()), words.end());
+
+	for (auto a : words) {
+		cout << a << '\n';
+	}
+
+
 }
 
 
