@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 ================= 2024-11-17================
-25305번 커트라인
+2751번 수 정렬하기 2
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -27,18 +27,16 @@ int main() {
 
     int N;
     cin >> N;
-    int K;
-    cin >> K;
-
-    vector<int> grades(N);
+    vector<int> nums(N);
     for (int i = 0; i < N; ++i) {
-        cin >> grades[i];
+        cin >> nums[i];
     }
-    partial_sort(grades.begin(), grades.begin() + K, grades.end(), [](int a, int  b) {
-        return a > b;
-        });
-    cout << grades[K-1];
-    
+    sort(nums.begin(), nums.end());
+    for (auto a : nums) {
+        cout << a << '\n';
+    }
+
+
 }
 
 
