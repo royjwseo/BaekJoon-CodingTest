@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 ================= 2024-11-17================
-2751번 수 정렬하기 2
+11650번 좌표 정렬하기
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -27,16 +27,15 @@ int main() {
 
     int N;
     cin >> N;
-    vector<int> nums(N);
+    vector<pair<int, int>>coords(N);
     for (int i = 0; i < N; ++i) {
-        cin >> nums[i];
+        cin >> coords[i].first >> coords[i].second;
     }
-    sort(nums.begin(), nums.end());
-    for (auto a : nums) {
-        cout << a << '\n';
+    sort(coords.begin(), coords.end());
+
+    for (auto a : coords) {
+        cout << a.first << ' ' << a.second << '\n';
     }
-
-
 }
 
 
