@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 ================= 2024-11-17================
-24444번 알고리즘 수업 - 너비 우선 탐색 1
+24445번 알고리즘 수업 - 너비 우선 탐색 2
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -64,7 +64,7 @@ int main() {
 		adjacent[b].push_back(a);
 	}
 	for (int i = 1; i <= N; ++i) {
-		sort(adjacent[i].begin(), adjacent[i].end());
+		sort(adjacent[i].begin(), adjacent[i].end(),greater<int>());
 	}
 
 	BFS(R);
