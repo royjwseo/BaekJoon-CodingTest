@@ -12,33 +12,59 @@ using namespace std;
 
 /*
 ================= 2024-11-17================
-10814번 나이순 정렬
+24479번 알고리즘 수업 - 깊이 우선 탐색 1
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
+vector<vector<int>>adjacent;
+vector<int> visited;
+int n{};
 
+void BFS(int here) {
+	
+	if (visited[here]==0) {
+		visited[here] = ++n;
+	}
+	int n = adjacent[here].size();
+	for (int i = 0; i < n; ++i) {
+		
+		if (visited[adjacent[here][i]]==0)
+			BFS(adjacent[here][i]);
+	}
 
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-
+	
 	int N;
-	cin >> N;
+	int M;
+	cin >> N >> M;
+	int R;
+	cin >> R;
 
-	vector<pair<int, string>>members(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> members[i].first >> members[i].second;
+	adjacent.resize(N+1);
+	visited.resize(N+1, 0);
+	
+	for (int i = 0; i < M; ++i) {
+		int a, b;
+		cin >> a >> b;
+		adjacent[a].push_back(b);
+		adjacent[b].push_back(a);
 	}
-	stable_sort(members.begin(), members.end(),[](const pair<int,string>& a, const pair<int,string>& b){
-		return a.first < b.first;
-		});
-	for (auto a : members) {
-		cout << a.first << ' ' << a.second << '\n';
+	for (int i = 1; i <= N; ++i) {
+		sort(adjacent[i].begin(), adjacent[i].end());
+	}
+	BFS(R);
+	for (int i = 1; i <= N; ++i) {
+		cout << visited[i] << '\n';
 	}
 
+
+	
 
 }
 
