@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 ================= 2024-11-17================
-1181번 단어 정렬
+10814번 나이순 정렬
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -27,21 +27,16 @@ int main() {
 
 	int N;
 	cin >> N;
-	vector<string> words(N);
 
+	vector<pair<int, string>>members(N);
 	for (int i = 0; i < N; ++i) {
-		cin >> words[i];
+		cin >> members[i].first >> members[i].second;
 	}
-	sort(words.begin(), words.end(), [](const string& a, const string& b) {
-		if (a.length() == b.length()) {
-			return a < b;
-		}
-		return a.length() < b.length();
+	stable_sort(members.begin(), members.end(),[](const pair<int,string>& a, const pair<int,string>& b){
+		return a.first < b.first;
 		});
-	words.erase(unique(words.begin(), words.end()), words.end());
-
-	for (auto a : words) {
-		cout << a << '\n';
+	for (auto a : members) {
+		cout << a.first << ' ' << a.second << '\n';
 	}
 
 
