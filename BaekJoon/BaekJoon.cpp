@@ -12,42 +12,38 @@ using namespace std;
 
 /*
 ================= 2024-11-19================
-2178 미로 탐색
+1697 숨바꼭질
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>> map;
-vector<vector<bool>>visited;
-
-int dirX[4] = { 1,0,0,-1 };
-int dirY[4] = { 0,1,-1,0 };
-
-void BFS(int x, int y, int w, int h) {
-	queue<pair<int, int>> q;
-	q.push({ x,y });
-	visited[y][x] = true;
-
+vector<bool>visited;
+vector<int> seconds;
+void BFS(int N,int M) {
+	queue<int> q;
+	visited[N] = true;
+	q.push(N);
 	while (!q.empty()) {
-		pair<int, int> cur = q.front();
-		q.pop();
-
-		for (int i = 0; i < 4; ++i) {
-			int dx = cur.first + dirX[i];
-			int dy = cur.second + dirY[i];
-			if (dx >= 0 && dy >= 0 && dx < w && dy < h) {
-				if (!visited[dy][dx] && map[dy][dx] == 1) {
-					visited[dy][dx]=true;
-					map[dy][dx] = map[cur.second][cur.first] + 1;
-					q.push({ dx,dy });
-				}
-			}
+		int front = q.front();
+		if (front == M) {
+			return;
 		}
-	
+		
+		q.pop();
+		for (int next:{front-1,front+1,front*2}) {
+			
+				if (next >= 0 && next < 100001) {
+					if (!visited[next]) {
+						visited[next] = true;
+						q.push(next);
+						seconds[next] = seconds[front] + 1;
+					}
+				}
+			
+		}
 	}
-	cout << map[h - 1][w - 1];
 }
 
 
@@ -55,22 +51,19 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	
-	int N, M;
-	cin >> N >> M;
-	map.resize(N, vector<int>(M, 0));
-	visited.resize(N, vector<bool>(M, false));
+	int N;
+	int K;
+	cin >> N >> K;
 
-	string input;
-	for (int i = 0; i < N; ++i) {
-		cin >> input;
-		for (int j = 0; j < M; ++j) {
-			int a = (int)(input[j] - '0');
-			map[i][j] = a;
-		}
+	visited.resize(100001,false);
+	seconds.resize(100001,0);
+	if (N == K) {
+		cout << 0 << '\n';
+		return 0;
 	}
-
+	BFS(N,K);
+	cout << seconds[K];
 	
-	BFS(0, 0, M, N);
 	
 
 }
