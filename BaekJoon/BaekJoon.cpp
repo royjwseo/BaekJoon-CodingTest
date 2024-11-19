@@ -12,59 +12,72 @@ using namespace std;
 
 /*
 ================= 2024-11-19================
-1697 숨바꼭질
+7562 나이트의 이동
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<bool>visited;
-vector<int> seconds;
-void BFS(int N,int M) {
-	queue<int> q;
-	visited[N] = true;
-	q.push(N);
+vector<vector<int>> board;
+vector<vector<bool>> visit;
+
+pair<int, int>dir[8] = { {1,2},{2,1},{1,-2},{2,-1},{-1,-2},{-2,-1},{-2,1},{-1,2} };
+
+void BFS(pair<int, int> here, pair<int, int> go,int I) {
+
+	queue<pair<int, int>> q;
+	q.push(here);
+	visit[here.second][here.first] = true;
+
 	while (!q.empty()) {
-		int front = q.front();
-		if (front == M) {
-			return;
-		}
-		
+
+		pair<int, int> cur = q.front();
 		q.pop();
-		for (int next:{front-1,front+1,front*2}) {
-			
-				if (next >= 0 && next < 100001) {
-					if (!visited[next]) {
-						visited[next] = true;
-						q.push(next);
-						seconds[next] = seconds[front] + 1;
-					}
+
+		if (cur.second == go.second && cur.first == go.first)return;
+
+
+		for (auto next : dir) {
+			pair<int, int> next_coord = { cur.first + next.first,cur.second + next.second };
+
+			if (next_coord.first < I && next_coord.first >= 0 && next_coord.second < I && next_coord.second >= 0) {
+				if (!visit[next_coord.second][next_coord.first]) {
+					visit[next_coord.second][next_coord.first] = true;
+					q.push(next_coord);
+					board[next_coord.second][next_coord.first] = board[cur.second][cur.first] + 1;
 				}
-			
+			}
+
 		}
 	}
-}
 
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	
-	int N;
-	int K;
-	cin >> N >> K;
+	int T;
+	cin >> T;
 
-	visited.resize(100001,false);
-	seconds.resize(100001,0);
-	if (N == K) {
-		cout << 0 << '\n';
-		return 0;
+	for (int i = 0; i < T; ++i) {
+		int I;
+		cin >> I;
+
+		board.assign(I, vector<int>(I, 0));
+		visit.assign(I, vector<bool>(I, false));
+
+		int here_x, here_y;
+		cin >> here_x >> here_y;
+
+		int go_x, go_y;
+		cin >> go_x >> go_y;
+
+		BFS({ here_x,here_y }, { go_x,go_y },I);
+
+		cout << board[go_y][go_x]<<'\n';
 	}
-	BFS(N,K);
-	cout << seconds[K];
-	
-	
 
 }
 
