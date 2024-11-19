@@ -12,35 +12,32 @@ using namespace std;
 
 /*
 ================= 2024-11-17================
-24445번 알고리즘 수업 - 너비 우선 탐색 2
+2667번 단지번호붙이기
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>> adjacent;
-vector<int> visit;
-int n = 1;
+vector<vector<int>> map;
+vector<vector<bool>>visited;
+int N;
+int dirX[4] = { 1,0,0,-1 };
+int dirY[4] = { 0,1,-1,0 };
 
-void BFS(int here) {
+void DFS(int x, int y,int &cnt) {
 
-	queue<int> q;
-	q.push(here);
-	visit[here] = n++;
-	while (!q.empty()) {
-		int front = q.front();
-		
-		q.pop();
+	visited[y][x] = true;
+	cnt++;
 
-		int a = adjacent[front].size();
-		for (int i = 0; i < a; ++i) {
-			if (visit[adjacent[front][i]]==0) {
-				visit[adjacent[front][i]] = n++;
-				q.push(adjacent[front][i]);
-			}
+	for (int i = 0; i < 4; ++i) {
+		int dx = x + dirX[i];
+		int dy = y + dirY[i];
+		if (dx >= 0 && dy >= 0 && dx <N && dy < N) {
+			if (map[dy][dx] == 1&&!visited[dy][dx]) {
+				DFS(dx, dy, cnt);
+			}			
 		}
-
 	}
 
 }
@@ -49,32 +46,41 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	
-	int N;
-	int M;
-	int R;
-	cin >> N >> M >> R;
 	
-	adjacent.resize(N+1);
-	visit.resize(N + 1, 0);
-	for (int i = 0; i < M; ++i) {
-		int a, b;
-		cin >> a >> b;
-
-		adjacent[a].push_back(b);
-		adjacent[b].push_back(a);
-	}
-	for (int i = 1; i <= N; ++i) {
-		sort(adjacent[i].begin(), adjacent[i].end(),greater<int>());
-	}
-
-	BFS(R);
-
-	for (int i = 1; i <= N; ++i) {
-		cout << visit[i]<<'\n';
-	}
+	cin >> N;
 
 	
+	map.resize(N);
+	visited.resize(N, vector<bool>(N, false));
 
+	for (int i = 0; i < N; ++i) {
+		string input;
+		cin >> input;
+		for (int j = 0; j < input.size(); ++j) {
+			int a = (int)(input[j] - '0');
+			map[i].push_back(a);
+		}
+	}
+
+	int house_bunches = 0;
+	vector<int>answer;
+	
+
+	for (int i = 0; i < N; ++i) {
+		for (int j = 0; j < N; ++j) {
+			if (!visited[i][j] && map[i][j] == 1) {
+				house_bunches++;
+				int cnt=0;
+				DFS(j, i, cnt);
+				answer.push_back(cnt);
+			}
+		}
+	}
+	sort(answer.begin(), answer.end());
+	cout << house_bunches<<'\n';
+	for (auto a : answer) {
+		cout << a << '\n';
+	}
 }
 
 
