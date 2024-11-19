@@ -25,20 +25,28 @@ vector<vector<bool>> visited;
 int dirX[4] = { 1,0,0,-1 };
 int dirY[4] = { 0,1,-1,0 };
 
-void DFS(int x, int y,int w,int h) {
+void BFS(int x, int y, int w, int h) {
+
+	queue<pair<int, int>>q;
+	q.push({ x, y });
 	visited[y][x] = true;
 
-	for (int i = 0; i < 4; ++i) {
-		int dx = x + dirX[i];
-		int dy = y + dirY[i];
-		if (dx >= 0 && dy >= 0 && dx < w && dy < h) {
-			if (!visited[dy][dx] && map[dy][dx] == 1) {
-				DFS(dx, dy,w,h);
+	while (!q.empty()) {
+		pair<int, int> cur = q.front();
+		q.pop();
+		for (int i = 0; i < 4; ++i) {
+			int dx = cur.first + dirX[i];
+			int dy = cur.second + dirY[i];
+			if (dx >= 0 && dy >= 0 && dy < h && dx < w) {
+				if (!visited[dy][dx] && map[dy][dx]) {
+					visited[dy][dx] = true;
+					q.push({ dx,dy });
+				}
 			}
 		}
 	}
-}
 
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
@@ -65,7 +73,7 @@ int main() {
 			for (int j = 0; j < width; ++j) {
 				if (!visited[i][j] && map[i][j]==1) {
 					cnt++;
-					DFS(j, i,width,height);
+					BFS(j, i, width, height);
 				}
 			}
 		}
