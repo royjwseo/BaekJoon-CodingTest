@@ -12,7 +12,7 @@ using namespace std;
 
 /*
 ================= 2024-11-19================
-1012번 유기농 배추
+2178 미로 탐색
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -20,67 +20,58 @@ using namespace std;
 */
 
 vector<vector<int>> map;
-vector<vector<bool>> visited;
+vector<vector<bool>>visited;
 
 int dirX[4] = { 1,0,0,-1 };
 int dirY[4] = { 0,1,-1,0 };
 
 void BFS(int x, int y, int w, int h) {
-
-	queue<pair<int, int>>q;
-	q.push({ x, y });
+	queue<pair<int, int>> q;
+	q.push({ x,y });
 	visited[y][x] = true;
 
 	while (!q.empty()) {
 		pair<int, int> cur = q.front();
 		q.pop();
+
 		for (int i = 0; i < 4; ++i) {
 			int dx = cur.first + dirX[i];
 			int dy = cur.second + dirY[i];
-			if (dx >= 0 && dy >= 0 && dy < h && dx < w) {
-				if (!visited[dy][dx] && map[dy][dx]) {
-					visited[dy][dx] = true;
+			if (dx >= 0 && dy >= 0 && dx < w && dy < h) {
+				if (!visited[dy][dx] && map[dy][dx] == 1) {
+					visited[dy][dx]=true;
+					map[dy][dx] = map[cur.second][cur.first] + 1;
 					q.push({ dx,dy });
 				}
 			}
 		}
+	
 	}
-
+	cout << map[h - 1][w - 1];
 }
+
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	
-	int T;
-	cin >> T;
-	for (int i = 0; i < T; ++i) {
-		int width, height;
-		cin >> width >> height;
+	int N, M;
+	cin >> N >> M;
+	map.resize(N, vector<int>(M, 0));
+	visited.resize(N, vector<bool>(M, false));
 
-		int amount;
-		cin >> amount;
-
-		visited.assign(height, vector<bool>(width, false));
-		map.assign(height, vector<int>(width, 0));
-		int x, y;
-		for (int i = 0; i < amount; ++i) {
-			cin >> x >> y;
-			map[y][x] = 1;
+	string input;
+	for (int i = 0; i < N; ++i) {
+		cin >> input;
+		for (int j = 0; j < M; ++j) {
+			int a = (int)(input[j] - '0');
+			map[i][j] = a;
 		}
-		int cnt{};
-		for (int i = 0; i < height; ++i) {
-			for (int j = 0; j < width; ++j) {
-				if (!visited[i][j] && map[i][j]==1) {
-					cnt++;
-					BFS(j, i, width, height);
-				}
-			}
-		}
-		cout << cnt << '\n';
-	
-	
 	}
+
+	
+	BFS(0, 0, M, N);
+	
 
 }
 
