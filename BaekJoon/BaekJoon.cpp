@@ -11,74 +11,85 @@
 using namespace std;
 
 /*
-================= 2024-11-19================
-7562 나이트의 이동
+================= 2024-11-20================
+1167 트리의 지름
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>> board;
-vector<vector<bool>> visit;
+vector<vector<pair<int, int>>> nodes;
+vector<bool> visited;
+vector<int> dist;
 
-pair<int, int>dir[8] = { {1,2},{2,1},{1,-2},{2,-1},{-1,-2},{-2,-1},{-2,1},{-1,2} };
+void BFS(int here) {
 
-void BFS(pair<int, int> here, pair<int, int> go,int I) {
-
-	queue<pair<int, int>> q;
+	visited[here] = true;
+	queue<int>q;
 	q.push(here);
-	visit[here.second][here.first] = true;
-
 	while (!q.empty()) {
-
-		pair<int, int> cur = q.front();
+		int front = q.front();
 		q.pop();
 
-		if (cur.second == go.second && cur.first == go.first)return;
-
-
-		for (auto next : dir) {
-			pair<int, int> next_coord = { cur.first + next.first,cur.second + next.second };
-
-			if (next_coord.first < I && next_coord.first >= 0 && next_coord.second < I && next_coord.second >= 0) {
-				if (!visit[next_coord.second][next_coord.first]) {
-					visit[next_coord.second][next_coord.first] = true;
-					q.push(next_coord);
-					board[next_coord.second][next_coord.first] = board[cur.second][cur.first] + 1;
-				}
+		int size = nodes[front].size();
+		for (int i = 0; i < size; ++i) {
+			pair<int,int> other = nodes[front][i];
+			if (!visited[other.first]) {
+				visited[other.first] = true;
+				dist[other.first] = dist[front] + other.second;
+				q.push(other.first);
 			}
-
 		}
+		
 	}
-
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	
-	int T;
-	cin >> T;
+	int V;
+	cin >> V;
 
-	for (int i = 0; i < T; ++i) {
-		int I;
-		cin >> I;
+	nodes.resize(V+1);
+	visited.resize(V + 1);
+	dist.resize(V + 1);
 
-		board.assign(I, vector<int>(I, 0));
-		visit.assign(I, vector<bool>(I, false));
-
-		int here_x, here_y;
-		cin >> here_x >> here_y;
-
-		int go_x, go_y;
-		cin >> go_x >> go_y;
-
-		BFS({ here_x,here_y }, { go_x,go_y },I);
-
-		cout << board[go_y][go_x]<<'\n';
+	for (int i = 1; i <= V; ++i) {
+		int input;
+		cin >> input;
+		int first{};
+		while (1) {
+			cin >> first;
+			if (first == -1)break;
+			int second;
+			cin >> second;
+			nodes[input].push_back({ first,second });
+		}
 	}
 
+
+	BFS(1);
+	int max = -1;
+	int next{};
+	for (int i = 1; i <= V; ++i) {
+		if (dist[i] > max) {
+			max = dist[i];
+			next = i;
+		}
+	}
+
+	visited.assign(V + 1, false);
+	dist.assign(V + 1, 0);
+	BFS(next);
+	int answer{};
+	for (int i = 1; i <= V; ++i) {
+		if (dist[i] > answer) {
+			answer = dist[i];
+		}
+	}
+	cout << answer;
 }
 
 
