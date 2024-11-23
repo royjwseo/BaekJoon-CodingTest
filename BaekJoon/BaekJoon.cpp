@@ -6,13 +6,14 @@
 #include <cmath>
 #include <algorithm>
 #include <stack>
+#include <set>
 #include <queue>
 #include <list>
 using namespace std;
 
 /*
 ================= 2024-11-23================
-1158번 요세푸스 문제
+1764번 듣보잡
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -26,50 +27,26 @@ int main() {
 	cin.tie(NULL);
 	
 	int N;
-	int K;
-	cin >> N >> K;
+	int M;
+	cin >> N >> M;
 
-	// 1 2 3 4 5 6 7
-	// 1 2 4 5 6 7 /  3
-	// 1 2 4 5 7 / 3 6
-	// 1 4 5 7 // 3 6 2
+	set<string> s;
+	vector<string> answer;
+	for (int i = 0; i < N + M; ++i) {
+		string input;
+		cin >> input;
 
-	vector<int>vec;
-	for (int i = 1; i <= N; ++i) {
-		vec.push_back(i);
+		set<string>::iterator It=s.find(input);
+		if (It != s.end()) {
+			answer.push_back(input);
+		}
+		s.insert(input);
 	}
-
-	int index = 0;
-
-	vector<int>answer;
-	while (!vec.empty()) {
-
-		index += 2;
-		if (index > vec.size()-1) {
-			index -= vec.size();
-			index = index % vec.size();
-		}
-
-		answer.push_back(vec[index]);
-		vec.erase(vec.begin() + index);
-		
-
+	cout << answer.size() << '\n';
+	sort(answer.begin(), answer.end());
+	for (auto a : answer) {
+		cout << a << '\n';
 	}
-
-	for (vector<int>::iterator It = answer.begin(); It != answer.end(); It++) {
-		if (It == answer.begin()) {
-			cout << '<';
-		}
-		if (It == answer.end() - 1) {
-			cout << *It << '>';
-		}
-		else {
-			cout << *It << ", ";
-		}
-	}
-	
-
-	
 	
 }
 
