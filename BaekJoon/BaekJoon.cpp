@@ -43,24 +43,22 @@ int main() {
 			dq.push_back({ input,i });
 		}
 		int cnt{};
-		while (!pq.empty()) {
-			int max = pq.top();
-			pq.pop();
-			cnt++;
-			auto a = dq.front();
-			while (1) {
-				a = dq.front();	
-				if (a.first == max)break;
-				dq.push_back(a);
-				dq.pop_front();
-			}
-			if (dq.front().second != ans) {
+		while (!dq.empty()) {
+			
+			if (dq.front().first == pq.top()) {
+				pq.pop();
+				cnt++;
+				if (dq.front().second == ans) {
+					cout << cnt << '\n';
+					break;
+				}
 				dq.pop_front();
 			}
 			else {
-				cout << cnt<<'\n';
-				break;
+				dq.push_back(dq.front());
+				dq.pop_front();
 			}
+			
 		}
 		
 		
