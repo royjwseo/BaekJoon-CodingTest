@@ -8,13 +8,14 @@
 #include <stack>
 #include <set>
 #include <unordered_set>
+#include <unordered_map>
 #include <queue>
 #include <list>
 using namespace std;
 
 /*
-================= 2024-11-23================
-1966번 프린터 큐
+================= 2024-11-26================
+1620번 나는야 포켓몬 마스터 이다솜
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -26,42 +27,32 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int T;
-	cin >> T;
-	for (int i = 0; i < T; ++i) {
-		deque<pair<int, int>>dq;
-		priority_queue<int> pq;
-		int N;
-		cin >> N;
-		int ans;
-		cin >> ans;
+	int N;
+	int M;
+	cin >> N >> M;
 
-		for (int i = 0; i < N; ++i) {
-			int input;
-			cin >> input;
-			pq.push({ input });
-			dq.push_back({ input,i });
+	vector<pair<string, int>> pokemons(N+1);
+	unordered_map<string,int> names(N + 1);
+
+	for (int i = 1; i <= N; ++i) {
+		string input;
+		cin >> input;
+		pokemons[i] = make_pair(input, i);
+		names.insert({ input,i });
+	}
+
+	for (int i = 0; i < M; ++i) {
+		string input;
+		cin >> input;
+		if (isdigit(input[0])) {
+			int num = stoi(input);
+			cout << pokemons[num].first << '\n';
 		}
-		int cnt{};
-		while (!dq.empty()) {
-			
-			if (dq.front().first == pq.top()) {
-				pq.pop();
-				cnt++;
-				if (dq.front().second == ans) {
-					cout << cnt << '\n';
-					break;
-				}
-				dq.pop_front();
-			}
-			else {
-				dq.push_back(dq.front());
-				dq.pop_front();
-			}
-			
+		else {
+			auto a = names.find(input);
+			if(a!=names.end())
+			cout<<a->second<<'\n';
 		}
-		
-		
 	}
 }
 
