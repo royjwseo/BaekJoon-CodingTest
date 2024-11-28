@@ -16,10 +16,7 @@ using namespace std;
 
 /*
 ================= 2024-11-28================
-[실패 문제] 1406 에디터
-
-0.3초-> vector사용하니까 중간 삽입 시 O(N)씩 M번하면 시간초과
-
+14425번 문자열 집합
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -30,57 +27,26 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	list<char> front;
-	list<char> back;
+	int N, M;
+	cin >> N >> M;
 
-	string input;
-	cin >> input;
-	for (char a : input) {
-		front.push_back(a);
+	unordered_set<string> set;
+
+	for (int i = 0; i < N; ++i) {
+		string input;
+		cin >> input;
+		set.insert(input);
 	}
+	int cnt{};
+	for (int i = 0; i < M; ++i) {
+		string find_str;
+		cin >> find_str;
 
-	int num;
-	cin >> num;
-	while (num--) {
-		char order;
-		cin >> order;
-		switch (order) {
-		case 'P':
-			char factor;
-			cin >> factor;
-			front.push_back(factor);
-			break;
-		case 'L':
-			if (!front.empty()) {
-				back.push_front(front.back());
-				front.pop_back();			
-			}
-			break;
-
-		case 'D':
-			if (!back.empty()) {
-				front.push_back(back.front());
-				back.pop_front();			
-			}
-			break;
-
-		case 'B':
-			if (!front.empty()) {
-				front.pop_back();
-			}
-			break;
+		if (set.find(find_str) != set.end()) {
+			cnt++;
 		}
 	}
-	
-	for (auto a : front) {
-		cout << a;
-	}
-	for (auto a : back) {
-		cout << a;
-	}
-
-	
-	
+	cout << cnt;
 
 }
 
