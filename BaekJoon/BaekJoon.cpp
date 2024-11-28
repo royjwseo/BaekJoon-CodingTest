@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <sstream>
 #include <array>
 #include <deque>
 #include <vector>
@@ -14,8 +15,8 @@
 using namespace std;
 
 /*
-================= 2024-11-26================
-1620번 나는야 포켓몬 마스터 이다솜
+================= 2024-11-28================
+[실패 문제] 5430번 AC
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -27,33 +28,76 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int N;
-	int M;
-	cin >> N >> M;
+	int T;
+	cin >> T;
 
-	vector<pair<string, int>> pokemons(N+1);
-	unordered_map<string,int> names(N + 1);
-
-	for (int i = 1; i <= N; ++i) {
+	while (T--) {
 		string input;
 		cin >> input;
-		pokemons[i] = make_pair(input, i);
-		names.insert({ input,i });
-	}
 
-	for (int i = 0; i < M; ++i) {
-		string input;
-		cin >> input;
-		if (isdigit(input[0])) {
-			int num = stoi(input);
-			cout << pokemons[num].first << '\n';
+		int n;
+		cin >> n;
+
+		string nums;
+		cin >> nums;
+		nums=nums.substr(1, nums.size() - 2);
+		deque<int> factors;
+		if (!nums.empty()) {
+			stringstream ss(nums);	
+			string real_num;
+			while (getline(ss, real_num, ',')) {
+				factors.push_back(stoi(real_num));
+			}
+		}
+		
+
+		bool isError = false;
+		bool isReverse = false;
+		for (char c : input) {
+			if (c == 'R') {
+				isReverse = !isReverse;
+			}
+			else {
+				if (factors.empty()) {
+					isError = true;
+					break;
+				}
+				if (!isReverse) {
+					factors.pop_front();
+				}
+				else {
+					factors.pop_back();
+				}
+			}
+		}
+		
+		if (!isError) {
+			if (!isReverse) {
+				cout << '[';
+				for (auto it = factors.begin(); it != factors.end(); ++it) {
+					if (it != factors.begin()) {
+						cout << ',';
+					}
+					cout << *it;
+				}
+				cout << "]\n";
+			}
+			else {
+				cout << '[';
+				for (auto it = factors.rbegin(); it != factors.rend(); ++it) {
+					if (it != factors.rbegin()) {
+						cout << ',';
+					}
+					cout << *it;
+				}
+				cout << "]\n";
+			}
 		}
 		else {
-			auto a = names.find(input);
-			if(a!=names.end())
-			cout<<a->second<<'\n';
+			cout << "error\n";
 		}
 	}
+
 }
 
 
