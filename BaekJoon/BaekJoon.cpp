@@ -30,13 +30,13 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	deque<char> front;
-	deque<char> back;
+	stack<char> front;
+	stack<char> back;
 
 	string input;
 	cin >> input;
 	for (char a : input) {
-		front.push_back(a);
+		front.push(a);
 	}
 
 	int num;
@@ -48,36 +48,41 @@ int main() {
 		case 'P':
 			char factor;
 			cin >> factor;
-			front.push_back(factor);
+			front.push(factor);
 			break;
 		case 'L':
 			if (!front.empty()) {
-				back.push_front(front.back());
-				front.pop_back();			
+				back.push(front.top());
+				front.pop();			
 			}
 			break;
 
 		case 'D':
 			if (!back.empty()) {
-				front.push_back(back.front());
-				back.pop_front();			
+				front.push(back.top());
+				back.pop();			
 			}
 			break;
 
 		case 'B':
 			if (!front.empty()) {
-				front.pop_back();
+				front.pop();
 			}
 			break;
 		}
 	}
 	
-	for (auto p : front) {
-		cout << p;
+
+	while (!front.empty()) {
+		back.push(front.top());
+		front.pop();
 	}
-	for (auto p : back) {
-		cout << p;
+	while (!back.empty()) {
+		cout << back.top();
+		back.pop();
 	}
+
+	
 	
 
 }
