@@ -16,7 +16,9 @@ using namespace std;
 
 /*
 ================= 2024-11-28================
-[실패 문제] 5430번 AC
+[실패 문제] 1406 에디터
+
+0.3초-> vector사용하니까 중간 삽입 시 O(N)씩 M번하면 시간초과
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -28,75 +30,55 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int T;
-	cin >> T;
+	deque<char> front;
+	deque<char> back;
 
-	while (T--) {
-		string input;
-		cin >> input;
+	string input;
+	cin >> input;
+	for (char a : input) {
+		front.push_back(a);
+	}
 
-		int n;
-		cin >> n;
+	int num;
+	cin >> num;
+	while (num--) {
+		char order;
+		cin >> order;
+		switch (order) {
+		case 'P':
+			char factor;
+			cin >> factor;
+			front.push_back(factor);
+			break;
+		case 'L':
+			if (!front.empty()) {
+				back.push_front(front.back());
+				front.pop_back();			
+			}
+			break;
 
-		string nums;
-		cin >> nums;
-		nums=nums.substr(1, nums.size() - 2);
-		deque<int> factors;
-		if (!nums.empty()) {
-			stringstream ss(nums);	
-			string real_num;
-			while (getline(ss, real_num, ',')) {
-				factors.push_back(stoi(real_num));
+		case 'D':
+			if (!back.empty()) {
+				front.push_back(back.front());
+				back.pop_front();			
 			}
-		}
-		
+			break;
 
-		bool isError = false;
-		bool isReverse = false;
-		for (char c : input) {
-			if (c == 'R') {
-				isReverse = !isReverse;
+		case 'B':
+			if (!front.empty()) {
+				front.pop_back();
 			}
-			else {
-				if (factors.empty()) {
-					isError = true;
-					break;
-				}
-				if (!isReverse) {
-					factors.pop_front();
-				}
-				else {
-					factors.pop_back();
-				}
-			}
-		}
-		
-		if (!isError) {
-			if (!isReverse) {
-				cout << '[';
-				for (auto it = factors.begin(); it != factors.end(); ++it) {
-					if (it != factors.begin()) {
-						cout << ',';
-					}
-					cout << *it;
-				}
-				cout << "]\n";
-			}
-			else {
-				cout << '[';
-				for (auto it = factors.rbegin(); it != factors.rend(); ++it) {
-					if (it != factors.rbegin()) {
-						cout << ',';
-					}
-					cout << *it;
-				}
-				cout << "]\n";
-			}
-		}
-		else {
-			cout << "error\n";
+			break;
 		}
 	}
+	
+	for (auto p : front) {
+		cout << p;
+	}
+	for (auto p : back) {
+		cout << p;
+	}
+	
 
 }
 
