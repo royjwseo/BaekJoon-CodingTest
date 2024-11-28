@@ -16,7 +16,7 @@ using namespace std;
 
 /*
 ================= 2024-11-28================
-17298번 오큰수
+1021번 회전하는 큐
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -27,27 +27,37 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	stack<int>st;
 	int N;
-	cin >> N;
-	vector<int> vec(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> vec[i];
-	}
-	int max = -1;
-	vector<int> answer(N,-1);
-	for (int i = 0; i < N; ++i) {
-		
-		while (!st.empty() && vec[st.top()] < vec[i]) {
-			answer[st.top()]=(vec[i]);
-			st.pop();
-		}
-		st.push(i);
-	}
+	int M;
+	cin >> N >> M;
 
-	for (auto a : answer) {
-		cout << a << ' ';
+	deque<int> dq;
+	for (int i = 1; i <= N; ++i) {
+		dq.push_back(i);
 	}
+	int cnt{};
+	for (int i = 0; i < M; ++i) {
+		int input;
+		cin >> input;
+
+		auto it=find(dq.begin(), dq.end(), input);
+		if (it - dq.begin() > dq.size() / 2) {
+			while (dq.front() != input) {
+				dq.push_front(dq.back());
+				dq.pop_back();
+				cnt++;
+			}
+		}
+		else {
+			while (dq.front() != input) {
+				dq.push_back(dq.front());
+				dq.pop_front();
+				cnt++;
+			}
+		}
+		dq.pop_front();
+	}
+	cout << cnt;
 
 }
 
