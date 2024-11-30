@@ -34,61 +34,17 @@ int main() {
 	string explosive;
 	cin >> explosive;
 	
-	deque<char> left;
-	deque<char> right;
-
-	for (char a : input) {
-		left.push_back(a);
-	}
-	int exp = explosive.size();
-	bool isSame = false;
-	int cnt{};
-	while (!left.empty()) {
-		cnt = cnt % exp;
-		char back = left.back();
-		right.push_front(back);
-		left.pop_back();
-		
-		if (back == explosive[exp - 1 - cnt]) {
-			isSame = true;	
-		}
-		else {
-			isSame = false;
-		}
-		
-		if(!isSame){
-			if (cnt > 0) {
-				for (int i = 0; i < cnt; ++i) {
-					if (!right.empty()) {
-						left.push_back(right.front());
-						right.pop_front();
-					}
-				}
-			}
-			cnt = 0;
-		}
-		else {
-			cnt++;
-			if (cnt == exp) {
-				for (int i = 0; i < exp; ++i) {
-					right.pop_front();
-				}
-				for (int i = 0; i < exp - 1; ++i) {
-					if (!right.empty()) {
-						left.push_back(right.front());
-						right.pop_front();
-					}
-				}
-			}
-
-		}
-		
-	}
-
+	int index = 1;
 	string ans = "";
-	for (auto a : right) {
+	for(char a: input) {
 		ans = ans + a;
+		if (ans.size() >= explosive.size()) {
+			if (ans.substr(ans.size() - explosive.size(), explosive.size()) == explosive) {
+				ans.erase(ans.size() - explosive.size(), explosive.size());
+			}
+		}
 	}
+	
 	if (ans.empty()) {
 		cout << "FRULA";
 	}
