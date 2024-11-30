@@ -15,7 +15,7 @@
 using namespace std;
 
 /*
-================= 2024-11-30================
+================= 2024-11-28================
 10845번 큐
 
 1KB -> 1024바이트
@@ -30,55 +30,44 @@ int main() {
 
 	int N;
 	cin >> N;
-	deque<int> dq;
+	queue<int> q;
 	while (N--) {
 		string input;
 		cin >> input;
-		if (input == "push_front") {
+		if (input == "push") {
 			int num;
 			cin >> num;
-			dq.push_front(num);
-		}else if(input == "push_back") {
-			int num;
-			cin >> num;
-			dq.push_back(num);
+			q.push(num);
 		}
-		else if (input == "pop_front") {
-			if (!dq.empty()) {
-				cout << dq.front() << '\n';
-				dq.pop_front();
+		else if (input == "pop") {
+			if (!q.empty()) {
+				cout << q.front() << '\n';
+				q.pop();
 			}
 			else
 				cout << -1 << '\n';
 		}
-		else if (input == "pop_back") {
-			if (!dq.empty()) {
-				cout << dq.back() << '\n';
-				dq.pop_back();
-			}
-			else
-				cout << -1 << '\n';
-		}
-		else if (input == "size"){
-			cout<<dq.size()<<'\n';
+		else if (input == "size") {
+			cout << q.size() << '\n';
 		}
 		else if (input == "empty") {
-			(dq.empty()) ? cout << "1\n" : cout << "0\n";
+			(q.empty()) ? cout << "1\n" : cout << "0\n";
 		}
 		else if (input == "front") {
-			if (dq.empty()) {
+			if (q.empty()) {
 				cout << "-1\n";
 			}
 			else {
-				cout << dq.front() << '\n';
+				cout << q.front() << '\n';
 			}
 		}
-		else if (input == "back") {
-			if (dq.empty()) {
+		else {
+			if (q.empty()) {
 				cout << "-1\n";
 			}
-			else {
-				cout << dq.back() << '\n';
+			else
+			{
+				cout << q.back() << '\n';
 			}
 		}
 	}
