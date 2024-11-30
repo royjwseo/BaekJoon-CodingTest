@@ -17,7 +17,7 @@ using namespace std;
 
 /*
 ================= 2024-11-28================
-7785번 회사에 있는 사람
+1269번 대칭 차집합
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -29,27 +29,17 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	set<string> set;
+	int A, B;
+	cin >> A >> B;
 
-	int N;
-	cin >> N;
-	while (N--) {
-		string name, input;
-		cin >> name >> input;
-		if (input == "enter") {
-			set.insert(name);
-		}
-		else {
-			set.erase(name);
-		}
+	set<int> st;
+	for (int i = 0; i < A + B; ++i) {
+		int input;
+		cin >> input;
+		st.insert(input);
 	}
-	
-	vector<string> names(set.begin(), set.end());
-
-	sort(names.begin(), names.end(), greater<string>());
-	for (auto a : names) {
-		cout << a << '\n';
-	}
+	int diff = (A + B)-st.size();
+	cout << (A + B) - 2 * diff;
 
 }
 
