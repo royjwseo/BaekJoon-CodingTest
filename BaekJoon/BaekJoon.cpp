@@ -17,7 +17,7 @@ using namespace std;
 
 /*
 ================= 2024-11-28================
-2493번 탑
+9935번 문자열 폭발
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -29,35 +29,23 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
-
-	vector<pair<int,int>>tops(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> tops[i].first;
-		tops[i].second = i + 1;
+	string input;
+	cin >> input;
+	string explosive;
+	cin >> explosive;
+	while (1) {
+		auto p = input.find(explosive);
+		if (p == string::npos) {
+			break;
+		}
+		input.erase(p, explosive.size());
 	}
-
-	stack<pair<int,int>> st;
-	vector<int>answers;
-	for (int i = 0; i < N; ++i) {
-		
-			while (!st.empty() && tops[i].first > st.top().first) {
-				st.pop();
-			}
-			if (st.size() != 0) {
-				answers.push_back(st.top().second);
-			}
-			else {
-				answers.push_back(0);
-			}
-		
-		st.push(tops[i]);
+	if (input.empty()) {
+		cout << "FRULA";
 	}
-	for (auto a : answers) {
-		cout << a << ' ';
+	else {
+		cout << input;
 	}
-
 }
 
 
