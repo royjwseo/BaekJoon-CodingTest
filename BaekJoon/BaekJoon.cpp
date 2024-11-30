@@ -15,9 +15,8 @@
 using namespace std;
 
 /*
-================= 2024-11-28================
-9375번 패션왕 신해빈
-경우의 수 -> 각 옷 종류 +1 (아무선택 X) 을 곱하여 -1(둘다 선택X)
+================= 2024-11-30================
+10845번 큐
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -29,32 +28,61 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int T;
-	cin >> T;
-
-
-	
-	
-	while (T--) {
-		int cnt{};
-		int N;
-		cin >> N;
-		unordered_map<string, int> clothes;
-		for (int i = 0; i < N; ++i) {
-
-			string wear;
-			string which;
-			cin >> wear >> which;
-			clothes[which]++;
+	int N;
+	cin >> N;
+	deque<int> dq;
+	while (N--) {
+		string input;
+		cin >> input;
+		if (input == "push_front") {
+			int num;
+			cin >> num;
+			dq.push_front(num);
+		}else if(input == "push_back") {
+			int num;
+			cin >> num;
+			dq.push_back(num);
 		}
-		int result = 1;
-		for (auto a : clothes) {
-			result *= (a.second + 1);
+		else if (input == "pop_front") {
+			if (!dq.empty()) {
+				cout << dq.front() << '\n';
+				dq.pop_front();
+			}
+			else
+				cout << -1 << '\n';
 		}
-		cout << result - 1<<'\n';
-		
-
+		else if (input == "pop_back") {
+			if (!dq.empty()) {
+				cout << dq.back() << '\n';
+				dq.pop_back();
+			}
+			else
+				cout << -1 << '\n';
+		}
+		else if (input == "size"){
+			cout<<dq.size()<<'\n';
+		}
+		else if (input == "empty") {
+			(dq.empty()) ? cout << "1\n" : cout << "0\n";
+		}
+		else if (input == "front") {
+			if (dq.empty()) {
+				cout << "-1\n";
+			}
+			else {
+				cout << dq.front() << '\n';
+			}
+		}
+		else if (input == "back") {
+			if (dq.empty()) {
+				cout << "-1\n";
+			}
+			else {
+				cout << dq.back() << '\n';
+			}
+		}
 	}
+
 }
 
 
