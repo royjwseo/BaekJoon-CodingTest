@@ -33,19 +33,67 @@ int main() {
 	cin >> input;
 	string explosive;
 	cin >> explosive;
-	while (1) {
-		auto p = input.find(explosive);
-		if (p == string::npos) {
-			break;
-		}
-		input.erase(p, explosive.size());
+	
+	deque<char> left;
+	deque<char> right;
+
+	for (char a : input) {
+		left.push_back(a);
 	}
-	if (input.empty()) {
+	int exp = explosive.size();
+	bool isSame = false;
+	int cnt{};
+	while (!left.empty()) {
+		cnt = cnt % exp;
+		char back = left.back();
+		right.push_front(back);
+		left.pop_back();
+		
+		if (back == explosive[exp - 1 - cnt]) {
+			isSame = true;	
+		}
+		else {
+			isSame = false;
+		}
+		
+		if(!isSame){
+			if (cnt > 0) {
+				for (int i = 0; i < cnt; ++i) {
+					if (!right.empty()) {
+						left.push_back(right.front());
+						right.pop_front();
+					}
+				}
+			}
+			cnt = 0;
+		}
+		else {
+			cnt++;
+			if (cnt == exp) {
+				for (int i = 0; i < exp; ++i) {
+					right.pop_front();
+				}
+				for (int i = 0; i < exp - 1; ++i) {
+					if (!right.empty()) {
+						left.push_back(right.front());
+						right.pop_front();
+					}
+				}
+			}
+
+		}
+		
+	}
+
+	string ans = "";
+	for (auto a : right) {
+		ans = ans + a;
+	}
+	if (ans.empty()) {
 		cout << "FRULA";
 	}
 	else {
-		cout << input;
+		cout << ans;
 	}
 }
-
 
