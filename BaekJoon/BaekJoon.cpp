@@ -17,7 +17,7 @@ using namespace std;
 
 /*
 ================= 2024-12-02================
-[그리디] 11047번 동전 0 
+[그리디] 1931번 회의실 배정
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -29,30 +29,27 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	
 	int N;
-	int K;
-	cin >> N >> K;
+	cin >> N;
 
-	vector<int>coins(N);
+	vector<pair<int, int>>conferences(N);
 	for (int i = 0; i < N; ++i) {
-		cin >> coins[i];
+		cin >> conferences[i].first >> conferences[i].second;
 	}
-	int total{};
-	int index = N-1;
-	while (1) {
-		int cur_fund = K / coins[index];
-		if (cur_fund < 1) {
-			index--;
-		}
-		else {
-			total += cur_fund;
-			K -= coins[index] * cur_fund;
-		}
-		if (K <= 0) {
-			break;
+	sort(conferences.begin(), conferences.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+		return a.second < b.second;
+		});
+	int cur_end = -1;
+	int cnt{};
+	pair<int, int> first_time=conferences[0];
+	for (int i = 1; i < N; ++i) {
+		if (conferences[i].first >= first_time.second) {
+			cnt++;
+			first_time = conferences[i];
 		}
 	}
-	cout << total;
+	cout << cnt;
+
+	
 }
 
