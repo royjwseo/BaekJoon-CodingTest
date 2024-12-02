@@ -16,8 +16,8 @@
 using namespace std;
 
 /*
-================= 2024-11-28================
-9935번 문자열 폭발
+================= 2024-12-02================
+[그리디] 2839번 설탕배달
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -29,27 +29,37 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	string input;
-	cin >> input;
-	string explosive;
-	cin >> explosive;
+	int N;
+	cin >> N;
+	//5 . 3 
+
+	int fives = N / 5;
+	int fives_leftover = N % 5;
 	
-	int index = 1;
-	string ans = "";
-	for(char a: input) {
-		ans = ans + a;
-		if (ans.size() >= explosive.size()) {
-			if (ans.substr(ans.size() - explosive.size(), explosive.size()) == explosive) {
-				ans.erase(ans.size() - explosive.size(), explosive.size());
+	int result{};
+	bool find_answer = true;
+	for (int i = fives; i >= 0; --i) {
+		int cur_five = 5 * i;
+		int leftover = N - cur_five;
+		if (leftover > 0) {
+			if (leftover % 3 == 0) {
+				find_answer = true;
+				cout << i + (leftover / 3);
+				break;
+			}
+			else {
+				find_answer = false;
 			}
 		}
+		else {
+			find_answer = true;
+			cout << fives;
+			break;
+		}	
+	}
+	if (!find_answer) {
+		cout << -1;
 	}
 	
-	if (ans.empty()) {
-		cout << "FRULA";
-	}
-	else {
-		cout << ans;
-	}
 }
 
