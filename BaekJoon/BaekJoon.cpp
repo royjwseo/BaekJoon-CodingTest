@@ -18,52 +18,33 @@ using namespace std;
 
 /*
 ================= 2024-12-03================
-[정수론] 1929번 소수 구하기
-
+[정수론] 2609번 최대공약수와 최소공배수
+유클리드 호제법
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-bool isPrime(int a) {
-	if (a % 2==0||a<=1)return false;
-	if (a ==2)return true;
-	int sqrtA = static_cast<int>(sqrt(a));
-	for (int i = 3; i <= sqrtA; i+=2) {
-		if (a % i == 0) {
-			return false;
-		}
+int gcd(int a,int b) {
+
+	while (b != 0) {
+		int temp = b;
+		b = a % b;
+		a = temp;
 	}
-	return true;
+	return a;
 }
 
-void Eratosthenes(int start, int end) {
-	vector<bool> isPrime(end + 1,true);
-	isPrime[0] = false;
-	isPrime[1] = false;
-
-
-	for (int i = 2; i*i <= end; ++i) {
-		if (isPrime[i]) {
-			for (int j = i * i; j <= end; j += i) {
-				isPrime[j] = false;
-			}
-		}
-	}
-
-	for (int i = start; i <= end; ++i) {
-		if (isPrime[i])cout << i << '\n';
-	}
-}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int M, N;
-	cin >> M >> N;
+	int A, B;
+	cin >> A >> B;
 
-	Eratosthenes(M, N);
-
+	int gcd_result = gcd(A, B);
+	cout << gcd_result <<'\n';
+	cout << A * B / gcd_result;
 }
 
