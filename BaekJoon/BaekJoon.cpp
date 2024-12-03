@@ -18,31 +18,25 @@ using namespace std;
 
 /*
 ================= 2024-12-03================
-[정수론] 4948 베르트랑 공준
+[정수론] 9020 골드바흐의 추측
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
+vector<bool> isPrime; 
 
-int Primes(int start) {
-	vector<bool> isPrime(2 * start + 1, true);
-	isPrime[0] = false;
-	isPrime[1] = false;
 
-	for (int i = 2; i * i <=2 * start; ++i) {
-		if (isPrime[i]) {
-			for (int j = i * i; j <= 2 * start; j += i) {
-				isPrime[j] = false;
-			}
+void PrintPrimeAdds(int n) {
+
+	
+	int left{}, right{};
+	for (int i = 2; i <= n/2; ++i) {
+		if (isPrime[i]&&isPrime[n-i]) {
+			left = i;
+			right = n - i;
 		}
 	}
-	for (int i = 2; i <= start; ++i) {
-		isPrime[i] = false;
-	}
-	int result = count_if(isPrime.begin(), isPrime.end(), [](const bool& a) {
-		return a == true;
-		});
-	return result;
+	cout << left << ' ' << right;
 }
 
 
@@ -50,11 +44,26 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	int input=-1;
-	while (1) {
-		cin >> input;
-		if (input == 0)break;
-		cout<<Primes(input)<<'\n';
+	
+	isPrime.resize(10001, true);
+	isPrime[0] = false;
+	isPrime[1] = false;
+	for (int i = 2; i * i <= 10000; ++i) {
+		if (isPrime[i]) {
+			for (int j = i*i; j <= 10000; j += i) {
+				isPrime[j] = false;
+			}
+		}
+	}
+
+
+	int T;
+	cin >> T;
+	while (T--) {
+		int n;
+		cin >> n;
+
+		PrintPrimeAdds(n);
 	}
 	
 }
