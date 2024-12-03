@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-03================
-12738번 가장 긴 증가하는 부분 수열 3
+1352 효율적인 해킹
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -26,26 +26,17 @@ using namespace std;
 */
 
 vector<vector<int>>adjacents;
-vector<pair<int,int>> visited;
+vector<bool>visited;
 
-void BFS(int start,int cnt) {
+void DFS(int here,int& cnt) {
 
-	queue<int> q;
-	q.push(start);
-	visited[start].first = true;
-
-	
-	while (!q.empty()) {
-		int front = q.front();
-		int size = adjacents[front].size();
-		q.pop();
-		for (int i = 0; i < size; ++i) {
-			int next = adjacents[front][i];
-			if (!visited[next].first) {
-				visited[next].first = true;
-				visited[next].second = visited[front].second+1;
-				q.push(next);
-			}
+	visited[here] = true;
+	cnt++;
+	int size = adjacents[here].size();
+	for (int i = 0; i < size; ++i) {
+		int next = adjacents[here][i];
+		if (!visited[next]) {
+			DFS(next,cnt);
 		}
 	}
 }
@@ -54,35 +45,34 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	int n_cities;
-	cin >> n_cities;
-	int n_roads;
-	cin >> n_roads;
+	int N, M;
+	cin >> N >> M;
+	adjacents.resize(N+1);
+	visited.resize(N+1,0);
 
-	int len;
-	cin >> len;
-	int start;
-	cin >> start;
-
-	adjacents.resize(n_cities+1);
-	visited.resize(n_cities+1,{false,0});
-	for (int i = 0; i < n_roads; ++i) {
+	for (int i = 0; i < M; ++i) {
 		int a, b;
 		cin >> a >> b;
-		adjacents[a].push_back(b);
+		adjacents[b].push_back(a);
 	}
-	int cnt{};
-	BFS(start,cnt);
-
-	bool has = false;
-	for (int i = 1; i <= n_cities; ++i) {
-		if (visited[i].second == len) {
-			cout << i<<'\n';
-			has = true;
+	vector<pair<int,int>>answer(N + 1);
+	for (int i = 1; i <= N; ++i) {
+		int cnt{};
+		visited.assign(N + 1, false);
+		DFS(i,cnt);
+		answer[i].first = cnt;
+		answer[i].second = i;
+	}
+	sort(answer.begin(), answer.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+		if (a.first == b.first)return a.second < b.second;
+		return a.first > b.first;
+		});
+	for (int i = 0; i < answer.size(); ++i) {
+		if (answer[i].first == answer[0].first) {
+			cout << answer[i].second << ' ';
 		}
 	}
-	if (!has) {
-		cout << -1;
-	}
+	
+
 }
 
