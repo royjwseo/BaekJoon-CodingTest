@@ -18,30 +18,27 @@ using namespace std;
 
 /*
 ================= 2024-12-03================
-[정수론] 1934 최소공배수
+[정수론] 1037 약수
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
 
-int gcd(int a, int b) {
-
-	if (a%b==0)return b;
-
-	return gcd(b, a % b);
-}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	int T;
-	cin >> T;
-	while (T--) {
-		int a, b;
-		cin >> a >> b;
-		cout << a * b / gcd(a, b)<<'\n';
+	int cnt;
+	cin >> cnt;
+	vector<int>nums(cnt);
+	for (int i = 0; i < cnt; ++i) {
+		cin >> nums[i];
 	}
+	sort(nums.begin(), nums.end());
+	
+	cout << nums[0] * nums[cnt - 1];
+	
 }
 
