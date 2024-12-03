@@ -58,20 +58,30 @@ int main() {
 	vector<pair<int,int>>answer(N + 1);
 	for (int i = 1; i <= N; ++i) {
 		int cnt{};
-		visited.assign(N + 1, false);
+		//visited.assign(N + 1, false);
+		fill(visited.begin(), visited.end(), false);
 		DFS(i,cnt);
 		answer[i].first = cnt;
 		answer[i].second = i;
 	}
-	sort(answer.begin(), answer.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+	/*sort(answer.begin(), answer.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
 		if (a.first == b.first)return a.second < b.second;
 		return a.first > b.first;
-		});
-	for (int i = 0; i < answer.size(); ++i) {
+		});*/
+
+	int max_elem = max_element(answer.begin(), answer.end())->first;
+
+	for (auto& a : answer) {
+		if (a.first == max_elem) {
+			cout << a.second << ' ';
+		}
+	}
+
+	/*for (int i = 0; i < answer.size(); ++i) {
 		if (answer[i].first == answer[0].first) {
 			cout << answer[i].second << ' ';
 		}
-	}
+	}*/
 	
 
 }
