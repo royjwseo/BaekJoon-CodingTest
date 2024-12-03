@@ -18,90 +18,71 @@ using namespace std;
 
 /*
 ================= 2024-12-03================
-7576번 토마토
+12738번 가장 긴 증가하는 부분 수열 3
+
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>>board;
-vector<vector<bool>>visited;
+vector<vector<int>>adjacents;
+vector<pair<int,int>> visited;
 
-int dirX[4] = { 1,0,0,-1 };
-int dirY[4] = { 0,1,-1,0 };
+void BFS(int start,int cnt) {
 
-int BFS(vector<pair<int,int>> start,int max_x,int max_y) {
-	queue<pair<int,int>> q;
-	int cnt{};
-	int result{};
-	int once = start.size();
-	int newtomato{};
-	for (int i = 0; i < once; ++i) {
-		q.push(start[i]);
-		visited[start[i].first][start[i].second] = true;
-	}
+	queue<int> q;
+	q.push(start);
+	visited[start].first = true;
+
+	
 	while (!q.empty()) {
-		pair<int, int> cur = q.front();
+		int front = q.front();
+		int size = adjacents[front].size();
 		q.pop();
-		cnt++;
-		if (cnt > once) {
-			result++;
-			once += newtomato;
-			newtomato = 0;
-		}
-		for (int i = 0; i < 4; ++i) {
-			int dx = cur.second + dirX[i];
-			int dy = cur.first + dirY[i];
-			if (dx < max_x && dx >= 0 && dy < max_y && dy >= 0) {
-				if (!visited[dy][dx]) {
-					if (board[dy][dx] == -1) {
-						visited[dy][dx] = true;
-					}
-					else if (board[dy][dx] == 0) {
-						visited[dy][dx] = true;
-						board[dy][dx] = 1;
-						q.push({ dy, dx });
-						newtomato++;
-					}
-				}
+		for (int i = 0; i < size; ++i) {
+			int next = adjacents[front][i];
+			if (!visited[next].first) {
+				visited[next].first = true;
+				visited[next].second = visited[front].second+1;
+				q.push(next);
 			}
 		}
-
 	}
-	return result;
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	int x, y;
-	cin >> x >> y;
-	board.resize(y, vector<int>(x));
-	visited.resize(y, vector<bool>(x, false));
-	vector<pair<int, int>> start;
-	for (int i = 0; i < y; ++i) {
-		for (int j = 0; j < x; ++j) {
-			cin >> board[i][j];
-			if (board[i][j] == 1) {
-				start.push_back({ i,j });
-			}
+	int n_cities;
+	cin >> n_cities;
+	int n_roads;
+	cin >> n_roads;
+
+	int len;
+	cin >> len;
+	int start;
+	cin >> start;
+
+	adjacents.resize(n_cities+1);
+	visited.resize(n_cities+1,{false,0});
+	for (int i = 0; i < n_roads; ++i) {
+		int a, b;
+		cin >> a >> b;
+		adjacents[a].push_back(b);
+	}
+	int cnt{};
+	BFS(start,cnt);
+
+	bool has = false;
+	for (int i = 1; i <= n_cities; ++i) {
+		if (visited[i].second == len) {
+			cout << i<<'\n';
+			has = true;
 		}
 	}
-	int res = BFS(start,x,y);
-	bool isAll = true;
-	for (int i = 0; i < y; ++i) {
-		if (count(board[i].begin(), board[i].end(), 0)>0) {
-			isAll = false;
-			break;
-		}	
-	}
-	if (isAll) {
-		cout << res;
-	}
-	else {
+	if (!has) {
 		cout << -1;
 	}
-	
 }
 
