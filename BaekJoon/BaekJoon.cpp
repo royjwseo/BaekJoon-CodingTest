@@ -17,71 +17,68 @@
 using namespace std;
 
 /*
-================= 2024-12-03================
-1352 효율적인 해킹
+================= 2024-12-05================
+[이진 탐색] 1920번 수 찾기
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>>adjacents;
-vector<bool>visited;
+bool isFind(int num,vector<int>& num_list) {
 
-void DFS(int here,int& cnt) {
-
-	visited[here] = true;
-	cnt++;
-	int size = adjacents[here].size();
-	for (int i = 0; i < size; ++i) {
-		int next = adjacents[here][i];
-		if (!visited[next]) {
-			DFS(next,cnt);
+	int right = num_list.size();
+	int left = 0;
+	int cur_index{};
+	while (left<right) {
+		 cur_index = (left + right) / 2;
+		if (num > num_list[cur_index]) {
+			left = cur_index+1;
+		}
+		else if(num<num_list[cur_index]) {
+			right = cur_index - 1;
+		}
+		else {
+			return true;
 		}
 	}
+	return false;
 }
+
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	int N, M;
-	cin >> N >> M;
-	adjacents.resize(N+1);
-	visited.resize(N+1,0);
+	int N;
+	cin >> N;
 
+	vector<int>nums(N);
+	for (int i = 0; i < N; ++i) {
+		cin >> nums[i];
+	}
+	sort(nums.begin(), nums.end());
+
+	int M;
+	cin >> M;
+	vector<int>find(M );
 	for (int i = 0; i < M; ++i) {
-		int a, b;
-		cin >> a >> b;
-		adjacents[b].push_back(a);
+		cin >> find[i];
 	}
-	vector<pair<int,int>>answer(N + 1);
-	for (int i = 1; i <= N; ++i) {
-		int cnt{};
-		//visited.assign(N + 1, false);
-		fill(visited.begin(), visited.end(), false);
-		DFS(i,cnt);
-		answer[i].first = cnt;
-		answer[i].second = i;
-	}
-	/*sort(answer.begin(), answer.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
-		if (a.first == b.first)return a.second < b.second;
-		return a.first > b.first;
-		});*/
 
-	int max_elem = max_element(answer.begin(), answer.end())->first;
-
-	for (auto& a : answer) {
-		if (a.first == max_elem) {
-			cout << a.second << ' ';
+	for (int a : find) {
+		if (isFind(a,nums)) {
+			cout << 0 << '\n';
+		}
+		else {
+			cout << 1 << '\n';
 		}
 	}
 
-	/*for (int i = 0; i < answer.size(); ++i) {
-		if (answer[i].first == answer[0].first) {
-			cout << answer[i].second << ' ';
-		}
-	}*/
+
+
+
+
 	
 
 }
