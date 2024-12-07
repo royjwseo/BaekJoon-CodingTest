@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-07================
-[이진 탐색] 2110번 공유기 설치
+[이진 탐색] 2512번 예산
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -27,41 +27,43 @@ using namespace std;
 
 
 
-
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
-	using ll = long long;
-	int N,C;
-	cin >> N >> C;
 
-	vector<ll>vec(N);
-	for (int i = 0; i < N; ++i)cin >> vec[i];
+	int N;
+	cin >> N;
+	vector<int>money(N);
+	for (int i = 0; i < N; ++i)cin >> money[i];
 
-	sort(vec.begin(), vec.end());
+	int M;
+	cin >> M;
 
-	ll min =1;
-	ll max = vec[N - 1]-vec[0];
+	int min = 0;
+	int max = *max_element(money.begin(), money.end());
 	int result{};
 	while (min <= max) {
-		ll mid = (min + max) / 2;
-		ll last_pos = vec[0];
-		int cnt=1;
-		for (int i = 1; i < N; ++i) {
-			if (vec[i] - last_pos >= mid) {
-				cnt++;
-				last_pos = vec[i];
+		int cnt{};
+		int mid = (min + max) / 2;
+
+		for (int a : money) {
+			if (mid >= a) {
+				cnt += a;
+			}
+			else {
+				cnt += mid;
 			}
 		}
-		if (cnt >= C) {
+
+		if (cnt > M) {			
+			max = mid - 1;
+		}
+		else {	
 			result = mid;
 			min = mid + 1;
 		}
-		else {
-			max = mid - 1;
-		}
-
 	}
 	cout << result;
+
 }
 
