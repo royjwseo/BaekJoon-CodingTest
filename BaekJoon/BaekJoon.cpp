@@ -17,69 +17,50 @@
 using namespace std;
 
 /*
-================= 2024-12-05================
-[이진 탐색] 1920번 수 찾기
+================= 2024-12-07================
+[이진 탐색] 2805번 나무 자르기
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-bool isFind(int num,vector<int>& num_list) {
-
-	int right = num_list.size();
-	int left = 0;
-	int cur_index{};
-	while (left<right) {
-		 cur_index = (left + right) / 2;
-		if (num > num_list[cur_index]) {
-			left = cur_index+1;
-		}
-		else if(num<num_list[cur_index]) {
-			right = cur_index - 1;
-		}
-		else {
-			return true;
-		}
-	}
-	return false;
-}
 
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
+
 	int N;
-	cin >> N;
-
-	vector<int>nums(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> nums[i];
-	}
-	sort(nums.begin(), nums.end());
-
 	int M;
-	cin >> M;
-	vector<int>find(M );
-	for (int i = 0; i < M; ++i) {
-		cin >> find[i];
-	}
+	cin >> N >> M;
 
-	for (int a : find) {
-		if (isFind(a,nums)) {
-			cout << 0 << '\n';
+	vector<long long> trees(N);
+	for (int i = 0; i < N; ++i)cin >> trees[i];
+
+	sort(trees.begin(), trees.end());
+	long long min = 0;
+	long long max = trees[N - 1];
+
+	long long result{};
+	while (min < max) {
+		long long mid = (min + max) / 2;
+		long long sum{};
+		for (long long a : trees) {
+			if (a  > mid) {
+				sum += (a - mid);
+			}
 		}
-		else {
-			cout << 1 << '\n';
+		if (sum >= M) {
+			min = mid+1;
+			result = mid;
 		}
+		else if (sum < M) {
+			max = mid-1;
+		}
+		
 	}
-
-
-
-
-
-	
-
+	cout << result;
 }
 
