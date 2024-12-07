@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-07================
-[이진 탐색] 2805번 나무 자르기
+[이진 탐색] 1654번 랜선 자르기
 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
@@ -31,36 +31,34 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
+	int K, N;
+	cin >> K >> N;
+	vector<int> lansons(K);
+	for (int i = 0; i < K; ++i)cin >> lansons[i];
 
-	int N;
-	int M;
-	cin >> N >> M;
+	sort(lansons.begin(), lansons.end());
 
-	vector<long long> trees(N);
-	for (int i = 0; i < N; ++i)cin >> trees[i];
-
-	sort(trees.begin(), trees.end());
 	long long min = 0;
-	long long max = trees[N - 1];
-
-	long long result{};
-	while (min < max) {
+	long long max = lansons[K - 1];
+	int result{};
+	while (min <= max) {
 		long long mid = (min + max) / 2;
 		long long sum{};
-		for (long long a : trees) {
-			if (a  > mid) {
-				sum += (a - mid);
+
+		for (int a : lansons) {
+			if (a > mid) {
+				sum += a / mid;
 			}
 		}
-		if (sum >= M) {
-			min = mid+1;
+		if (sum >= N) {
 			result = mid;
+			min = mid+1;
 		}
-		else if (sum < M) {
-			max = mid-1;
+		else {
+			max = mid - 1;
 		}
-		
 	}
+
 	cout << result;
 }
 
