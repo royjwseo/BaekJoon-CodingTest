@@ -17,53 +17,43 @@
 using namespace std;
 
 /*
-================= 2024-12-07================
-[이진 탐색] 2512번 예산
-
+================= 2024-12-14================
+[코테 강의 1주차 문자열,누적합,구현] 2309 일곱 난쟁이
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
 
-
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
-	vector<int>money(N);
-	for (int i = 0; i < N; ++i)cin >> money[i];
-
-	int M;
-	cin >> M;
-
-	int min = 0;
-	int max = *max_element(money.begin(), money.end());
-	int result{};
-	while (min <= max) {
-		int cnt{};
-		int mid = (min + max) / 2;
-
-		for (int a : money) {
-			if (mid >= a) {
-				cnt += a;
-			}
-			else {
-				cnt += mid;
-			}
+	vector<int>heights(9);
+	for (int i = 0; i < 9; ++i) {
+		cin >> heights[i];
+	}
+	sort(heights.begin(), heights.end());
+	int sum=accumulate(heights.begin(), heights.end(),0);
+	int left = 0;
+	int right = 1;
+	while (left<8) {
+		int two_sum = heights[left] + heights[right];
+		if (sum - two_sum == 100) {
+			break;
 		}
-
-		if (cnt > M) {			
-			max = mid - 1;
-		}
-		else {	
-			result = mid;
-			min = mid + 1;
+		else {
+			right++;
+			if (right > 8) {
+				left++;
+				right = left + 1;
+			}
 		}
 	}
-	cout << result;
 
+	for (int i = 0; i < 9; ++i) {
+		if(i!=left&&i!=right)
+		cout << heights[i] << '\n';
+	}
 }
 
