@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-14================
-[코테 강의 1주차 문자열,누적합,구현] 1159 농구 경기
+[코테 강의 1주차 문자열,누적합,구현] 11655 ROT13
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -29,24 +29,32 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
+	string input;
+	getline(cin, input);
 
-	vector<string>names(N);
-	array<int, 26>alphas{};
-	for (int i = 0; i < N; ++i) {
-		cin >> names[i];
-		alphas[names[i][0] - 'a']++;
-	}
-
-	bool ifis = false;
-	for (int i = 0; i < 26; ++i) {
-		if (alphas[i] >= 5) {
-			ifis = true;
-			cout << (char)(i+'a');
+	for (char& a : input) {
+		if (islower(a)) {
+			if (a <= 'z' && a >= 'a') {
+				if (a + 13 > 'z') {
+					a = 'a' + (a + 13 - 'z' - 1);
+				}
+				else {
+					a = a + 13;
+				}
+			}
+		}
+		else {
+			if (a <= 'Z' && a >= 'A') {
+				if (a + 13 > 'Z') {
+					a = 'A' + (a + 13 - 'Z' - 1);
+				}
+				else {
+					a = a + 13;
+				}
+			}
 		}
 	}
-	if (!ifis)cout << "PREDAJA";
 
+	cout << input;
 }
 
