@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-14================
-[코테 강의 1주차 문자열,누적합,구현] 2559 수열
+[코테 강의 1주차 문자열,누적합,구현] 1213번 팰린드롬 만들기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -29,26 +29,44 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N, K;
-	cin >> N >> K;
+	deque<char>left;
+	deque<char>right;
 
-	vector<int>added_nums(N + 1, 0);
+	string input;
+	cin >> input;
 
-	for (int i = 1; i <= N; ++i) {
-		int input;
-		cin >> input;
-		added_nums[i] = added_nums[i - 1] + input;
+	array<int, 26> alpha{};
+	for (char a : input) {
+		alpha[a - 'A']++;
 	}
 
-	int max = numeric_limits<int>::min();
-	int left = 0;
-	while (left+K <= N) {
-		int sum = added_nums[left+K] - added_nums[left];
-		if (sum > max)max = sum;
-		left++;
+	int mid=-1;
+	for (int i = 0; i < 26; ++i) {
+		int num = alpha[i];
+		while (num > 1) {
+			left.push_back('A' + i);
+			right.push_front('A' + i);
+			num -= 2;
+		}
+		if (num == 1) {
+			mid = i;
+		}
 	}
+	if(mid>=0)
+	left.push_back('A' + mid);
 
-	cout << max;
-
+	if (left.size() + right.size() < input.size())
+	{
+		cout << "I'm Sorry Hansoo";
+	}
+	else {
+		for (char a : left) {
+			cout << a;
+		}
+		for (char a : right) {
+			cout << a;
+		}
+	}
+	
 }
 
