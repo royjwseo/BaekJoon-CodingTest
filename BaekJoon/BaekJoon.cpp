@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-19================
-[코테 강의 3주차 완전탐색]  4673번 셀프 넘버 
+[완전탐색, 브루트포스]  1065번 한수 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -26,36 +26,31 @@ using namespace std;
 
 vector<bool>check;
 
-int CheckIfSelf(int i) {
-
-	string test=to_string(i);
-	int result = i;
+int Check(int i) {
+	if (i < 100)return 1;
 	
-	for (char a : test) {
-		result += int(a - '0');
+	string input = to_string(i);
+	if (input[2] - input[1] == input[1] - input[0]) {
+		return 1;
+	}
+	else {
+		return 0;
 	}
 
-	if (result > 10000)return 0;
-	else 
-	return result;
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	check.resize(10001, false);
+	int N;
+	cin >> N;
 
-	
-	for (int i = 1; i <= 10000; ++i) {
-		check[CheckIfSelf(i)] = true;
+	int cnt{};
+	for (int i = 1; i <= N; ++i) {
+		cnt += Check(i);
 	}
-
-	for (int i = 1; i <= 10000; ++i) {
-		if (check[i] == false) {
-			cout << i << '\n';
-		}
-	}
+	cout << cnt;
 
 }
 
