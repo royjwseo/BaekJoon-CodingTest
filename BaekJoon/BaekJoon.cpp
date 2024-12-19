@@ -17,83 +17,45 @@
 using namespace std;
 
 /*
-================= 2024-12-16================
-[코테 강의 2주차 그래프이론, BFS, DFS]  2583번 영역 구하기 
+================= 2024-12-19================
+[코테 강의 3주차 완전탐색]  4673번 셀프 넘버 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>>field;
-vector<vector<bool>>visited;
+vector<bool>check;
 
-void fillField(pair<int, int> left, pair<int, int> right) {
-	for (int i = left.second; i < right.second; ++i) {
-		for (int j = left.first; j < right.first; ++j) {
-			visited[i][j] = true;
-		}
-	}
-}
+int CheckIfSelf(int i) {
 
-int dirX[4] = { 1,0,0,-1 };
-int dirY[4] = { 0,1,-1,0 };
-
-void DFS(int x, int y,int w,int h,int& cnt) {
-
-	if (!visited[y][x]) {
-		cnt++;
-		visited[y][x] = true;
+	string test=to_string(i);
+	int result = i;
+	
+	for (char a : test) {
+		result += int(a - '0');
 	}
 
-	for (int i = 0; i < 4; ++i) {
-		int dx = x + dirX[i];
-		int dy = y + dirY[i];
-		if (dx >= 0 && dx < w && dy >= 0 && dy < h) {
-			if (!visited[dy][dx]) {
-				DFS(dx, dy, w, h, cnt);
-			}
-		}
-	}
+	if (result > 10000)return 0;
+	else 
+	return result;
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int Y, X, N;
-	cin >> Y >> X >> N;
+	check.resize(10001, false);
 
-	field.resize(Y, vector<int>(X, 0));
-	visited.resize(Y, vector<bool>(X, false));
-
-	for (int i = 0; i < N; ++i) {
-		pair<int, int> left, right;
-		cin >> left.first >> left.second >> right.first >> right.second;
-		fillField(left, right);
+	
+	for (int i = 1; i <= 10000; ++i) {
+		check[CheckIfSelf(i)] = true;
 	}
 
-	vector<int> answer;
-	int cnt{};
-	for (int i = 0; i < Y; ++i) {
-		for (int j = 0; j < X; ++j) {
-			int size{};
-			if (!visited[i][j]) {
-				cnt++;
-				DFS(j, i, X, Y, size);
-			}
-			if (size > 0)answer.push_back(size);
+	for (int i = 1; i <= 10000; ++i) {
+		if (check[i] == false) {
+			cout << i << '\n';
 		}
 	}
-	sort(answer.begin(), answer.end());
-	cout << cnt << '\n';
-	for (int a : answer) {
-		cout << a << ' ';
-	}
-
-
-
-
-
 
 }
 
