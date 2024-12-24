@@ -18,25 +18,12 @@ using namespace std;
 
 /*
 ================= 2024-12-24================
-[6주차 이분탐색 & LIS(최대증가부분수열)] 2792번 보석 상자
+[6주차 이분탐색 & LIS(최대증가부분수열)] 2343번 기타 레슨
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-int check(vector<int>&jewels,int division_num,int num_of_people) {
-
-	int jewels_size = jewels.size();
-	int cnt{};
-	for (int i = 0; i < jewels_size; ++i) {
-		int cur_num = jewels[i];
-		int leftover= cur_num / division_num;
-		cnt += leftover;
-		if (cur_num % division_num)
-			cnt++;			
-	}
-	return cnt <= num_of_people;
-}
 
 
 
@@ -46,26 +33,44 @@ int main() {
 
 	int N, M;
 	cin >> N >> M;
-	vector<int>jewels(M);
-	int max_find = 0;
-	for (int i = 0; i < M; ++i) {
-		cin >> jewels[i];
-		max_find = max(max_find, jewels[i]);
+
+	vector<int>lessons(N);
+	int max_len = 0;
+	for (int i = 0; i < N; ++i) {
+		cin >> lessons[i];
+		max_len += lessons[i];
 	}
 
-	int left = 1;
-	int right = max_find;
-	int result = numeric_limits<int>::max();
+	int left = *max_element(lessons.begin(), lessons.end());
+	int right = max_len;
+	int result = 0;
 	while (left <= right) {
 		int mid = (left + right) / 2;
-		if (check(jewels,mid,N)) {
+		int cnt{};
+		int val = 0;
+		for (int i = 0; i < N; ++i) {
+			
+			if (val + lessons[i] > mid) {
+				cnt++;
+				val = lessons[i];
+			}
+			else {
+				val += lessons[i];
+			}
+		}
+		if (val >0)cnt++;
+
+		if (cnt > M) {
+			left = mid + 1;	
+		}
+		else{
 			right = mid - 1;
-			result = min(result, mid);
+			result = mid;
 		}
-		else {
-			left = mid + 1;
-		}
+
 	}
 	cout << result;
+
+
 }
 
