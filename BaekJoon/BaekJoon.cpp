@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-24================
-[6주차 이분탐색 & LIS(최대증가부분수열)] 2343번 기타 레슨
+[6주차 이분탐색 & LIS(최대증가부분수열)] 6236번 용돈 관리
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -34,43 +34,44 @@ int main() {
 	int N, M;
 	cin >> N >> M;
 
-	vector<int>lessons(N);
-	int max_len = 0;
+	vector<int>money(N);
+	int sum{};
+	int max_money{};
 	for (int i = 0; i < N; ++i) {
-		cin >> lessons[i];
-		max_len += lessons[i];
+		cin >> money[i];
+		sum += money[i];
+		max_money = max(max_money, money[i]);
 	}
-
-	int left = *max_element(lessons.begin(), lessons.end());
-	int right = max_len;
-	int result = 0;
+	int left = max_money;
+	int right = sum;
+	int result{};
 	while (left <= right) {
 		int mid = (left + right) / 2;
+
+		int leftover = mid;
 		int cnt{};
-		int val = 0;
+	
 		for (int i = 0; i < N; ++i) {
-			
-			if (val + lessons[i] > mid) {
+			if (leftover - money[i] < 0) {
 				cnt++;
-				val = lessons[i];
+				leftover = mid - money[i];
 			}
 			else {
-				val += lessons[i];
+				leftover -= money[i];
 			}
 		}
-		if (val >0)cnt++;
+		if (leftover > 0)cnt++;
 
 		if (cnt > M) {
-			left = mid + 1;	
+			left = mid + 1;
 		}
-		else{
+		else {
 			right = mid - 1;
 			result = mid;
 		}
 
 	}
 	cout << result;
-
 
 }
 
