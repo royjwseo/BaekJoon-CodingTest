@@ -17,8 +17,8 @@
 using namespace std;
 
 /*
-================= 2024-12-24================
-[5주차 그리디,라인스위핑,투포인터] 9935 문자열 폭발
+================= 2024-12-27================
+[5주차 그리디,라인스위핑,투포인터] 1781번 컵라면
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -31,25 +31,33 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	string input;
-	cin >> input;
-	string cmp;
-	cin >> cmp;
+	int N;
+	cin >> N;
 
-	string result = "";
-	int cmp_len = cmp.length();
-	for (char a : input) {
-		result += a;
-		if (result.size()>=cmp_len&&result.substr(result.size() - cmp_len) == cmp) {
-			result.erase(result.size() - cmp_len);
+	vector<pair<int, int>>deadlines(N+1);
+	for (int i = 1; i <= N; ++i) {
+		cin >> deadlines[i].first >> deadlines[i].second;
+	}
+
+	priority_queue<int, vector<int>, greater<int>>pq;
+
+	sort(deadlines.begin(), deadlines.end(), [](const pair<int, int>& l, const pair<int, int>& r) {
+		if (l.first == r.first)return l.second > r.second;
+		return l.first < r.first;
+		});
+
+	for (int i = 1; i <= N; ++i) {
+		pq.push(deadlines[i].second);
+		if (pq.size() > deadlines[i].first) {
+			pq.pop();
 		}
 	}
-	if (!result.empty()) {
-		cout << result;
+	int result{};
+	while (!pq.empty()) {
+		result += pq.top();
+		pq.pop();
 	}
-	else {
-		cout << "FRULA";
-	}
+	cout << result;
 	
 }
 
