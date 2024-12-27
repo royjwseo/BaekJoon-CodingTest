@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-27================
-[5주차 그리디,라인스위핑,투포인터] 14469 소가 길을 건너간 이유3
+[5주차 그리디,라인스위핑,투포인터] 1931번 회의실 배정
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -34,27 +34,22 @@ int main() {
 	int N;
 	cin >> N;
 
-	vector<pair<int, int>>cows(N);
+	vector<pair<int, int>>conf(N);
 	for (int i = 0; i < N; ++i) {
-		cin >> cows[i].first >> cows[i].second;
+		cin >> conf[i].second >> conf[i].first;
 	}
-	sort(cows.begin(), cows.end());
 
-	int cur_time=cows[0].first;
-	queue<pair<int,int>> q;
-	for (auto& cow : cows) {
-		q.push(cow);
-		if (!q.empty()) {
-			auto cur_cow=q.front();
-			if (cur_cow.first >= cur_time) {
-				cur_time = cur_cow.first + cur_cow.second;
-			}
-			else {
-				cur_time += cur_cow.second;
-			}
-			q.pop();
+	sort(conf.begin(), conf.end());
+
+	int cnt{};
+	pair<int, int>cur={0,0};
+	for (auto a : conf) {
+		if (a.second >= cur.first) {
+			cnt++;
+			cur = a;
 		}
 	}
-	cout << cur_time;
+	cout << cnt;
+
 }
 
