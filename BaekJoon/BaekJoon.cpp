@@ -18,7 +18,7 @@ using namespace std;
 
 /*
 ================= 2024-12-27================
-[5주차 그리디,라인스위핑,투포인터] 1781번 컵라면
+[5주차 그리디,라인스위핑,투포인터] 14469 소가 길을 건너간 이유3
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -34,30 +34,27 @@ int main() {
 	int N;
 	cin >> N;
 
-	vector<pair<int, int>>deadlines(N+1);
-	for (int i = 1; i <= N; ++i) {
-		cin >> deadlines[i].first >> deadlines[i].second;
+	vector<pair<int, int>>cows(N);
+	for (int i = 0; i < N; ++i) {
+		cin >> cows[i].first >> cows[i].second;
 	}
+	sort(cows.begin(), cows.end());
 
-	priority_queue<int, vector<int>, greater<int>>pq;
-
-	sort(deadlines.begin(), deadlines.end(), [](const pair<int, int>& l, const pair<int, int>& r) {
-		if (l.first == r.first)return l.second > r.second;
-		return l.first < r.first;
-		});
-
-	for (int i = 1; i <= N; ++i) {
-		pq.push(deadlines[i].second);
-		if (pq.size() > deadlines[i].first) {
-			pq.pop();
+	int cur_time=cows[0].first;
+	queue<pair<int,int>> q;
+	for (auto& cow : cows) {
+		q.push(cow);
+		if (!q.empty()) {
+			auto cur_cow=q.front();
+			if (cur_cow.first >= cur_time) {
+				cur_time = cur_cow.first + cur_cow.second;
+			}
+			else {
+				cur_time += cur_cow.second;
+			}
+			q.pop();
 		}
 	}
-	int result{};
-	while (!pq.empty()) {
-		result += pq.top();
-		pq.pop();
-	}
-	cout << result;
-	
+	cout << cur_time;
 }
 
