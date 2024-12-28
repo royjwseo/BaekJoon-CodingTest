@@ -18,53 +18,45 @@ using namespace std;
 
 /*
 ================= 2024-12-28================
-[2주차그래프이론,DFS, BFS] 1992 쿼드트리
+[2주차그래프이론,DFS, BFS] 2828 사과 담기 게임
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<char>>board;
-
-string conquer(int y, int x, int size) {
-
-	if (size == 1)return string(1, board[y][x]);
-	char first = board[y][x];
-
-	string result = "";
-	for (int i = y; i < size+y; ++i) {
-		for (int j = x; j < x+size; ++j) {
-			if (board[i][j] != first) {
-				result += '(';
-				result += conquer(y, x, size / 2);
-				result += conquer(y, x + size / 2, size / 2);
-				result += conquer(y + size / 2, x, size / 2);
-				result += conquer(y + size / 2, x+size/2, size / 2);
-				result += ')';
-				return result;
-			}
-		}
-	}
-	return string(1, board[y][x]);
-
-}
 
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
+	
+	int N, M,J;
+	cin >> N >> M>>J;
 
-	int N;
-	cin >> N;
-	board.resize(N, vector<char>(N, 0));
+	int cur_loc = 1;
+	int cnt{};
+	for (int i = 0; i < J; ++i) {
+		int where;
+		cin >> where;
 
-	for (int i = 0; i < N; ++i) {
-		for (int j = 0; j < N; ++j) {
-			cin >> board[i][j];
+		int left = cur_loc;
+		int right = cur_loc + M - 1;
+
+		if (where >= left && where <= right) {
+			continue;
 		}
+		else {
+			if (where > right) {
+				cnt +=  where-right;
+				cur_loc = where-M + 1;
+			}
+			else if (left > where) {
+				cnt += left - where;
+				cur_loc = where;
+			}
+		}
+
 	}
-
-	cout << conquer(0, 0, N);
-
+	cout << cnt;
 }
 
