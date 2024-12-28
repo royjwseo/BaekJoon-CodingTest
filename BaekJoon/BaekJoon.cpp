@@ -17,51 +17,35 @@
 using namespace std;
 
 /*
-================= 2024-12-28================
-[2주차그래프이론,DFS, BFS] 10709번 기상캐스터
+================= 2024-12-29================
+[2주차그래프이론,DFS, BFS] 3474번 교수가 된 현우
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-
-
+using ll = unsigned long long;
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int H, W;
-	cin >> H >> W;
 
-	vector<vector<char>>map(H, vector<char>(W, 0));
-	for (int i = 0; i < H; ++i) {
-		for (int j = 0; j < W; ++j) {
-			cin >> map[i][j];
+	int T;
+	cin >> T;
+	while (T--) {
+		int input;
+		cin >> input;
+		int cnt{};
+		
+		for (int i = 5; i <= input; i *= 5) {
+			cnt += input / i;
 		}
-	}
-	vector<vector<int>>answer(H, vector<int>(W, -1));
-
-	for(int j=0;j<W;++j){
-		for (int i = 0; i < H; ++i) {
-			if (map[i][j] == 'c') { answer[i][j] = 0; 
-				continue;
-			}
-			if (map[i][j] == '.'&&j==0)answer[i][j] = -1;
-
-			if (j > 0) {
-				if (map[i][j] == '.') {
-					if (answer[i][j - 1] >= 0)answer[i][j] = answer[i][j - 1] + 1;
-				}
-			}
-		}
+		
+		cout << cnt<<'\n';
 	}
 
-	for (int i = 0; i < H; ++i) {
-		for (int j = 0; j < W; ++j) {
-			cout << answer[i][j] << ' ';
-		}cout << '\n';
-	}
+	
 
 }
 
