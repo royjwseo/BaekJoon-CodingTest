@@ -18,44 +18,64 @@ using namespace std;
 
 /*
 ================= 2024-12-28================
-[2주차그래프이론,DFS, BFS] 2910 빈도 정렬
+[2주차그래프이론,DFS, BFS] 4659번 비밀번호 발음하기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-
+bool checkIf(char a) {
+	if (a == 'a' || a == 'e' || a == 'i' || a == 'o' || a == 'u')return true;
+	return false;
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	int N, C;
-	cin >> N >> C;
-
-	unordered_map<int, pair<int,int>> m;
-
-	for (int i = 0; i < N; ++i) {
-		int input;
+	while (1) {
+		string input;
 		cin >> input;
-		m[input].first++;
-		if(m[input].second==0)m[input].second = i + 1;
-	}
-	vector<pair<int, pair<int,int>>>v;
-	for (auto a : m) {	
-		v.push_back(a);
-	}
+		if (input == "end")break;
+		bool hasAnswer = true;
+		if (input.find('a') != string::npos || input.find('e') != string::npos
+			|| input.find('i') != string::npos || input.find('o') != string::npos
+			|| input.find('u') != string::npos) {
 
-	sort(v.begin(), v.end(), [](const pair<int, pair<int,int>>& l, const pair<int, pair<int,int>>& r) {
-		if (l.second.first == r.second.first)return l.second.second<r.second.second;
-		return l.second.first > r.second.first;
-		});
+			if (input.size() >= 2) {
+				char a = input[0];
+				for (int i = 1; i < input.size(); ++i) {
+					if (input[i] == a && input[i] !='e'&&input[i]!='o') {
+						cout << '<' << input << "> is not acceptable.\n";
+						hasAnswer = false;
+						continue;	
+					}
+					a = input[i];
+				}
+			}
+			if (input.size() >= 3) {
+				for (int i = 0; i < input.size() - 2; ++i) {
+					int cnt{};
+					string check = input.substr(i, 3);
+					for (int j = 0; j < check.size(); ++j) {
+						if (checkIf(check[j]))cnt++;
+						else cnt--;
+					}
+					if (cnt == 3 || cnt == -3) {
+						cout << '<' << input << "> is not acceptable.\n";
+						hasAnswer = false;
 
-	for (auto a : v) {
-		for(int i=0;i<a.second.first;++i)
-		cout << a.first << ' ';
+						continue;
+					}
+				}
+			}
+			if(hasAnswer)
+			cout << '<' << input << "> is acceptable.\n";
+		}
+		else {
+			cout << '<' << input << "> is not acceptable.\n";
+		}
 	}
-
 
 }
 
