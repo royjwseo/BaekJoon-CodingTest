@@ -18,34 +18,31 @@ using namespace std;
 
 /*
 ================= 2024-12-29================
-[2주차그래프이론,DFS, BFS] 3474번 교수가 된 현우
+[2주차그래프이론,DFS, BFS] 1436번 영화감독 숌
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-using ll = unsigned long long;
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
+	int N;
+	cin >> N;
 
-	int T;
-	cin >> T;
-	while (T--) {
-		int input;
-		cin >> input;
-		int cnt{};
-		
-		for (int i = 5; i <= input; i *= 5) {
-			cnt += input / i;
+	int cnt{};
+	for (int i = 666; i < numeric_limits<int>::max(); ++i) {
+		string find_num = to_string(i);
+		if (find_num.find("666")!=string::npos) {
+			cnt++;
 		}
-		
-		cout << cnt<<'\n';
+		if (cnt == N) {
+			cout << i;
+			break;
+		}
 	}
-
-	
 
 }
 
