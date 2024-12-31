@@ -18,78 +18,108 @@ using namespace std;
 
 /*
 ================= 2024-12-31================
-[2주차그래프이론,DFS, BFS] 10026번 적록색약
+[2주차그래프이론,DFS, BFS] 7569번 토마토
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>>board;
-vector<vector<int>>board2;
-vector<vector<bool>>visited;
-vector<vector<bool>>visited2;
-int N;
-int dirX[4] = { 1,0,0,-1 };
-int dirY[4] = { 0,1,-1,0 };
+vector<vector<vector<int>>>tomatoes;
+vector<vector<vector<int>>>tomatoe_days;
+vector<vector<vector<bool>>>visited;
 
-void DFS(int y, int x,vector<vector<bool>>& visited, vector<vector<int>>&board) {
-	visited[y][x] = true;
+int dirX[6] = { 0,0,1,-1,0,0 };
+int dirY[6] = { 0,0,0,0,-1,1 };
+int dirH[6] = { 1,-1,0,0,0,0 };
+int M, N, H;
 
-	for (int i = 0; i < 4; ++i) {
-		int dx = x + dirX[i];
-		int dy = y + dirY[i];
+void BFS(queue<pair<int, pair<int, int>>>& q,int h, int y, int x) {
+	visited[h][y][x] = true;
 
-		if (dx >= 0 && dx < N && dy >= 0 && dy < N) {
-			if (!visited[dy][dx]&&board[dy][dx]==board[y][x]) {
-				DFS(dy, dx,visited,board);
+
+	while (!q.empty()) {
+		pair<int, pair<int, int>> cur = q.front();
+		q.pop();
+		for (int i = 0; i < 6; ++i) {
+			int dx = cur.second.second + dirX[i];
+			int dy = cur.second.first + dirY[i];
+			int dh = cur.first + dirH[i];
+
+			if (dx >= 0 && dx < M && dy >= 0 && dy < N && dh >= 0 && dh < H) {
+				if (!visited[dh][dy][dx] && tomatoes[dh][dy][dx] == 0) {
+					tomatoes[dh][dy][dx] = 1;
+					tomatoe_days[dh][dy][dx] = tomatoe_days[cur.first][cur.second.first][cur.second.second] + 1;
+					q.push({ dh,{dy,dx} });
+				}
+			}
+		}
+		
+	}
+
+}
+
+int getMax() {
+	int cnt{};
+	for (int i = 0; i < H; ++i) {
+		for (int j = 0; j < N; ++j) {
+			for (int k = 0; k < M; ++k) {
+				cnt= max(cnt, tomatoe_days[i][j][k]);
 			}
 		}
 	}
+	return cnt;
 }
 
-
+bool checkif() {
+	for (int i = 0; i < H; ++i) {
+		for (int j = 0; j < N; ++j) {
+			for (int k = 0; k < M; ++k) {
+				if (tomatoes[i][j][k] == 0)return false;
+			}
+		}
+	}
+	return true;
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
 
-	cin >> N;
+	cin >> M >> N >> H;
 
-	board.resize(N, vector<int>(N,0));
-	board2.resize(N, vector<int>(N,0));
-	visited.resize(N, vector<bool>(N, false));
-	visited2.resize(N, vector<bool>(N, false));
-
-	char input{};
-	for (int i = 0; i < N; ++i) {
+	tomatoes.resize(H, vector<vector<int>>(N, vector<int>(M)));
+	tomatoe_days.resize(H, vector<vector<int>>(N, vector<int>(M)));
+	visited.resize(H, vector<vector<bool>>(N, vector<bool>(M,false)));
+	queue<pair<int, pair<int, int>>> q;
+	for (int i = 0; i < H; ++i) {
 		for (int j = 0; j < N; ++j) {
-			cin >> input;
-			if (input == 'G') {
-				board[i][j] = 1;
-			}
-			else if (input == 'B') {
-				board[i][j] = 2;
-				board2[i][j] = 2;
-			}	
-		}
-	}
-
-	int cnt1{}, cnt2{};
-	for (int i = 0; i < N; ++i) {
-		for (int j = 0; j < N; ++j) {
-			if (!visited[i][j]) {
-				cnt1++;
-				DFS(i, j, visited, board);
-			}
-			if (!visited2[i][j]) {
-				cnt2++;
-				DFS(i, j, visited2, board2);
+			for (int k = 0; k < M; ++k) {
+				cin >> tomatoes[i][j][k];
+				if (tomatoes[i][j][k] == 1) {
+					q.push({ i, { j,k } });
+				}
 			}
 		}
 	}
-	cout << cnt1 << ' ' << cnt2;
+	
+	if (checkif())cout << 0;
+	else {
+		for (int i = 0; i < H; ++i) {
+			for (int j = 0; j < N; ++j) {
+				for (int k = 0; k < M; ++k) {
+					if (tomatoes[i][j][k] == 1) {
+						BFS(q,i, j, k);
+					}
+				}
+			}
+		}
 
+
+
+		if (!checkif())cout << -1;
+		else cout << getMax();
+	}
 
 
 
