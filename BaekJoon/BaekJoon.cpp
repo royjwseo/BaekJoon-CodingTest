@@ -18,67 +18,65 @@ using namespace std;
 
 /*
 ================= 2024-12-31================
-[2주차그래프이론,DFS, BFS] 1068 트리
+[2주차그래프이론,DFS, BFS] 1325 효율적인 해킹
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
+vector<vector<int>>adjacents;
+vector<int>visited;
 
-vector<vector<int>>tree;
-vector<bool>visited;
-
-int DFS(int here, int del_num) {
+int DFS(int here) {
+	int cnt=1;
+	if (!visited[here]) visited[here] = true;
 	
-	int cnt{};
-	if (tree[here].size() > 1) {
-		for (int a : tree[here]) {
-
-			if (a == del_num) {
-				continue;
-			}
-			else {
-				cnt += DFS(a, del_num);
-			}
-
+	
+		for (int a : adjacents[here]) {
+			if (!visited[a])
+				cnt += DFS(a);
 		}
-	}
-	else {
-		return 1;
-	}
+	
 	return cnt;
 }
+
 
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
+	int N, M;
+	cin >> N >> M;
 
-	tree.resize(N);
-	visited.resize(N, 0);
+	adjacents.resize(N+1);
+	visited.resize(N + 1,0);
+	for (int i = 0; i < M; ++i) {
+		pair<int, int>input;
+		cin >> input.first >> input.second;
+		adjacents[input.second].push_back(input.first);
+	}
 
-	int root{};
-	for (int i = 0; i < N; ++i) {
-		int node;
-		cin >> node;
-		if (node == -1) {
-			root = i;
-			continue;
-		}
-		tree[node].push_back(i);
+	int max_res{};
+	vector<pair<int,int>>result;
+	for (int i = 1; i <= N; ++i) {
+		int cnt{};
+		fill(visited.begin(), visited.end(), 0);
+		cnt = DFS(i);
+		max_res = max(max_res, cnt);
+		result.push_back({cnt,i});
+	}
+
+	sort(result.begin(), result.end(), [](const pair<int, int>& l, const pair<int, int>& r) {
+		if (l.first == r.first)return l.second < r.second;
+		return l.first > r.first;
+		});
+
+	for (auto a : result) {
+		if (a.first == max_res)cout << a.second << ' ';
 	}
 
 
-	int delete_node;
-	cin >> delete_node;
-	if (delete_node == root) {
-		cout << 0;
-	}
-	else {
-		cout << DFS(root, delete_node);
-	}
+
 }
 
