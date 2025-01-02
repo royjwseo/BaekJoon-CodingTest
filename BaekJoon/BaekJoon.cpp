@@ -18,18 +18,17 @@ using namespace std;
 
 /*
 ================= 2025-01-02================
-[Dijikstra] 1753번 최단경로
+[Dijikstra] 1916번 최소비용 구하기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
 
-vector<vector<pair<int, int>>>adjacents;
+vector<vector<pair<int, int>>>busline;
 vector<int>dist;
 
 void Dijikstra(int start) {
-
 	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>pq;
 
 	dist[start] = 0;
@@ -37,52 +36,45 @@ void Dijikstra(int start) {
 
 	while (!pq.empty()) {
 		int curNode = pq.top().second;
-		int curWeight = pq.top().first;
+		int curFee = pq.top().first;
 		pq.pop();
-		if (dist[curNode] < curWeight)continue;
 
-		for (pair<int, int>& next : adjacents[curNode]) {
+		if (curFee > dist[curNode])continue;
+
+		for (auto& next : busline[curNode]) {
 			int nextNode = next.first;
-			int nextWeight = next.second;
+			int nextFee = next.second;
 
-			if (dist[curNode] + nextWeight < dist[nextNode]) {
-				dist[nextNode] = dist[curNode] + nextWeight;
+			if (dist[curNode] + nextFee < dist[nextNode]) {
+				dist[nextNode] = dist[curNode] + nextFee;
 				pq.push({ dist[nextNode],nextNode });
 			}
-
 		}
 	}
-
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
+	int N, M;
+	cin >> N >> M;
+	busline.resize(N + 1);
+	dist.resize(N + 1,numeric_limits<int>::max());
 
-	int V, E, K;
-	cin >> V >> E >> K;
-	adjacents.resize(V + 1);
-	dist.resize(V + 1,numeric_limits<int>::max());
-
-	for (int i = 1; i <= E; ++i) {
+	for (int i = 0; i < M; ++i) {
 		int from;
 		cin >> from;
-		int to, weight;
-		cin >> to >> weight;
-		adjacents[from].push_back({ to,weight });
+		int to, amount;
+		cin >> to >> amount;
+		busline[from].push_back({ to,amount });
 	}
 
-	Dijikstra(K);
-
-	for (int i = 1; i <= V; ++i) {
-		if (dist[i] == numeric_limits<int>::max()) {
-			cout << "INF\n";
-		}
-		else {
-			cout << dist[i] << '\n';
-		}
-	}
+	int ans_from, ans_to;
+	cin >> ans_from >> ans_to;
+	Dijikstra(ans_from);
+	
+	cout << dist[ans_to];
 
 }
 
