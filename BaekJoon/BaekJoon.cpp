@@ -18,78 +18,73 @@ using namespace std;
 
 /*
 ================= 2025-01-03================
-[Dijikstra] 1504번 특정한 최단 경로
+[Dijikstra] 1261번 알고스팟
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
+vector<vector<int>>board;
+vector<vector<int>>cost;
+int N, M;
+int dirX[4] = { 1,0,0,-1 };
+int dirY[4] = { 0,1,-1,0 };
 
-vector<vector<pair<int, int>>>adjacents;
-vector<int>parent;
-
-vector<int> Dijikstra(int start,int num) {
-
-	vector<int> dist(num + 1, numeric_limits<int>::max());
-	dist[start] = 0;
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>pq;
-	pq.push({ 0,start });
-	parent[start] = start;
+void Dijikstra(int starty, int startx) {
+	priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>>pq;
+	cost[starty][startx] = 0;
+	pq.push({ 0,{starty,startx} });
 
 	while (!pq.empty()) {
-		int curNode = pq.top().second;
+		pair<int, int>curCoord = pq.top().second;
 		int curCost = pq.top().first;
 		pq.pop();
-		if (curCost > dist[curNode])continue;
+		if (curCost > cost[curCoord.first][curCoord.second])continue;
 
-		for (auto& next : adjacents[curNode]) {
-			int nextNode = next.first;
-			int nextCost = next.second;
-			if (dist[curNode] + nextCost < dist[nextNode]) {
-				dist[nextNode] = dist[curNode] + nextCost;
-				parent[nextNode] = curNode;
-				pq.push({ dist[nextNode],nextNode });
+		for (int i = 0; i < 4; ++i) {
+			int dx = curCoord.second + dirX[i];
+			int dy = curCoord.first + dirY[i];
+			if (dx > 0 && dy > 0 && dx <= M && dy <= N) {
+				if (board[dy][dx] == 1) {
+					if (cost[dy][dx] > cost[curCoord.first][curCoord.second] + 1) {
+						cost[dy][dx] = cost[curCoord.first][curCoord.second] + 1;
+						pq.push({ cost[dy][dx],{dy,dx} });
+					}
+				}
+				else {
+					if (cost[dy][dx] > cost[curCoord.first][curCoord.second]) {
+						cost[dy][dx] = cost[curCoord.first][curCoord.second];
+						pq.push({ cost[dy][dx],{dy,dx} });
+					}
+				}
 			}
 		}
 	}
-	return dist;
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N, E;
-	cin >> N >> E;
 
-	adjacents.resize(N+1);
-	parent.resize(N + 1);
+	cin >> M >> N;
+	board.resize(N+1,vector<int>(M+1,0));
+	cost.resize(N+1,vector<int>(M+1,numeric_limits<int>::max()));
 
-	for (int i = 0; i < E; ++i) {
-		int from, to, weight;
-		cin >> from >> to >> weight;
-		adjacents[from].push_back({ to,weight });
-		adjacents[to].push_back({ from,weight });
-	}
 	
-	int pass_from, pass_to;
-	cin >> pass_from >> pass_to;
-
-	vector<int> FullDist=Dijikstra(1,N);
-	vector<int> v1v2 = Dijikstra(pass_from, N);
-	vector<int> v2v1 = Dijikstra(pass_to, N);
-
-	long long v1v2Dist = FullDist[pass_from] + v1v2[pass_to] + v2v1[N];
-	long long v2v1Dist = FullDist[pass_to] + v2v1[pass_from] + v1v2[N];
-
-	long long minDist = min(v1v2Dist, v2v1Dist);
-
-	if (minDist >= numeric_limits<int>::max()) {
-		cout << -1;
+	for (int i = 1; i <= N; ++i) {
+		string input;
+		cin >> input;
+		for (int j = 1; j <= M; ++j) {
+			board[i][j] = input[j - 1]-'0';
+		}
 	}
-	else {
-		cout << minDist;
-	}
+
+	
+
+	Dijikstra(1, 1);
+
+	cout << cost[N][M];
 
 
 }
