@@ -18,74 +18,67 @@ using namespace std;
 
 /*
 ================= 2025-01-03================
-[Dijikstra] 1261번 알고스팟
+[Dijikstra] 11403 경로찾기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>>board;
-vector<vector<int>>cost;
-int N, M;
-int dirX[4] = { 1,0,0,-1 };
-int dirY[4] = { 0,1,-1,0 };
+vector<vector<int>>adjacents;
+vector<vector<bool>>visited;
 
-void Dijikstra(int starty, int startx) {
-	priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>>pq;
-	cost[starty][startx] = 0;
-	pq.push({ 0,{starty,startx} });
+vector<bool> GraphVisit(int start,int N) {
 
-	while (!pq.empty()) {
-		pair<int, int>curCoord = pq.top().second;
-		int curCost = pq.top().first;
-		pq.pop();
-		if (curCost > cost[curCoord.first][curCoord.second])continue;
+	vector<bool>visit(N,false);
+	stack<int> st;
 
-		for (int i = 0; i < 4; ++i) {
-			int dx = curCoord.second + dirX[i];
-			int dy = curCoord.first + dirY[i];
-			if (dx > 0 && dy > 0 && dx <= M && dy <= N) {
-				if (board[dy][dx] == 1) {
-					if (cost[dy][dx] > cost[curCoord.first][curCoord.second] + 1) {
-						cost[dy][dx] = cost[curCoord.first][curCoord.second] + 1;
-						pq.push({ cost[dy][dx],{dy,dx} });
-					}
-				}
-				else {
-					if (cost[dy][dx] > cost[curCoord.first][curCoord.second]) {
-						cost[dy][dx] = cost[curCoord.first][curCoord.second];
-						pq.push({ cost[dy][dx],{dy,dx} });
-					}
-				}
+	for (int next : adjacents[start]) {
+		st.push(next);
+		visit[next] = true;
+	}
+	while (!st.empty()) {
+		int top = st.top();
+		st.pop();
+
+		for (int next : adjacents[top]) {
+			if (!visit[next]) {
+				visit[next] = true;
+				st.push(next);
 			}
 		}
 	}
+	return visit;
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
+	int N;
+	cin >> N;
 
-	cin >> M >> N;
-	board.resize(N+1,vector<int>(M+1,0));
-	cost.resize(N+1,vector<int>(M+1,numeric_limits<int>::max()));
+	adjacents.resize(N);
+	visited.resize(N);
 
-	
-	for (int i = 1; i <= N; ++i) {
-		string input;
-		cin >> input;
-		for (int j = 1; j <= M; ++j) {
-			board[i][j] = input[j - 1]-'0';
+	for (int i = 0; i < N; ++i) {
+		for (int j = 0; j < N; ++j) {
+			int input;
+			cin >> input;
+			if (input == 1)
+				adjacents[i].push_back(j);
 		}
 	}
 
-	
+	for (int i = 0; i < N; ++i) {
+		visited[i] = GraphVisit(i, N);
+	}
 
-	Dijikstra(1, 1);
-
-	cout << cost[N][M];
-
+	for (int i = 0; i < N; ++i) {
+		for (int j = 0; j < N; ++j) {
+			cout << visited[i][j] << ' ';
+		}
+		cout << '\n';
+	}
 
 }
 
