@@ -19,16 +19,16 @@ using namespace std;
 
 /*
 ================= 2025-01-10================
-11779번 최소비용 구하기 2
+14938번 서강그라운드
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-int N, M;
+int N, M, R;
+vector<int>items;
 vector<vector<pair<int, int>>>adjacents;
 vector<int>dist;
-vector<int>before_stop;
 
 void Dijikstra(int start) {
 	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>pq;
@@ -38,57 +38,62 @@ void Dijikstra(int start) {
 	while (!pq.empty()) {
 		int curNode = pq.top().second;
 		int curDist = pq.top().first;
-
 		pq.pop();
+
 		if (curDist > dist[curNode])continue;
 
 		for (int i = 0; i < adjacents[curNode].size(); ++i) {
 			int nextNode = adjacents[curNode][i].first;
-			int nextDist = adjacents[curNode][i].second;
-			if (curDist + nextDist < dist[nextNode]) {
-				dist[nextNode] = curDist + nextDist;
-				before_stop[nextNode] = curNode;
+			int nextCost = adjacents[curNode][i].second;
+
+			if (curDist + nextCost < dist[nextNode]) {
+				dist[nextNode] = curDist + nextCost;
 				pq.push({ dist[nextNode],nextNode });
 			}
 		}
 	}
 
+	
 }
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
+ 
+	cin >> N >> M >> R;
 
-	cin >> N >> M;
-
+	items.assign(N + 1, 0);
 	adjacents.resize(N + 1);
-	dist.resize(N + 1, numeric_limits<int>::max());
-	before_stop.resize(N + 1, 0);
+	dist.resize(N + 1,numeric_limits<int>::max());
 
-	for (int i = 0; i < M; ++i) {
+
+	for (int i = 0; i < N; ++i) {
+		int input;
+		cin >> input;
+		items[i + 1] = input;
+	}
+
+	for (int i = 0; i < R; ++i) {
 		int from, to, fee;
 		cin >> from >> to >> fee;
 		adjacents[from].push_back({ to,fee });
+		adjacents[to].push_back({ from,fee });
 	}
 
-	int ans_from, ans_to;
-	cin >> ans_from >> ans_to;
+	int ans = -1;
 
-	Dijikstra(ans_from);
-
-	int cur = ans_to;
-	int cnt = 1;
-	deque<int>ans;
-	ans.push_front(cur);
-	while (1) {
-		int before = before_stop[cur];
-		ans.push_front(before);
-		cur = before;
-		if (before == ans_from)break;
+	for (int i = 2; i <= N; ++i) {
+		int cnt{};
+		fill(dist.begin(), dist.end(), numeric_limits<int>::max());
+		Dijikstra(i);
+		for (int k = 1; k <= N; ++k) {
+			if (dist[k] <= M)cnt += items[k];
+		}
+		ans=max(ans, cnt);
+	
 	}
 
-	cout << dist[ans_to] << '\n';
-	cout << ans.size() << '\n';
-	for (int a : ans)cout << a << ' ';
+	cout << ans;
+
 }
 
