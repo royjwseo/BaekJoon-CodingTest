@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <tuple>
 #include <numeric>
 #include <sstream>
 #include <array>
@@ -17,68 +18,71 @@
 using namespace std;
 
 /*
-================= 2025-01-03================
-[Dijikstra] 11403 경로찾기
+================= 2025-01-10================
+4485번 녹색 옷 입은 애가 젤다지?
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>>adjacents;
-vector<vector<bool>>visited;
+vector<vector<int>>board;
+int dirX[4] = { 1,0,0,-1 };
+int dirY[4] = { 0,1,-1,0 };
+vector<vector<int>>dist;
+int T;
+vector<vector<pair<int, int>>>parent;
 
-vector<bool> GraphVisit(int start,int N) {
+void Dijikstra(int startY,int startX) {
 
-	vector<bool>visit(N,false);
-	stack<int> st;
-
-	for (int next : adjacents[start]) {
-		st.push(next);
-		visit[next] = true;
-	}
-	while (!st.empty()) {
-		int top = st.top();
-		st.pop();
-
-		for (int next : adjacents[top]) {
-			if (!visit[next]) {
-				visit[next] = true;
-				st.push(next);
+	priority_queue<tuple<int, int,int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>>pq;
+	pq.push({ board[startY][startX],startY,startX });
+	dist[startY][startX] = board[startY][startX];
+	parent[startY][startX] = { startY,startX };
+	while (!pq.empty()) {
+		int curNodeX = get<2>(pq.top());
+		int curNodeY = get<1>(pq.top());
+		int curDist = get<0>(pq.top());
+		pq.pop();
+		if (curDist > dist[curNodeY][curNodeX])continue;
+		
+		for (int i = 0; i < 4; ++i) {
+			int dx = curNodeX + dirX[i];
+			int dy = curNodeY + dirY[i];
+			if (dx >= 0 && dx < T && dy>=0 && dy < T) {
+				if (curDist + board[dy][dx] < dist[dy][dx]) {
+					dist[dy][dx] = curDist + board[dy][dx];
+					parent[dy][dx] = { curNodeY,curNodeX };
+					pq.push({ dist[dy][dx], dy, dx });
+				}
 			}
 		}
 	}
-	return visit;
 }
+
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
+	int cnt = 1;
 
-	adjacents.resize(N);
-	visited.resize(N);
+	while (1) {
+		
+		cin >> T;
+		if (T == 0)break;
 
-	for (int i = 0; i < N; ++i) {
-		for (int j = 0; j < N; ++j) {
-			int input;
-			cin >> input;
-			if (input == 1)
-				adjacents[i].push_back(j);
+		board.assign(T, vector<int>(T, 0));
+		dist.assign(T, vector<int>(T, numeric_limits<int>::max()));
+		parent.assign(T, vector<pair<int, int>>(T, { 0,0 }));
+
+		for (int i = 0; i < T; ++i) {
+			for (int j = 0; j < T; ++j)cin >> board[i][j];
 		}
-	}
 
-	for (int i = 0; i < N; ++i) {
-		visited[i] = GraphVisit(i, N);
-	}
+		Dijikstra(0, 0);
 
-	for (int i = 0; i < N; ++i) {
-		for (int j = 0; j < N; ++j) {
-			cout << visited[i][j] << ' ';
-		}
-		cout << '\n';
+		cout << "Problem " << cnt++ << ": " << dist[T - 1][T - 1] << '\n';
 	}
-
+	
 }
 
