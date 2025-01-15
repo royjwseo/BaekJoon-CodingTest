@@ -18,51 +18,42 @@
 using namespace std;
 
 /*
-================= 2025-01-12================
-21937번 작업
+================= 2025-01-15================
+[자료구조] 17299 오등큰수
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-vector<vector<int>>adjacents;
-vector<int>visited;
 
-int DFS(int here) {
-
-	int cnt{};
-	if(!visited[here])
-	visited[here] = true;
-	
-	for (int i = 0; i < adjacents[here].size(); ++i) {
-		if (!visited[adjacents[here][i]]) {
-			cnt++;
-			cnt += DFS(adjacents[here][i]);
-		}
-	}
-	return cnt;
-}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
  
-	int N, M;
-	cin >> N >> M;
-	adjacents.resize(N + 1);
-	visited.resize(N + 1);
+	int N;
+	cin >> N;
 
-	for (int i = 0; i < M; ++i) {
-		int from, to;
-		cin >> from >> to;
-		adjacents[to].push_back(from);
+	vector<pair<int,int>>nums(N);
+	unordered_map<int, int>um;
+	for (int i = 0; i < N; ++i) {
+		cin >> nums[i].first;
+		um[nums[i].first]++;
+	}
+	for (int i = 0; i < N; ++i) {
+		nums[i].second = um[nums[i].first];
 	}
 	
-	int find;
-	cin >> find;
+	stack <int>st;
+	vector<int>ans(N, -1);
+	for (int i = 0; i < N; ++i) {
+		while (!st.empty()&&nums[st.top()].second < nums[i].second) {
+			ans[st.top()] = nums[i].first;
+			st.pop();
+		}
+		st.push(i);
+	}
 
-	int ans = DFS(find);
-	cout << ans;
-
+	for (int a : ans)cout << a << ' ';
 }
 
