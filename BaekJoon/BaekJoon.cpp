@@ -20,7 +20,7 @@ using namespace std;
 /*
 ================= 2025-01-20================
 [2024 국민대학교 & 중앙대학교 연합 프로그래밍 경진대회 Open Contest]
-32751번 햄버거
+32752번 수열이에요?
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -31,36 +31,31 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	array<int, 4>ingredients;
-	cin >> N >> ingredients[0] >> ingredients[1] >> ingredients[2] >> ingredients[3];
-	string input;
-	cin >> input;
+	int N, L, R;
+	cin >> N >> L >> R;
 
-	bool isFine = true;
-	if (input[0] == 'a' && input[N - 1] == 'a'){
-		for (int i = 0; i < 4; ++i) {
-			int cnt = count(input.begin(), input.end(), (char)('a' + i));
-			if (cnt > ingredients[i]) {
-				isFine = false;
-				break;
-			}
-		}
-		char cur=input[0];
-		for (int i = 1; i < N; ++i) {
-			if (input[i] == cur) {
-				isFine = false;
-				break;
-			}
-			cur = input[i];
-		}
-		
+	vector<int>nums(N);
+	for (int i = 0; i < N; ++i) {
+		int input;
+		cin >> input;
+		nums[i] = input;
 	}
-	else {
-		isFine = false;
+
+	sort(nums.begin()+L-1,nums.begin()+R);
+
+
+	int compare = nums[0];
+	bool is = true;
+	for (int i = 1; i < N; ++i) {
+		if (compare > nums[i]) {
+			is = false;
+			break;
+		}
+		compare = nums[i];
 	}
-	if (isFine)cout << "Yes";
-	else cout << "No";
+	if (!is)cout << 0;
+	else cout << 1;
+
 
 }
 
