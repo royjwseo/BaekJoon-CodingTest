@@ -19,34 +19,32 @@ using namespace std;
 
 /*
 ================= 2025-01-20================
-[32068번 보물 찾기] KOI 2024 2차 초등부
+[이분 탐색(실패)] 12015번 가장 긴 증가하는 부분 수열 2 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
 
+
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int T;
-	cin >> T;
-
-	while (T--) {
-		int L, R, S;
-		cin >> L >> R >> S;
-		
-		int min = (abs(L-S) >= abs(R-S)) ? R-S : L-S;
-
-		if (min < 0) {
-			cout << abs(min) * 2 + 1 << '\n';
+	int N;
+	cin >> N;
+	vector<int>nums(N);
+	for (int i = 0; i < N; ++i)cin >> nums[i];
+	vector<int>ans;
+	for (int i = 0; i < N; ++i) {
+		vector<int>::iterator iter = lower_bound(ans.begin(), ans.end(), nums[i]);
+		if (iter == ans.end()) {
+			ans.push_back(nums[i]);
 		}
 		else {
-			cout << min * 2<<'\n';
+			*iter = nums[i];
 		}
 	}
-
-
+	cout << ans.size();
 }
 
