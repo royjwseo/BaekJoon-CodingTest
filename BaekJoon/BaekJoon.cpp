@@ -18,8 +18,9 @@
 using namespace std;
 
 /*
-================= 2025-01-18================
-17413번 단어 뒤집기 2
+================= 2025-01-20================
+[2024 국민대학교 & 중앙대학교 연합 프로그래밍 경진대회 Open Contest]
+32751번 햄버거
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -30,49 +31,36 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
+	int N;
+	array<int, 4>ingredients;
+	cin >> N >> ingredients[0] >> ingredients[1] >> ingredients[2] >> ingredients[3];
 	string input;
-	getline(cin, input);
+	cin >> input;
 
-	bool put_in = true;
-	bool reverse_pop = false;
-	deque<char>dq;
-	string ans = "";
-	for (int i = 0; i < input.size(); ++i) {
-		if (input[i] == '<') {
-			put_in = false;
-		}
-		if (input[i] == '>') {
-			put_in = true;
-		}
-		if (!put_in||i==input.size()-1)
-		{
-			if (i == input.size() - 1)dq.push_back(input[i]);
-			while (!dq.empty()) {
-				ans += dq.back();
-				dq.pop_back();
+	bool isFine = true;
+	if (input[0] == 'a' && input[N - 1] == 'a'){
+		for (int i = 0; i < 4; ++i) {
+			int cnt = count(input.begin(), input.end(), (char)('a' + i));
+			if (cnt > ingredients[i]) {
+				isFine = false;
+				break;
 			}
-			if (i != input.size() - 1)
-			ans += input[i];
 		}
-		else {
-			if (input[i] == ' ') {
-				while (!dq.empty()) {
-					ans += dq.back();
-					dq.pop_back();
-				}
-				ans += ' ';
+		char cur=input[0];
+		for (int i = 1; i < N; ++i) {
+			if (input[i] == cur) {
+				isFine = false;
+				break;
 			}
-			else {
-				if (input[i] == '>') {
-					ans += '>';
-					continue;
-				}
-				dq.push_back(input[i]);
-			}
+			cur = input[i];
 		}
 		
 	}
-	cout << ans;
+	else {
+		isFine = false;
+	}
+	if (isFine)cout << "Yes";
+	else cout << "No";
 
 }
 
