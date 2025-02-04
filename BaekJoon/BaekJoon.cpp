@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-04================
-[이분 탐색 복습] 2110번 공유기 설치
+[이분 탐색 복습] 8983번 사냥꾼
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -32,37 +32,52 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
-	int C;
-	cin >> C;
-
-	vector<long long>houses(N);
+	int M, N, L;
+	cin >> M >> N >> L;
+	vector<int>places(M);
+	for (int i = 0; i < M; ++i) {
+		cin >> places[i];
+	}
+	sort(places.begin(), places.end());
+	
+	vector<pair<int, int>>animals(N);
 	for (int i = 0; i < N; ++i) {
-		cin >> houses[i];
+		cin >> animals[i].first >> animals[i].second;
 	}
-	sort(houses.begin(), houses.end());
-	long long left = 1;
-	long long right = houses[N - 1]-houses[0];
-	long long answer{};
-	while (left <= right) {
-		long long mid = left + (right - left) / 2;
-		long long result = 1;
-		long long start = houses[0];
-		for (int i = 1; i < N; ++i) {
-			if (houses[i] - start >= mid) {
-				result++;
-				start = houses[i];
+	vector<bool>check_animal(N, false);
+
+	
+
+	for (int i = 0; i < N; ++i) {
+		int left = 0;
+		int right = M - 1;
+		while (left <= right) {
+			int mid = left + (right - left) / 2;
+
+			if (abs(places[mid] - animals[i].first) + animals[i].second > L) {
+				if (animals[i].first > places[mid]) {
+					left = mid + 1;
+				}
+				else if(animals[i].first<places[mid]) {
+					right = mid - 1;
+				}
+				else {
+					break;
+				}
 			}
-		}
-		if (result >= C) {
-			answer = result;
-			left = mid + 1;
-		}
-		else {
-			right = mid -1;
+			else {
+				check_animal[i] = true;
+				break;
+			}
+
+
 		}
 	}
-	cout << answer;
+	int cnt{};
+	for (auto a : check_animal) {
+		if (a)cnt++;
+	}
+	cout << cnt;
+
 }
 
