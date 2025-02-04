@@ -47,19 +47,8 @@ int main() {
 
 		int cnt{};
 		for (int i = 0; i < N; ++i) {
-			
-			int left = 0;
-			int right = B.size();
-			while (left < right) {
-				int mid = left + (right - left) / 2;
-				if (B[mid] >=A[i]) {
-					right = mid;
-				}
-				else {
-					left = mid + 1;
-				}
-			}
-			cnt += left;
+			auto iter = lower_bound(B.begin(), B.end(), A[i]);
+			cnt += iter - B.begin();
 		}
 		cout << cnt<<'\n';
 	}
