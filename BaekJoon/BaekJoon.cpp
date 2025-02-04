@@ -27,45 +27,37 @@ using namespace std;
 
 int upper(int value, vector<int>& cards) {
 	int left = 0;
-	int right = cards.size() - 1;
+	int right = cards.size();
 
-	while (left <= right) {
-		int mid = (left + (right)) / 2;
+	while (left < right) {
+		int mid = left + (right - left) / 2;
 
 		if (cards[mid] > value) {
-			right = mid - 1;
-		}
-		else if (cards[mid] < value) {
-			left = mid + 1;
+			right = mid;
 		}
 		else {
-			while (mid < cards.size()&&cards[mid] <= value)mid++;
-
-			return mid;
+			left = mid+1;
 		}
 	}
-	return cards.size();
+	return left;
 }
 
 int lower(int value, vector<int>& cards) {
 	int left = 0;
-	int right = cards.size() - 1;
+	int right = cards.size();
 
-	while (left <= right) {
-		int mid = (left + (right)) / 2;
+	while (left < right) {
+		int mid = left + (right - left) / 2;
 
-		if (cards[mid] > value) {
-			right = mid - 1;
-		}
-		else if (cards[mid] < value) {
-			left = mid + 1;
+		if (cards[mid] >= value) {
+			right = mid;
 		}
 		else {
-			while (mid >= 1 && cards[mid-1] == value)mid--;
-			return mid;
+			left = mid + 1;
 		}
 	}
-	return cards.size();
+	return left;
+
 }
 
 
