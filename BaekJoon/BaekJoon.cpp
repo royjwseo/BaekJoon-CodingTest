@@ -25,40 +25,6 @@ using namespace std;
 스택 크기 : 1MB
 */
 
-int upper(int value, vector<int>& cards) {
-	int left = 0;
-	int right = cards.size();
-
-	while (left < right) {
-		int mid = left + (right - left) / 2;
-
-		if (cards[mid] > value) {
-			right = mid;
-		}
-		else {
-			left = mid+1;
-		}
-	}
-	return left;
-}
-
-int lower(int value, vector<int>& cards) {
-	int left = 0;
-	int right = cards.size();
-
-	while (left < right) {
-		int mid = left + (right - left) / 2;
-
-		if (cards[mid] >= value) {
-			right = mid;
-		}
-		else {
-			left = mid + 1;
-		}
-	}
-	return left;
-
-}
 
 
 int main() {
@@ -79,9 +45,7 @@ int main() {
 	for (int i = 0; i < M; ++i) {
 		int input;
 		cin >> input;
-		int up = upper(input, cards);
-		int low = lower(input, cards);
-		cout << up-low << ' ';
+		cout << upper_bound(cards.begin(), cards.end(), input) - lower_bound(cards.begin(), cards.end(), input)<<' ';
 	}
 
 	
