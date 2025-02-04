@@ -19,56 +19,47 @@ using namespace std;
 
 /*
 ================= 2025-02-04================
-[이분 탐색 복습] 2805번 나무 자르기
+[이분 탐색 복습] 1654번 랜선 자르기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-bool leftover(const vector<long long>& trees, long long val, long long get) {
-	long long leftover{};
-	for (auto a : trees) {
-		if (a - val >= 0)
-			leftover += a - val;
-	}
-	if (leftover >= get)return true;
-	else return false;
-}
 
-long long binary(const vector<long long>& trees, long long get) {
-	long long left = 0;
-	long long right = trees[trees.size() - 1];
-	
-	long long result{};
-	while (left <= right) {
-		long long mid= left + (right - left) / 2;
-
-		if (leftover(trees, mid, get)) {
-			left = mid + 1;
-			result = mid;
-		}
-		else {
-			right = mid - 1;
-		}
-	}
-	return result;
-}
 
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N, M;
-	cin >> N >> M;
+	int K, N;
+	cin >> K >> N;
 
-	vector<long long>trees(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> trees[i];
+	vector<long long>lansons(K);
+	for (int i = 0; i < K; ++i) {
+		cin >> lansons[i];
 	}
-	sort(trees.begin(), trees.end());
 
-	cout << binary(trees, M);
-	
+	sort(lansons.begin(), lansons.end());
+
+	long long left = 1;
+	long long right = lansons[lansons.size()-1];
+	long long cur_result{};
+	while (left <= right) {
+		long long cnt{};
+		
+		long long mid = left + (right - left) / 2;
+		for (auto a : lansons) {
+			cnt += a / mid;
+		}
+		if (cnt >= N) {
+			left = mid + 1;
+			cur_result = mid;
+		}
+		else {
+			right = mid - 1;
+		}
+	}
+	cout << cur_result;
 }
 
