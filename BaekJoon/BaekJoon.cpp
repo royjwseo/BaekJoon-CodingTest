@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-04================
-[이분 탐색 복습] 1654번 랜선 자르기
+[이분 탐색 복습] 2110번 공유기 설치
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -32,34 +32,37 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int K, N;
-	cin >> K >> N;
+	int N;
+	cin >> N;
+	int C;
+	cin >> C;
 
-	vector<long long>lansons(K);
-	for (int i = 0; i < K; ++i) {
-		cin >> lansons[i];
+	vector<long long>houses(N);
+	for (int i = 0; i < N; ++i) {
+		cin >> houses[i];
 	}
-
-	sort(lansons.begin(), lansons.end());
-
+	sort(houses.begin(), houses.end());
 	long long left = 1;
-	long long right = lansons[lansons.size()-1];
-	long long cur_result{};
+	long long right = houses[N - 1]-houses[0];
+	long long answer{};
 	while (left <= right) {
-		long long cnt{};
-		
 		long long mid = left + (right - left) / 2;
-		for (auto a : lansons) {
-			cnt += a / mid;
+		long long result = 1;
+		long long start = houses[0];
+		for (int i = 1; i < N; ++i) {
+			if (houses[i] - start >= mid) {
+				result++;
+				start = houses[i];
+			}
 		}
-		if (cnt >= N) {
+		if (result >= C) {
+			answer = result;
 			left = mid + 1;
-			cur_result = mid;
 		}
 		else {
-			right = mid - 1;
+			right = mid -1;
 		}
 	}
-	cout << cur_result;
+	cout << answer;
 }
 
