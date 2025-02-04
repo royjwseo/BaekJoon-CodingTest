@@ -19,11 +19,54 @@ using namespace std;
 
 /*
 ================= 2025-02-04================
-[이분 탐색 복습] 1920번 수 찾기
+[이분 탐색 복습] 10816번 숫자 카드2
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
+
+int upper(int value, vector<int>& cards) {
+	int left = 0;
+	int right = cards.size() - 1;
+
+	while (left <= right) {
+		int mid = (left + (right)) / 2;
+
+		if (cards[mid] > value) {
+			right = mid - 1;
+		}
+		else if (cards[mid] < value) {
+			left = mid + 1;
+		}
+		else {
+			while (mid < cards.size()&&cards[mid] <= value)mid++;
+
+			return mid;
+		}
+	}
+	return cards.size();
+}
+
+int lower(int value, vector<int>& cards) {
+	int left = 0;
+	int right = cards.size() - 1;
+
+	while (left <= right) {
+		int mid = (left + (right)) / 2;
+
+		if (cards[mid] > value) {
+			right = mid - 1;
+		}
+		else if (cards[mid] < value) {
+			left = mid + 1;
+		}
+		else {
+			while (mid >= 1 && cards[mid-1] == value)mid--;
+			return mid;
+		}
+	}
+	return cards.size();
+}
 
 
 int main() {
@@ -32,23 +75,21 @@ int main() {
 
 	int N;
 	cin >> N;
-	vector<int>nums(N);
+
+	vector<int>cards(N);
 	for (int i = 0; i < N; ++i) {
-		cin >> nums[i];
+		cin >> cards[i];
 	}
-	sort(nums.begin(), nums.end());
+	sort(cards.begin(), cards.end());
+
 	int M;
 	cin >> M;
-	for(int i=0;i<M;++i){
+	for (int i = 0; i < M; ++i) {
 		int input;
 		cin >> input;
-		if (upper_bound(nums.begin(), nums.end(), input)-lower_bound(nums.begin(), nums.end(), input)) {
-			cout << "1\n";
-		}
-		else {
-			cout << "0\n";
-		}
-
+		int up = upper(input, cards);
+		int low = lower(input, cards);
+		cout << up-low << ' ';
 	}
 
 	
