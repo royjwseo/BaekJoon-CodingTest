@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-04================
-[이분 탐색 복습] 8983번 사냥꾼
+[이분 탐색 복습] 7795번 먹을 것인가 먹힐 것인가
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -32,52 +32,37 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int M, N, L;
-	cin >> M >> N >> L;
-	vector<int>places(M);
-	for (int i = 0; i < M; ++i) {
-		cin >> places[i];
-	}
-	sort(places.begin(), places.end());
-	
-	vector<pair<int, int>>animals(N);
-	for (int i = 0; i < N; ++i) {
-		cin >> animals[i].first >> animals[i].second;
-	}
-	vector<bool>check_animal(N, false);
+	int T;
+	cin >> T;
 
-	
+	while (T--) {
+		int N, M;
+		cin >> N >> M;
 
-	for (int i = 0; i < N; ++i) {
-		int left = 0;
-		int right = M - 1;
-		while (left <= right) {
-			int mid = left + (right - left) / 2;
+		vector<int>A(N), B(M);
+		for (int i = 0; i < N; ++i)cin >> A[i];
+		for (int i = 0; i < M; ++i)cin >> B[i];
 
-			if (abs(places[mid] - animals[i].first) + animals[i].second > L) {
-				if (animals[i].first > places[mid]) {
-					left = mid + 1;
-				}
-				else if(animals[i].first<places[mid]) {
-					right = mid - 1;
+		sort(B.begin(), B.end());
+
+		int cnt{};
+		for (int i = 0; i < N; ++i) {
+			
+			int left = 0;
+			int right = B.size();
+			while (left < right) {
+				int mid = left + (right - left) / 2;
+				if (B[mid] >=A[i]) {
+					right = mid;
 				}
 				else {
-					break;
+					left = mid + 1;
 				}
 			}
-			else {
-				check_animal[i] = true;
-				break;
-			}
-
-
+			cnt += left;
 		}
+		cout << cnt<<'\n';
 	}
-	int cnt{};
-	for (auto a : check_animal) {
-		if (a)cnt++;
-	}
-	cout << cnt;
 
 }
 
