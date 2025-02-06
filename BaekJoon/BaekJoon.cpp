@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-06================
-[DP] 9461번 파도반 수열
+[DP] 1912번 연속합
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -51,22 +51,19 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int T;
-	cin >> T;
+	int N;
+	cin >> N;
 
-	// 1, 1, 1, 2, 2, 3, 4, 5, 7, 9,12,16,21,
-
-	long long dp[110];
-	dp[1] = 1;
-	dp[2] = 1;
-	dp[3] = 1;
-	dp[4] = 2;
-	for (int i = 5; i <= 101; ++i)dp[i] = dp[i - 3] + dp[i - 2];
-	while (T--) {
-		int N;
-		cin >> N;
-		cout << dp[N]<<'\n';
+	int cur;
+	cin >> cur;
+	int max_cur = cur;
+	for (int i = 1; i < N; ++i) {
+		int input;
+		cin >> input;
+		cur = max(cur + input, input);
+		max_cur = max(max_cur, cur);
 	}
+	cout << max_cur;
 }
 
 
