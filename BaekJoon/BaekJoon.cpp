@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-06================
-[DP] 1904번 01타일
+[DP] 9461번 파도반 수열
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -45,27 +45,28 @@ DP는 메모이제이션(Memoization) 을 활용해서 중복 계산을 방지�
 */
 
 
-int dp(int n) {
-	vector<int>nums(n + 1);
-	nums[1]=1;
-	nums[2] = 2;
 
-	for (int i = 3; i <= n; ++i) {
-		nums[i] = nums[i - 1] + nums[i - 2];
-	}
-	return nums[n]%15746;
-}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
+	int T;
+	cin >> T;
 
-	cout << dp(N);
+	// 1, 1, 1, 2, 2, 3, 4, 5, 7, 9,12,16,21,
 
-
+	long long dp[110];
+	dp[1] = 1;
+	dp[2] = 1;
+	dp[3] = 1;
+	dp[4] = 2;
+	for (int i = 5; i <= 101; ++i)dp[i] = dp[i - 3] + dp[i - 2];
+	while (T--) {
+		int N;
+		cin >> N;
+		cout << dp[N]<<'\n';
+	}
 }
 
 
