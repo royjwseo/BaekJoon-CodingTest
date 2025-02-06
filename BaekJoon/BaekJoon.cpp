@@ -19,37 +19,54 @@ using namespace std;
 
 /*
 ================= 2025-02-06================
-[DP] 9148번 신나는 함수 실행
+[DP] 1904번 01타일
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-int dp[50][50][50];
+/*
+==Dynamic Programming==
 
-int w(int a, int b, int c) {
-	if (a <= 0 || b <= 0 || c <= 0)return 1;
+1단계 작은 문제부터 직접 풀어보기
+DP는 규칙을 찾는 게 핵심이야.
+먼저 N=1,2,3,4 정도까지 경우를 직접 계산하면서 패턴을 찾아봐!
 
-	if (a > 20 || b > 20 || c > 20)return w(20,20,20);
+2단계: 점화식(재귀식) 만들기
+규칙을 찾았으면, 이전 값들로 현재 값을 만들 수 있는 방법을 찾아 점화식을 세운다.
+점화식이 안 떠오르면 "마지막에 무엇을 붙일 수 있는가?" 를 고민하면 돼!
 
-	if (dp[a][b][c] != 0)return dp[a][b][c];
+3단계: 배열을 활용해 반복문으로 구현하기
+점화식을 찾았으면, 이제 for 문을 사용해서 배열을 채우는 방식으로 구현하면 돼.
+DP는 메모이제이션(Memoization) 을 활용해서 중복 계산을 방지하는 게 핵심이야.
 
-	if (a < b && b < c)return dp[a][b][c]=w(a, b, c - 1) + w(a, b - 1, c - 1) - w(a, b - 1, c);
-	else return dp[a][b][c]=w(a - 1, b, c) + w(a - 1, b - 1, c) + w(a - 1, b, c - 1) - w(a - 1, b - 1, c - 1);
+4단계: 공간 최적화 가능하면 최적화하기
+위 코드에서 dp 배열을 사용했지만, 사실 피보나치는 이전 두 개의 값만 사용하니까 배열 없이도 구현 가능해!
+*/
 
+
+int dp(int n) {
+	vector<int>nums(n + 1);
+	nums[1]=1;
+	nums[2] = 2;
+
+	for (int i = 3; i <= n; ++i) {
+		nums[i] = nums[i - 1] + nums[i - 2];
+	}
+	return nums[n]%15746;
 }
-
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	while (1) {
-		int a, b, c;
-		cin >> a >> b >> c;
-		if (a == -1 && b == -1 && c == -1)break;
-		cout << "w(" << a << ", " << b << ", " << c << ") = " << w(a, b, c) << '\n';
-	}
+	int N;
+	cin >> N;
+
+	cout << dp(N);
+
 
 }
+
+
 
