@@ -18,8 +18,8 @@
 using namespace std;
 
 /*
-================= 2025-02-06================
-[DP] 1149번 RGB거리
+================= 2025-02-09================
+[DP] 1932번 정수 삼각형
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -51,27 +51,23 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
-
-	vector<vector<int>>cost(N, vector<int>(3)),dp;
-	dp = cost;
-	for (int i = 0; i < N; ++i) {
-		cin >> cost[i][0] >> cost[i][1] >> cost[i][2];
-	}
-	dp[0][0] = cost[0][0];
-	dp[0][1] = cost[0][1];
-	dp[0][2] = cost[0][2];
-
-	for (int i = 1; i < N; ++i) {					   
-		dp[i][0]=min(dp[i-1][1],dp[i-1][2])+cost[i][0] ;
-		dp[i][1]=min(dp[i-1][0],dp[i-1][2])+cost[i][1] ;
-		dp[i][2]=min(dp[i-1][0],dp[i-1][1])+cost[i][2] ;
+	int n;
+	cin >> n;
+	vector<vector<int>>nums(n);
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < i + 1; ++j) {
+			int input;
+			cin >> input;
+			nums[i].push_back(input);
+		}
 	}
 	
-	cout << min({ dp[N - 1][0],dp[N - 1][1],dp[N - 1][2] });
-
-	
+	for (int i = n - 2; i >= 0; i--) {
+		for (int j = 0; j <= i; ++j) {
+			nums[i][j] = nums[i][j] + max(nums[i + 1][j], nums[i + 1][j + 1]);
+		}
+	}
+	cout << nums[0][0];
 }
 
 
