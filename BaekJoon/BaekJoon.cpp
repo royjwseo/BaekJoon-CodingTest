@@ -18,8 +18,8 @@
 using namespace std;
 
 /*
-================= 2025-02-09================
-[DP] 2579번 계단 오르기
+================= 2025-02-11================
+[DP] 1463번 1로 만들기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -51,25 +51,23 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int N;
-	cin >> N;
-	
-	vector<int>scores(N);
-	for (int i = 0; i < N; ++i)cin >> scores[i];
+	int input;
+	cin >> input;
 
-	if (N == 1)cout << scores[0];
-	if (N == 2)cout << scores[0] + scores[1];
+	int cnt{};
 
-	vector<int>dp(N);
-	dp[0] = scores[0];
-	dp[1] = scores[0] + scores[1];
-	dp[2] = max(scores[0] + scores[2], scores[1]+ scores[2]);
-	for (int i = 3; i < N; ++i) {
-		dp[i] = max(dp[i - 2] + scores[i], dp[i - 3] + scores[i - 1] + scores[i]);
+	vector<int>dp(input + 1, 0);
+	for (int i = 2; i <= input; ++i) {
+		dp[i] = dp[i-1] + 1;
+
+		if (i % 2 == 0)
+			dp[i] = min(dp[i], dp[i / 2] + 1);
+		if (i % 3 == 0)
+			dp[i] = min(dp[i], dp[i / 3] + 1);
+
+
 	}
-	
-	if(N!=1&&N!=2)cout << dp[N - 1];
-
+	cout << dp[input];
 }
 
 
