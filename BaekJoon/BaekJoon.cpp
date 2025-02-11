@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-09================
-[DP] 1932번 정수 삼각형
+[DP] 2579번 계단 오르기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -51,23 +51,25 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int n;
-	cin >> n;
-	vector<vector<int>>nums(n);
-	for (int i = 0; i < n; ++i) {
-		for (int j = 0; j < i + 1; ++j) {
-			int input;
-			cin >> input;
-			nums[i].push_back(input);
-		}
+	int N;
+	cin >> N;
+	
+	vector<int>scores(N);
+	for (int i = 0; i < N; ++i)cin >> scores[i];
+
+	if (N == 1)cout << scores[0];
+	if (N == 2)cout << scores[0] + scores[1];
+
+	vector<int>dp(N);
+	dp[0] = scores[0];
+	dp[1] = scores[0] + scores[1];
+	dp[2] = max(scores[0] + scores[2], scores[1]+ scores[2]);
+	for (int i = 3; i < N; ++i) {
+		dp[i] = max(dp[i - 2] + scores[i], dp[i - 3] + scores[i - 1] + scores[i]);
 	}
 	
-	for (int i = n - 2; i >= 0; i--) {
-		for (int j = 0; j <= i; ++j) {
-			nums[i][j] = nums[i][j] + max(nums[i + 1][j], nums[i + 1][j + 1]);
-		}
-	}
-	cout << nums[0][0];
+	if(N!=1&&N!=2)cout << dp[N - 1];
+
 }
 
 
