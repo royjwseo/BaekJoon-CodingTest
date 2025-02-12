@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-12================
-[DP] 9095번 1,2,3 더하기 
+[DP] 2775번 부녀회장이 될테야
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -53,35 +53,21 @@ int main() {
 
 	int T;
 	cin >> T;
-	while (T--) {
-		int input;
-		cin >> input;
-		vector<int>dp(input+1);
-		if (input == 1) {
-			cout << 0 << '\n';
-			continue;
-		}
-		else if (input == 2) {
-			cout << 1 << '\n';
-			continue;
-		}
-		dp[0] = 0;
-		dp[1] = 1;
-		dp[2] = 2;
-		dp[3] = 4;
-		// 1 1 1 1 1
-		// 1 4
-		// 4 1
-		// 3 1 1
-		// 1
-		// 0, 1, 3, 7, 
-		int cnt = 1;
-		for (int i = 4; i < input + 1; ++i) {
-			dp[i] = dp[i - 3] + dp[i - 2] + dp[i - 1];
-		}
-		cout << dp[input]<<'\n';
-	}
+	int dp[15][15]{};
+	for (int i = 1; i < 15; ++i)dp[1][i] = dp[1][i - 1] + i;
 
+	for (int i = 2; i < 15; ++i) {
+		for (int j = 1; j < 15; ++j) {
+			dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+		}
+	}
+	while (T--) {
+		int k,n;
+		cin >> k >> n;
+
+		
+		cout << dp[k][n]<<'\n';
+	}
 
 }
 
