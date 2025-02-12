@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-12================
-[DP] 2775번 부녀회장이 될테야
+[DP] 11726번 2xn 타일링
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -51,23 +51,19 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int T;
-	cin >> T;
-	int dp[15][15]{};
-	for (int i = 1; i < 15; ++i)dp[1][i] = dp[1][i - 1] + i;
+	int N;
+	cin >> N;
 
-	for (int i = 2; i < 15; ++i) {
-		for (int j = 1; j < 15; ++j) {
-			dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-		}
+	int dp[1001]{};
+	dp[1] = 1;
+	dp[2] = 2;
+	dp[3] = 3;
+	dp[4] = 5;
+	for (int i = 5; i <= N; ++i) {
+		dp[i] = (dp[i - 1] + dp[i - 2])%10007;
 	}
-	while (T--) {
-		int k,n;
-		cin >> k >> n;
+	cout << dp[N];
 
-		
-		cout << dp[k][n]<<'\n';
-	}
 
 }
 
