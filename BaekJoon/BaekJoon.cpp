@@ -18,8 +18,8 @@
 using namespace std;
 
 /*
-================= 2025-02-11================
-[DP] 1463번 1로 만들기
+================= 2025-02-12================
+[DP] 9095번 1,2,3 더하기 
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -51,23 +51,38 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int input;
-	cin >> input;
-
-	int cnt{};
-
-	vector<int>dp(input + 1, 0);
-	for (int i = 2; i <= input; ++i) {
-		dp[i] = dp[i-1] + 1;
-
-		if (i % 2 == 0)
-			dp[i] = min(dp[i], dp[i / 2] + 1);
-		if (i % 3 == 0)
-			dp[i] = min(dp[i], dp[i / 3] + 1);
-
-
+	int T;
+	cin >> T;
+	while (T--) {
+		int input;
+		cin >> input;
+		vector<int>dp(input+1);
+		if (input == 1) {
+			cout << 0 << '\n';
+			continue;
+		}
+		else if (input == 2) {
+			cout << 1 << '\n';
+			continue;
+		}
+		dp[0] = 0;
+		dp[1] = 1;
+		dp[2] = 2;
+		dp[3] = 4;
+		// 1 1 1 1 1
+		// 1 4
+		// 4 1
+		// 3 1 1
+		// 1
+		// 0, 1, 3, 7, 
+		int cnt = 1;
+		for (int i = 4; i < input + 1; ++i) {
+			dp[i] = dp[i - 3] + dp[i - 2] + dp[i - 1];
+		}
+		cout << dp[input]<<'\n';
 	}
-	cout << dp[input];
+
+
 }
 
 
