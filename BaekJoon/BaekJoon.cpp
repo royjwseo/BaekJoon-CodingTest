@@ -15,57 +15,85 @@
 #include <map>
 #include <queue>
 #include <list>
+#include "h.h"
 using namespace std;
 
 /*
-================= 2025-02-12================
-[DP] 11726번 2xn 타일링
+================= 2025-02-15================
+4963번 섬의 개수
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
+int w, h;
+vector<vector<int>>field;
+vector<vector<bool>>visited;
 
-/*
-==Dynamic Programming==
+int dirX[8] = { 1,0,0,-1,1 ,1,-1,-1};
+int dirY[8] = { 0,1,-1,0 ,1,-1,1,-1};
 
-1단계 작은 문제부터 직접 풀어보기
-DP는 규칙을 찾는 게 핵심이야.
-먼저 N=1,2,3,4 정도까지 경우를 직접 계산하면서 패턴을 찾아봐!
 
-2단계: 점화식(재귀식) 만들기
-규칙을 찾았으면, 이전 값들로 현재 값을 만들 수 있는 방법을 찾아 점화식을 세운다.
-점화식이 안 떠오르면 "마지막에 무엇을 붙일 수 있는가?" 를 고민하면 돼!
+void BFS(int y, int x) {
 
-3단계: 배열을 활용해 반복문으로 구현하기
-점화식을 찾았으면, 이제 for 문을 사용해서 배열을 채우는 방식으로 구현하면 돼.
-DP는 메모이제이션(Memoization) 을 활용해서 중복 계산을 방지하는 게 핵심이야.
+    queue<pair<int, int>>q;
+    
+    visited[y][x] = true;
 
-4단계: 공간 최적화 가능하면 최적화하기
-위 코드에서 dp 배열을 사용했지만, 사실 피보나치는 이전 두 개의 값만 사용하니까 배열 없이도 구현 가능해!
-*/
+    if(field[y][x]==1)
+    q.push({ y,x });
 
+    while (!q.empty()) {
+        pair<int, int> cur = q.front();
+        q.pop();
+
+        for (int i = 0; i < 8; ++i) {
+            int dx = cur.second + dirX[i];
+            int dy = cur.first + dirY[i];
+
+            if (dx >= 0 && dx < w && dy >= 0 && dy < h && !visited[dy][dx] && field[dy][dx] == 1) {
+                visited[dy][dx] = true;
+                q.push({ dy,dx });
+            }
+        }
+
+    }
+
+}
 
 
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-	int N;
-	cin >> N;
+    while (1) {
+        
+        cin >> w >> h;
+        if (w == 0 && h == 0)break;
 
-	int dp[1001]{};
-	dp[1] = 1;
-	dp[2] = 2;
-	dp[3] = 3;
-	dp[4] = 5;
-	for (int i = 5; i <= N; ++i) {
-		dp[i] = (dp[i - 1] + dp[i - 2])%10007;
-	}
-	cout << dp[N];
+        field.assign(h, vector<int>(w));
+        visited.assign(h, vector<bool>(w));
+       
+        for (int i = 0; i < h; ++i) {
+            for (int j = 0; j < w; ++j) {
+                cin >> field[i][j];
+                if (field[i][j] == 0)visited[i][j] = true;
+            }
+        }
+        int cnt{};
+        for (int i = 0; i < h; ++ i) {
+            for (int j = 0; j < w; ++j) {
+                if (!visited[i][j]) {
+                    BFS(i, j);
+                    cnt++;
+                }
+            }
+        }
+        cout << cnt << '\n';
 
+
+    }
 
 }
-
 
 
