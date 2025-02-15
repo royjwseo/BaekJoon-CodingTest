@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-02-15================
-1712번 손익분기점
+9655번 돌 게임
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -31,18 +31,11 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    // A 고정 비용 , B 가변 비용, 
+    int N;
+    cin >> N;
 
-    int A, B, C;
-    cin >> A >> B >> C;
-
-    int total=A;
-    int cnt{};
-    if (B >= C)cout << -1;
-    else {
-        int div = C - B;
-        cout<< A / div + 1;
-    }
+    if (N % 2 == 0)cout << "CY";
+    else cout << "SK";
 
   
 }
