@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-03-06================
-2748번 피보나치 수 2
+2156번 포도주 시식
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -32,17 +32,28 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int n;
-	cin >> n;
-	vector<long long>dp(n+1);
-	dp[0] = 0;
-	dp[1] = 1;
-	dp[2] = 1;
-	for (int i = 3; i <= n; ++i) {
-		dp[i] = dp[i - 1] + dp[i - 2];
+	int N;
+	cin >> N;
+	vector<int>wine(N);
+	for (int i = 0; i < N; ++i)cin >> wine[i];
+	vector<int>dp(N,-1);
+	dp[0] = wine[0];
+	if (N == 1) {
+		cout << wine[0];
 	}
-	cout << dp[n];
-
+	if (N == 2) {
+		dp[1] = wine[1] + wine[0];
+		cout << dp[1];
+	}
+	if (N >= 3) {
+		
+		dp[1] = wine[1] + wine[0];
+		dp[2] = max({ wine[0] + wine[1],wine[2] + wine[0], wine[1] + wine[2] });
+		for (int i = 3; i < N; ++i) {
+			dp[i] = max({ dp[i - 1],dp[i - 2] + wine[i], dp[i - 3] + wine[i - 1] + wine[i] });
+		}
+		cout << *max_element(dp.begin(), dp.end());
+	}
 }
 
 
