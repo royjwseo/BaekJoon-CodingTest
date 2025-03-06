@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-03-06================
-11726번 2xn 타일링
+2579번 계단 오르기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -28,21 +28,35 @@ using namespace std;
 
 
 int main() {
+	 
 	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	
+	cin.tie(NULL);
+
 	int N;
 	cin >> N;
-
-	vector<long long>dp(N+1);
-	dp[0] = 0;
-	dp[1] = 1;
-	dp[2] = 2;
-	for (int i = 3; i <= N; ++i) {
-		dp[i] = (dp[i - 1] + dp[i - 2])%10007;
+	vector<int>stairs(N);
+	for (int i = 0; i < N; ++i)cin >> stairs[i];
+	vector<int>dp(N);
+	if (N == 1) {
+		dp[0] = stairs[0];
+		cout << dp[0];
 	}
-	cout << dp[N];
+	else if (N == 2) {
+		dp[1] = stairs[1]+stairs[1];
+		cout << dp[1];
+	}
+	else {
+		dp[0] = stairs[0];
+		dp[1] = stairs[0] + stairs[1];
+		dp[2] = max(dp[1], dp[0] + stairs[2]);
+		for (int i = 3; i < N; ++i) {
+			dp[i] = max(dp[i - 2] + stairs[i], dp[i - 3]+stairs[i-1]+stairs[i]);
+		}
+	}
 
+	//10->15->25 / 10->20->25(전단계에서 안밟음) / 10->15->10 안밟음 
+
+	cout << dp[N - 1];
 }
 
 
