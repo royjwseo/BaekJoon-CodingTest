@@ -18,42 +18,37 @@
 using namespace std;
 
 /*
-================= 2025-03-05================
-1010번 다리 놓기
+================= 2025-03-06================
+2839번 설탕 배달
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
-long long combination(int n, int r) {
-	if (r > n - r) r = n - r; // C(n, r) == C(n, n-r) 최적화
-	long long result = 1;
-	for (int i = 0; i < r; ++i) {
-		result *= (n - i);
-		result /= (i + 1);
-	}
-	return result;
-}
+
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	int T;
-	cin >> T;
+	//3kg 5kg 최대한 적은 봉지 
 
-	while (T--) {
-		int N, M;
-		cin >> N >> M;
+	int N;
+	cin >> N;
 
-		
-		cout << combination(M,N) << '\n';
-
-
-		
-		
-		
+	int cnt{};
+	
+	while (N % 5 != 0) {
+		N -= 3;
+		if (N < 0)break;
+		cnt++;
 	}
+	if (N < 0)cout << -1;
+	else {
+		cnt += N / 5;
+		cout << cnt;
+	}
+
 
 }
 
