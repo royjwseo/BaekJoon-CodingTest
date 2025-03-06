@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-03-06================
-2579번 계단 오르기
+11053번 가장 긴 증가하는 부분 수열
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -34,29 +34,23 @@ int main() {
 
 	int N;
 	cin >> N;
-	vector<int>stairs(N);
-	for (int i = 0; i < N; ++i)cin >> stairs[i];
-	vector<int>dp(N);
-	if (N == 1) {
-		dp[0] = stairs[0];
-		cout << dp[0];
+
+	vector<int>nums(N);
+	for (int i = 0; i < N; ++i) {
+		cin >> nums[i];
 	}
-	else if (N == 2) {
-		dp[1] = stairs[1]+stairs[1];
-		cout << dp[1];
-	}
-	else {
-		dp[0] = stairs[0];
-		dp[1] = stairs[0] + stairs[1];
-		dp[2] = max(dp[1], dp[0] + stairs[2]);
-		for (int i = 3; i < N; ++i) {
-			dp[i] = max(dp[i - 2] + stairs[i], dp[i - 3]+stairs[i-1]+stairs[i]);
+
+	vector<int>dp(N, 1);
+	int last_index = 0;
+	for (int i = 1; i < N; ++i) {
+
+		for (int j = i; j >= 0; --j) {
+			if (nums[i] > nums[j]) {
+				dp[i] = max(dp[j] + 1,dp[i]);
+			}
 		}
 	}
-
-	//10->15->25 / 10->20->25(전단계에서 안밟음) / 10->15->10 안밟음 
-
-	cout << dp[N - 1];
+	cout << *max_element(dp.begin(), dp.end());
 }
 
 
