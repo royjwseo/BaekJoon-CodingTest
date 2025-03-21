@@ -19,7 +19,7 @@ using namespace std;
 
 /*
 ================= 2025-03-21================
-11052번 카드 구매하기
+14501번 퇴사
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
@@ -31,37 +31,23 @@ int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	//아이디, 얼굴 -> 등급을 나타내는 색 8가지 
-	// 카드팩형태 - 카드1개, 카드n개
-
 	int N;
 	cin >> N;
 
-	vector<int>cards(N + 1);
-	for (int i = 0; i < N; ++i)cin >> cards[i + 1];
-
-	vector<int>dp(N + 1);
-	if (N == 1) {
-		dp[1] = cards[1];
-		cout << cards[1];
+	vector<pair<int, int>>dates(N + 1);
+	for (int i = 1; i <= N; ++i) {
+		cin >> dates[i].first >> dates[i].second;
 	}
-	else if (N == 2){
-		dp[2] = max(cards[1] * 2, cards[2]);
-		cout << dp[2];
-	}else{
-		dp[1] = cards[1];
-		dp[2] = max(cards[1] * 2, cards[2]);
-		for (int i = 3; i <= N; ++i) {
-			if (i % 2 == 0) {
-				dp[i] = max({ cards[i], dp[i/2] * 2,dp[i - 1] + dp[1] });
-			}
-			else {
-				dp[i] = max({ cards[i], dp[i - 1] + dp[1],dp[i - 2] + dp[2] });
-			}
+	vector<int>dp(N + 2);
+	for (int i = 1; i <= N; ++i) {
+		dp[i] = max(dp[i], dp[i-1]);
+		if (i + dates[i].first <= N+1) {
+		
+			dp[i + dates[i].first] = max(dp[i+dates[i].first],dp[i]+dates[i].second);
 		}
 	}
-	cout << dp[N];
-	//5 10 15 20 35 50 85
+	cout << *max_element(dp.begin(),dp.end());
+
 }
 
 
