@@ -18,42 +18,50 @@
 using namespace std;
 
 /*
-================= 2025-03-06================
-2156번 포도주 시식
+================= 2025-03-21================
+11052번 카드 구매하기
 1KB -> 1024바이트
 1MB -> 1000KB -> 1024 * 1024 바이트 대략 262'144개 int저장가능
 스택 크기 : 1MB
 */
 
 
-
 int main() {
-	 
+
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
+	//아이디, 얼굴 -> 등급을 나타내는 색 8가지 
+	// 카드팩형태 - 카드1개, 카드n개
+
 	int N;
 	cin >> N;
-	vector<int>wine(N);
-	for (int i = 0; i < N; ++i)cin >> wine[i];
-	vector<int>dp(N,-1);
-	dp[0] = wine[0];
+
+	vector<int>cards(N + 1);
+	for (int i = 0; i < N; ++i)cin >> cards[i + 1];
+
+	vector<int>dp(N + 1);
 	if (N == 1) {
-		cout << wine[0];
+		dp[1] = cards[1];
+		cout << cards[1];
 	}
-	if (N == 2) {
-		dp[1] = wine[1] + wine[0];
-		cout << dp[1];
-	}
-	if (N >= 3) {
-		
-		dp[1] = wine[1] + wine[0];
-		dp[2] = max({ wine[0] + wine[1],wine[2] + wine[0], wine[1] + wine[2] });
-		for (int i = 3; i < N; ++i) {
-			dp[i] = max({ dp[i - 1],dp[i - 2] + wine[i], dp[i - 3] + wine[i - 1] + wine[i] });
+	else if (N == 2){
+		dp[2] = max(cards[1] * 2, cards[2]);
+		cout << dp[2];
+	}else{
+		dp[1] = cards[1];
+		dp[2] = max(cards[1] * 2, cards[2]);
+		for (int i = 3; i <= N; ++i) {
+			if (i % 2 == 0) {
+				dp[i] = max({ cards[i], dp[i/2] * 2,dp[i - 1] + dp[1] });
+			}
+			else {
+				dp[i] = max({ cards[i], dp[i - 1] + dp[1],dp[i - 2] + dp[2] });
+			}
 		}
-		cout << *max_element(dp.begin(), dp.end());
 	}
+	cout << dp[N];
+	//5 10 15 20 35 50 85
 }
 
 
